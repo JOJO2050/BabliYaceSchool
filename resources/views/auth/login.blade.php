@@ -30,7 +30,7 @@
                                 src="logo_ecole.jpg" alt="logo"></a></div>
 
                     {{-- {{ Hash::make('azerty') }} --}}
-                    <h2 class="auth-heading text-center mb-4">Veillez vous connectez</h2>
+                    <h2 class="auth-heading text-center mb-4">Veuillez vous connectez</h2>
                     @include('_message')
                     <div class="auth-form-container text-start mx-auto">
                         <form class="auth-form login-form" action="{{ url('login') }}" method="post">
