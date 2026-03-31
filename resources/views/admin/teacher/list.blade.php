@@ -129,8 +129,8 @@
                                             <div class="col-md-3 mb-3">
                                                 <label class="form-label"><b>Genre</b></label>
                                                 <select name="gender" class="form-control">
-                                                    <option value="">~~~~~~~~~~~~~~~~~~~Selection un
-                                                        genre~~~~~~~~~~~~~~~~~~~
+                                                    <option value="">~~~~~~~~~~~~~Selection un
+                                                        genre~~~~~~~~~~
                                                     </option>
                                                     <option
                                                         {{ Request::get('gender') == 'Male' ? 'selected' : '' }}value="Male">
@@ -151,7 +151,7 @@
                                         <!-- ROW 2 -->
                                         <div class="row">
 
-                                            <div class="col-md-3 mb-3">
+                                            {{-- <div class="col-md-3 mb-3">
                                                 <label class="form-label"><b>Addresse Postale</b></label>
                                                 <input type="text" name="address"
                                                     value="{{ Request::get('address') }}" class="form-control"
@@ -163,13 +163,13 @@
                                                 <input type="text" name="marital_status"
                                                     value="{{ Request::get('marital_status') }}" class="form-control"
                                                     placeholder="Entrer le Statu matrimonial">
-                                            </div>
+                                            </div> --}}
 
                                             <div class="col-md-3 mb-3">
                                                 <label class="form-label"><b>Status</b></label>
                                                 <select name="status" class="form-control">
-                                                    <option value="">~~~~~~~~~~~~~~~Selection un
-                                                        status~~~~~~~~~~~~~~~~~~~
+                                                    <option value="">~~~~~~~~~~~~~Selection un
+                                                        status~~~~~~~~~~~~~
                                                     </option>
                                                     <option
                                                         {{ Request::get('status') == '100' ? 'selected' : '' }}value="100">
@@ -185,21 +185,34 @@
                                             <div class="col-md-3 mb-3">
                                                 <label class="form-label"><b>Date d'adhésion</b></label>
                                                 <input type="date" name="admission_date"
-                                                    value="{{ Request::get('admission_date') }}"
-                                                    class="form-control">
+                                                    value="{{ Request::get('admission_date') }}" class="form-control">
                                             </div>
+
+                                            <div class="col-md-3 mb-3">
+                                                <label class="form-label"><b>Date De creation</b></label>
+                                                <input type="date" name="created_at"
+                                                    value="{{ Request::get('created_at') }}" class="form-control">
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <label class="form-label"><b>Date de modification</b></label>
+                                                <input type="date" name="updated_at"
+                                                    value="{{ Request::get('updated_at') }}" class="form-control">
+                                            </div>
+
                                         </div>
+
+
 
                                         <div class="row">
 
-                                            <div class="col-md-4 mb-3">
+                                            {{-- <div class="col-md-4 mb-3">
                                                 <label class="form-label"><b>Contact Telephonique</b></label>
                                                 <input type="text" name="mobile_number"
                                                     value="{{ Request::get('mobile_number') }}" class="form-control"
                                                     placeholder="Entrer le Contact Telephonique">
-                                            </div>
+                                            </div> --}}
 
-                                            <div class="col-md-4 mb-3">
+                                            {{-- <div class="col-md-4 mb-3">
                                                 <label class="form-label"><b>Date De creation</b></label>
                                                 <input type="date" name="created_at"
                                                     value="{{ Request::get('created_at') }}" class="form-control">
@@ -208,7 +221,7 @@
                                                 <label class="form-label"><b>Date de modification</b></label>
                                                 <input type="date" name="updated_at"
                                                     value="{{ Request::get('updated_at') }}" class="form-control">
-                                            </div>
+                                            </div> --}}
                                         </div>
 
                                         <!-- ROW 5 (BOUTONS) -->
@@ -277,7 +290,7 @@
                                                         <th>Status</th>
                                                         <th>Date création</th>
                                                         <th>Date modification</th>
-                                                        <th class="text-center">Action</th>k
+                                                        <th class="text-center">Action</th>
 
                                                     </tr>
                                                 </thead>

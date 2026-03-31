@@ -129,8 +129,8 @@
                                             <div class="col-md-3 mb-3">
                                                 <label class="form-label"><b>Genre</b></label>
                                                 <select name="gender" class="form-control">
-                                                    <option value="">~~~~~~~~~~~~~~~Selection un
-                                                        genre~~~~~~~~~~~~~~~~~~~
+                                                    <option value="">~~~~~~~~~~~~Selection un
+                                                        genre~~~~~~~~~~~~~
                                                     </option>
                                                     <option
                                                         {{ Request::get('gender') == 'Male' ? 'selected' : '' }}value="Male">
@@ -151,7 +151,7 @@
                                         <!-- ROW 2 -->
                                         <div class="row">
 
-                                            <div class="col-md-3 mb-3">
+                                            {{-- <div class="col-md-3 mb-3">
                                                 <label class="form-label"><b>Profession</b></label>
                                                 <input type="text" name="occupation"
                                                     value="{{ Request::get('occupation') }}" class="form-control"
@@ -170,13 +170,13 @@
                                                 <input type="text" name="address"
                                                     value="{{ Request::get('address') }}" class="form-control"
                                                     placeholder="Entrer l'addresse postale">
-                                            </div>
+                                            </div> --}}
 
-                                            <div class="col-md-3 mb-3">
+                                            <div class="col-md-4 mb-3">
                                                 <label class="form-label"><b>Status</b></label>
                                                 <select name="status" class="form-control">
-                                                    <option value="">~~~~~~~~~~~~~~~Selection un
-                                                        status~~~~~~~~~~~~~~~~~~~
+                                                    <option value="">~~~~~~~~~~~~Selection un
+                                                        status~~~~~~~~~
                                                     </option>
                                                     <option {{ Request::get('status') == 100 ? 'selected' : '' }}
                                                         value="100">
@@ -187,13 +187,24 @@
 
                                                 </select>
                                             </div>
+
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label"><b>Date De creation</b></label>
+                                                <input type="date" name="created_at"
+                                                    value="{{ Request::get('created_at') }}" class="form-control">
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label"><b>Date de modification</b></label>
+                                                <input type="date" name="updated_at"
+                                                    value="{{ Request::get('updated_at') }}" class="form-control">
+                                            </div>
                                         </div>
 
 
                                         <!-- ROW 4 -->
                                         <div class="row">
 
-                                            <div class="col-md-6 mb-3">
+                                            {{-- <div class="col-md-6 mb-3">
                                                 <label class="form-label"><b>Date De creation</b></label>
                                                 <input type="date" name="created_at"
                                                     value="{{ Request::get('created_at') }}" class="form-control">
@@ -202,7 +213,7 @@
                                                 <label class="form-label"><b>Date de modification</b></label>
                                                 <input type="date" name="updated_at"
                                                     value="{{ Request::get('updated_at') }}" class="form-control">
-                                            </div>
+                                            </div> --}}
                                         </div>
 
                                         <!-- ROW 5 (BOUTONS) -->

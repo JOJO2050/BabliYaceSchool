@@ -106,6 +106,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="{{ url('admin/assign_teacher_subject/list') }}"
+                                        class="nav-link {{ Request::segment(2) == 'assign_teacher_subject' ? 'active-child' : '' }}">
+                                        <i class="fas fa-sitemap"></i>
+                                        <p>Professeur + Matière</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ url('admin/assign_class_teacher/list') }}"
                                         class="nav-link {{ Request::segment(2) == 'assign_class_teacher' ? 'active-child' : '' }}">
                                         <i class="fas fa-sitemap"></i>
