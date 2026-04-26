@@ -257,11 +257,11 @@
                                                         <th>photo</th>
                                                         <th>Nom </th>
                                                         <th>Prénom</th>
-                                                        <th class="text-center">>Email</th>
+                                                        <th class="text-center">Email</th>
                                                         <th>Genre</th>
                                                         <th>Profession</th>
                                                         <th>Contact</th>
-                                                        <th>Address Postal</th>
+                                                        {{-- <th>Address Postal</th> --}}
                                                         <th>Status</th>
                                                         <th>Date création</th>
                                                         <th>Date modification</th>
@@ -285,7 +285,7 @@
                                                             <td>{{ $value->gender }}</td>
                                                             <td>{{ $value->occupation }}</td>
                                                             <td>{{ $value->mobile_number }}</td>
-                                                            <td>{{ $value->address }}</td>
+                                                            {{-- <td>{{ $value->address }}</td> --}}
                                                             <td>{{ $value->status == 0 ? 'Active ' : 'Inactive' }}</td>
                                                             <td>{{ date('d-m-Y H:i A', strtotime($value->created_at)) }}
                                                             </td>
@@ -303,7 +303,7 @@
                                                                     </a>
                                                                     <a href="{{ url('admin/parent/my_student/' . $value->id) }}"
                                                                         class="btn btn-sm btn-warning">
-                                                                        élève
+                                                                        élèves
                                                                     </a>
 
                                                                 </div>

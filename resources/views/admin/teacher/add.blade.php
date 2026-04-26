@@ -184,9 +184,9 @@
                                             <label for="setting-input-3" class="form-label"><b>Status
                                                     Matrimonial</b></label>
                                             <input type="text" class="form-control" id="setting-input-3"
-                                                name="marital_satus" value="{{ old('marital_satus') }}"
+                                                name="marital_status" value="{{ old('marital_status') }}"
                                                 placeholder="Entrez le Status Matrimonial">
-                                            @error('marital_satus')
+                                            @error('marital_status')
                                                 <div class="text-danger"><b>{{ $message }}</b></div>
                                             @enderror
                                         </div>

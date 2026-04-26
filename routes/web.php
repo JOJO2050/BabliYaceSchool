@@ -181,14 +181,18 @@ Route::group(["middleware" => "student"], function () {
 
     Route::get("/student/dashboard", [DashboardController::class, "dashboard"]);
 
+
     // Recuperation des matières liés a l'élève connecté dans son espace
     Route::get("student/my_subject", [SubjectController::class, "mySubjectStudent"]);
+
 
     // espace emploi du temps
     Route::get("student/my_timetable", [ClassTimetableController::class, "myTimetableStudent"]);
 
+
     // Calendrier des devoirs
     Route::get("student/my_exam_timetable", [ExaminationsController::class, "myExamTimetableStudent"]);
+
 
     // Edition personnel du profil ELEVE
     Route::get("student/parameter", [UserController::class, "My_parameter"]);
