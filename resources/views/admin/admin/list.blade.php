@@ -164,6 +164,7 @@
                                                     <th>Photo</th>
                                                     <th>Nom Complet</th>
                                                     <th class="text-center">Email</th>
+                                                    <th>Contact</th>
                                                     <th>Type</th>
                                                     <th>Date création</th>
                                                     <th>Date modification</th>
@@ -183,6 +184,7 @@
                                                         </td>
                                                         <td>{{ $value->name }}</td>
                                                         <td>{{ $value->email }}</td>
+                                                        <td>{{ $value->mobile_number }}</td>
                                                         <td>{{ $value->user_type }}</td>
                                                         <td>{{ date('d-m-Y H:i A', strtotime($value->created_at)) }}
                                                         </td>

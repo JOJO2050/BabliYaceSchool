@@ -101,7 +101,7 @@
                                     {{ csrf_field() }}
 
                                     <div class="row">
-                                        <div class="col-md-3 mb-3">
+                                        <div class="col-md-4 mb-3">
                                             <label for="setting-input-1" class="form-label"><b>Nom Complet</b></label>
                                             <input type="text" class="form-control" id="setting-input-1"
                                                 name="name" value="{{ old('name') }}"
@@ -111,7 +111,31 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-3 mb-3">
+
+                                        <div class="col-md-4 mb-3">
+                                            <label for="setting-input-3" class="form-label"><b>Contact
+                                                    Téléphonique</b></label>
+                                            <input type="text" class="form-control" id="setting-input-3"
+                                                name="mobile_number" value="{{ old('mobile_number') }}"
+                                                placeholder="Entrez le contact">
+                                            @error('mobile_number')
+                                                <div class="text-danger"><b>{{ $message }}</b></div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
+                                            <label for="setting-input-3" class="form-label"><b>Telecharger une
+                                                    photo</b></label>
+                                            <input type="file" class="form-control" id="setting-input-3"
+                                                name="profile_pic">
+                                            @error('profile_pic')
+                                                <div class="text-danger"><b>{{ $message }}</b></div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
                                             <label for="setting-input-3" class="form-label"><b>Email</b></label>
                                             <input type="email" class="form-control" id="setting-input-3"
                                                 name="email" value="{{ old('email') }}"
@@ -121,7 +145,8 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-3 mb-3">
+
+                                        <div class="col-md-6 mb-3">
                                             <label for="setting-input-3" class="form-label"><b>Mot de passe</b></label>
                                             <input type="password" class="form-control" id="setting-input-3"
                                                 name="password" value="{{ old('password') }}"
@@ -131,24 +156,7 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-3 mb-3">
-                                            <label for="setting-input-3" class="form-label"><b>Telecharger une
-                                                    photo</b></label>
-                                            <input type="file" class="form-control" id="setting-input-3"
-                                                name="profile_pic">
-                                            @error('profile_pic')
-                                                <div class="text-danger"><b>{{ $message }}</b></div>
-                                            @enderror
-                                        </div>
 
-                                        {{-- <div class="col-md-4 mb-3">
-                                        <label for="setting-input-3" class="form-label"><b>Telecharger une photo</b></label>
-                                        <input type="file" class="form-control" id="setting-input-3" name="photo"
-                                            value="{{ old('photo') }}" placeholder="Selectionner une photo">
-                                        @error('email')
-                                            <div class="text-danger"><b>{{ $message }}</b></div>
-                                        @enderror
-                                    </div> --}}
 
                                     </div>
 

@@ -23,6 +23,7 @@ class insertAdminRequest extends FormRequest
     {
         return [
             "name" => "required|string",
+            "mobile_number" => "required|string",
             "email" => "required|email|unique:users,email",
             "password" => "required"
         ];
@@ -34,6 +35,7 @@ class insertAdminRequest extends FormRequest
         return [
 
             "name.required" => "le nom de est requis",
+            "mobile_number.required" => "Le contact de l'administrateur est requis",
             "email.required" => "L'email est requis",
             "email.unique" => "L'email est dejà utilisé",
             // "email.email" => "l'email n'est pas valide",

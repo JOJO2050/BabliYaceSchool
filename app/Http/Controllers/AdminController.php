@@ -31,6 +31,7 @@ class AdminController extends Controller
 
         $user = new User();
         $user->name  = trim($request->name);
+        $user->mobile_number = trim($request->mobile_number);
         $user->email = trim($request->email);
 
         if (!empty($request->file("profile_pic"))) {
@@ -66,6 +67,7 @@ class AdminController extends Controller
     {
         $user = User::getSingle($id);
         $user->name  = trim($request->name);
+        $user->mobile_number = trim($request->mobile_number);
         $user->email = trim($request->email);
 
         if (!empty($request->file("profile_pic"))) {
