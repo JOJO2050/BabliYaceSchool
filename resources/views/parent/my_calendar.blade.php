@@ -86,7 +86,8 @@
                         <div>
                             <h3 class="mt-1 app-page-title d-inline-block px-3 py-1 rounded"
                                 style="background-color: #28a745; color: #fff;">
-                                Espace Evève</h3>
+                                Calandrier de l'élève : <span style="color: white"><b>{{ $getStudent->name }}
+                                        {{ $getStudent->last_name }}</b></span></h3>
                         </div>
 
 
@@ -225,7 +226,7 @@
                     start: "{{ $exam['exam_date'] }}",
                     end: "{{ $exam['exam_date'] }}",
                     color: "red",
-                    url: "http://127.0.0.1:8000/student/my_exam_timetable"
+
                 });
             @endforeach
         @endforeach

@@ -66,6 +66,22 @@ class ClassTeacherModel extends Model
             ->where("assign_class_teacher.teacher_id", "=", $teacher_id)
             ->get();
     }
+
+    static public function getCalendarTeacher($teacher_id)
+    {
+        return ClassTeacherModel::select("class_subject_timetable.*", "class.name as class_name", "subject.name as subject_name", "week.name as week_name", "week.fullcalendar_day")
+            ->join("class", "class.id", "=", "assign_class_teacher.class_id")
+            ->join("class_subject", "class_subject.class_id", "=", "class.id")
+            ->join("class_subject_timetable", "class_subject_timetable.subject_id", "=", "class_subject.subject_id")
+            ->join("subject", "subject.id", "=",  "class_subject.subject_id")
+            ->join("week", "week.id", "=",  "class_subject_timetable.week_id")
+            ->where("assign_class_teacher.teacher_id", "=", $teacher_id)
+            ->where("assign_class_teacher.status", "=", 0)
+            ->where("assign_class_teacher.is_delete", "=", 0)
+            ->get();
+    }
+
+
     static public function getMyClassSubjectGroup($teacher_id)
     {
         return  ClassTeacherModel::select("assign_class_teacher.*", "class.name as class_name", "class.id as class_id")
@@ -93,22 +109,27 @@ class ClassTeacherModel extends Model
     }
 
     //Fontion qui permet de gerer les jours lier a une classe et aux matières
+    // static public function getMyTimeTable($class_id, $subject_id)
+    // {
+    //     $today = date("l");
+
+    //     $getWeek = WeekModel::getWeekUsingName($today);
+
+    //     if (!$getWeek) {
+    //         return null;
+    //     }
+
+    //     return ClassSubjectTimetableModel::getRecordClassSubject(
+    //         $class_id,
+    //         $subject_id,
+    //         $getWeek->id
+    //     );
+    // }
+
     static public function getMyTimeTable($class_id, $subject_id)
     {
-        $days = [
-            "Monday" => "Lundi",
-            "Tuesday" => "Mardi",
-            "Wednesday" => "Mercredi",
-            "Thursday" => "Jeudi",
-            "Friday" => "Vendredi",
-            "Saturday" => "Samedi",
-            "Sunday" => "Dimanche"
-        ];
-
-        $today = $days[date("l")];
-
-        $getWeek = WeekModel::getWeekUsingName($today);
-
-        return ClassSubjectTimetableModel::getRecordClassSubject($class_id, $subject_id, $getWeek->id);
+        return ClassSubjectTimetableModel::where('class_id', $class_id)
+            ->where('subject_id', $subject_id)
+            ->first();
     }
 }

@@ -86,7 +86,7 @@
                         <div>
                             <h3 class="mt-1 app-page-title d-inline-block px-3 py-1 rounded"
                                 style="background-color: #28a745; color: #fff;">
-                                Espace Evève</h3>
+                                Espace Professeur</h3>
                         </div>
 
 
@@ -194,7 +194,6 @@
         }
     </style>
     {{-- permet de gerer le calendrier debut --}}
-    <script src="{{ asset('assets1/fullcalendar/index.global.js') }}"></script>
     <script src="{{ asset('assets1/fullcalendar/index.global.min.js') }}"></script>
 
 
@@ -202,33 +201,20 @@
     <script type="text/javascript">
         var events = new Array();
 
+
         //pour le calandrier des matieres ou des cours
-        @foreach ($getMyTimetable as $value)
-            @foreach ($value['week'] as $week)
-                events.push({
-                    title: "{{ $value['name'] }}",
-                    daysOfWeek: [{{ $week['fullcalendar_day'] }}],
-                    startTime: "{{ $week['start_time'] }}",
-                    endTime: "{{ $week['end_time'] }}",
+        @foreach ($getClassTimetable as $value)
 
+            events.push({
+                title: "{{ $value->class_name }} - {{ $value->subject_name }}",
+                daysOfWeek: [{{ $value->fullcalendar_day }}],
+                startTime: "{{ $value->start_time }}",
+                endTime: "{{ $value->end_time }}",
 
-                })
-            @endforeach
+            })
         @endforeach
 
-        //pour le calendrier des examens
-        @foreach ($getExamTimetable as $valueE)
-            @foreach ($valueE['exam'] as $exam)
-                events.push({
 
-                    title: "{{ $valueE['name'] }} - {{ $exam['subject_name'] }}  de  {{ $exam['start_time'] }} à {{ $exam['end_time'] }}",
-                    start: "{{ $exam['exam_date'] }}",
-                    end: "{{ $exam['exam_date'] }}",
-                    color: "red",
-                    url: "http://127.0.0.1:8000/student/my_exam_timetable"
-                });
-            @endforeach
-        @endforeach
 
         var calendarID = document.getElementById("calendar");
 

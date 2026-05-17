@@ -173,6 +173,10 @@ Route::group(["middleware" => "teacher"], function () {
     // Edition personnel du profil PROFESSEUR
     Route::get("teacher/parameter", [UserController::class, "My_parameter"]);
     Route::post("teacher/parameter", [UserController::class, "Update_My_parameter_teacher"]);
+
+
+    //Calendrier  Teacher
+    Route::get("teacher/my_calendar", [CalendarController::class, "myCalendarTeacher"]);
 });
 
 
@@ -220,6 +224,9 @@ Route::group(["middleware" => "parent"], function () {
 
     // Recuperation des matières liés a chaque élève lié au parent connecté dans son espace
     Route::get("parent/my_student", [ParentController::class, "myStudentParent"]);
+
+    //Calendrier
+    Route::get("parent/my_student/calendar/{student_id}", [CalendarController::class, "myCalendarParent"]);
 
     // Edition personnel du profil PARENT
     Route::get("parent/parameter", [UserController::class, "My_parameter"]);

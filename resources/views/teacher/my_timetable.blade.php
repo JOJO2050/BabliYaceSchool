@@ -90,7 +90,7 @@
                             {{-- <a href="#" class="btn btn-label-primary btn-round me-2">Liste Année</a> --}}
                             <a href="{{ url('teacher/my_class_subject') }}" class="btn btn-primary btn-round">Revenir
                                 sur
-                                le dashboard
+                                la liste des matières
                             </a>
                         </div>
                     </div>

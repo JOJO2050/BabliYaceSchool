@@ -150,7 +150,7 @@
                                     <a href="{{ url('admin/examination/exam/list') }}"
                                         class="nav-link {{ Request::segment(3) == 'exam' ? 'active-child' : '' }}">
                                         <i class="fas fa-book"></i>
-                                        <p>Devoir</p>
+                                        <p>Type d'examen</p>
                                     </a>
                                 </li>
 
@@ -211,6 +211,14 @@
                             class="nav-link {{ Request::segment(2) == 'my_exam_timetable' ? 'active' : '' }}">
                             <i class="fas fa-calendar-alt"></i>
                             <p>Calendrier examen </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('teacher/my_calendar') }}"
+                            class="nav-link {{ Request::segment(2) == 'my_calendar' ? 'active' : '' }}">
+                            <i class="fas fa-calendar-alt"></i>
+                            <p>Mon Calendrier global</p>
                         </a>
                     </li>
 

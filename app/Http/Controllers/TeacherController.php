@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 class TeacherController extends Controller
 {
+
     public function list()
     {
         $data["getRecord"] = User::getTeacher();

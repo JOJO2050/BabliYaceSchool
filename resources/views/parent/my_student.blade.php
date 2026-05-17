@@ -182,6 +182,11 @@
                                                                         <b>Examen</b>
                                                                     </a>
 
+                                                                    <a href="{{ url('/parent/my_student/calendar/' . $value->id) }}"
+                                                                        class="btn btn-sm btn-success">
+                                                                        <b>Calendrier</b>
+                                                                    </a>
+
                                                                 </div>
                                                             </td>
                                                         </tr>

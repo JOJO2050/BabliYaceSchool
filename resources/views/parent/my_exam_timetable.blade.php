@@ -88,8 +88,8 @@
 
                         <div class="ms-md-auto py-2 py-md-0">
                             {{-- <a href="#" class="btn btn-label-primary btn-round me-2">Liste Année</a> --}}
-                            <a href="{{ url('parent/my_student') }}" class="btn btn-primary btn-round">Revenir sur
-                                le dashboard
+                            <a href="{{ url('parent/my_student') }}" class="btn btn-primary btn-round">Voir la liste des
+                                enfants
                             </a>
                         </div>
                     </div>
