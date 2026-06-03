@@ -9,7 +9,7 @@
          Réinitialiser votre mot de passe
      @endcomponent
 
-     Si vous avez un souci de Réinitialiser votre mot de passe, veillez nous contacter
+     Si vous avez un souci pour Réinitialiser votre mot de passe, veillez nous contacter
 
      Merci,
      {{ config('app.name') }}
