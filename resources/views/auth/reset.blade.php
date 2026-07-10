@@ -35,7 +35,7 @@
 
 
                     <!-- Titre -->
-                    <h2 class="auth-heading text-center mb-5">BlaBla de mot de passe</h2>
+                    <h2 class="auth-heading text-center mb-5">BlaBlaBla de mot de passe</h2>
                     @include('_message')
                     <!-- Formulaire -->
                     <div class="auth-form-container text-start">
