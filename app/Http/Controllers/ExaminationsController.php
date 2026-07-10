@@ -293,6 +293,7 @@ class ExaminationsController extends Controller
 
     public function submit_marks_register(Request $request)
     {
+
         if (!empty($request->mark)) {
 
             foreach ($request->mark as $mark) {
@@ -437,6 +438,21 @@ class ExaminationsController extends Controller
             'message' => "La note de cette matière a bien été enregistrée avec succès."
         ]);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // public function submit_marks_register(request $request)

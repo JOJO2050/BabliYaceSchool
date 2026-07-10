@@ -241,16 +241,40 @@
 
                                                                         @php
                                                                             $i = 1;
+                                                                            $totalStudentMark = 0;
+                                                                            $totalFullMarks = 0;
+                                                                            $totalPassingMarks = 0;
                                                                         @endphp
 
                                                                         @foreach ($getSubject as $subject)
                                                                             @php
+                                                                                $totalMark = 0;
+
+                                                                                $totalFullMarks =
+                                                                                    $totalFullMarks +
+                                                                                    $subject->full_marks;
+
+                                                                                $totalPassingMarks =
+                                                                                    $totalPassingMarks +
+                                                                                    $subject->passing_mark;
+
                                                                                 $getMark = $subject->getMark(
                                                                                     $student->id,
                                                                                     Request::get('exam_id'),
                                                                                     Request::get('class_id'),
                                                                                     $subject->subject_id,
                                                                                 );
+
+                                                                                if (!empty($getMark)) {
+                                                                                    $totalMark =
+                                                                                        $getMark->Interrogation_1 +
+                                                                                        $getMark->Interrogation_2 +
+                                                                                        $getMark->Devoir_de_classe_1 +
+                                                                                        $getMark->Devoir_de_classe_2 +
+                                                                                        $getMark->Devoir_de_niveau;
+                                                                                }
+                                                                                $totalStudentMark =
+                                                                                    $totalStudentMark + $totalMark;
                                                                             @endphp
                                                                             <td>
 
@@ -324,68 +348,137 @@
                                                                                         unique</button>
                                                                                 </div>
 
+                                                                                @if (!empty($getMark))
+                                                                                    <div style="margin-bottom: 10px;">
+                                                                                        <b>Total de point :
+                                                                                        </b>{{ $totalMark }} <br />
 
-                                                                            </td>
+                                                                                        <b>Point
+                                                                                            de passage :
+                                                                                        </b>{{ $subject->passing_mark }}
+                                                                                        <br />
 
-                                                                            @php
-                                                                                $i++;
-                                                                            @endphp
-                                                                        @endforeach
-
-
-                                                                        <td class="text-end">
-
-                                                                            <button type="submit"
-                                                                                class="btn btn-success">
-                                                                                Enregistrer
-                                                                            </button>
-
-                                                                        </td>
-
-                                                                    </form>
-
-                                                                </tr>
-                                                            @endforeach
-                                                        @else
-                                                            <tr>
-                                                                <td colspan="{{ ($getSubject->count() ?? 0) + 2 }}"
-                                                                    class="text-center text-danger fw-bold">
-                                                                    Aucun élève trouvé pour cette classe.
-                                                                </td>
-                                                            </tr>
-                                                        @endif
-                                                    @else
-                                                        <tr>
-                                                            <td colspan="100%" class="text-center text-danger fw-bold"
-                                                                style="font-size:18px;">
-                                                                Ce type d'évaluation n'est pas lié à cette classe.
-                                                            </td>
-                                                        </tr>
-                                                    @endif
-
-                                                </tbody>
-                                            </table>
+                                                                                        <b>Votre moyenne est de :</b>
+                                                                                        <br />
+                                                                                        <span
+                                                                                            class="app-page-title d-inline-block px-1 py-1 rounded"
+                                                                                            style="background-color:#72b4a2; color:#fff; font-size:20px;">
+                                                                                            {{ number_format($totalMark / 4, 2) }}
+                                                                                        </span>
+                                                                                        <b>Vous êtes donc declaré</b>
+                                                                                        @if ($subject->passing_mark <= $totalMark)
+                                                                                            <span
+                                                                                                style="color: green; font-weight: bold;">Admis</span>
+                                                                                        @else
+                                                                                            <span
+                                                                                                style="color: red; font-weight: bold;">Refusé</span>
+                                                                                        @endif
+                                                                                        @php
+                                                                                            $pass_fail_vali = 1;
+                                                                                        @endphp
+                                                                                @endif
                                         </div>
-                                    @else
-                                        <div class="text-center text-muted fw-bold" style="padding:20px;">
-                                            Veuillez sélectionner un type d’évaluation et une classe.
-                                        </div>
-                                    @endif
-                                    </form>
-                                </tbody>
-                                </table>
+
+
+
+                                        </td>
+
+                                        @php
+                                            $i++;
+                                        @endphp
+                                    @endforeach
+
+
+                                    <td class="text-end">
+
+                                        <button type="submit" class="btn btn-success mb-4">
+                                            Enregistrer
+                                        </button>
+                                        @if (!empty($totalStudentMark))
+                                            <div class="mb-3"></div>
+                                            <strong>Total de points de toutes
+                                                les
+                                                matières : <span
+                                                    class="badge bg-danger text-dark fs-6"><b>{{ $totalFullMarks }}</b></span></strong><br>
+                            </div>
+                            <br />
+                            <div class="mb-3">
+                                <strong>Total de points de passage
+                                    de
+                                    l'élève : <span
+                                        class="badge bg-success text-dark fs-6"><b>{{ $totalPassingMarks }}</b></span></strong><br>
 
                             </div>
 
+                            <div class="mb-3">
+                                <strong>Total de points de l'élève
+                                    dans
+                                    toutes les matières : <span
+                                        class="badge bg-warning text-dark fs-6"><b>{{ $totalStudentMark }}</b></span></strong><br>
+                            </div>
+                            @php
+                                $percentage = ($totalStudentMark * 100) / $totalFullMarks;
+                            @endphp
+                            <br>
+                            <div class="mb-3"><b>Pourcentage :</b>{{ round($percentage, 2) }}%</div>
 
+
+                            @if ($totalStudentMark >= $totalPassingMarks)
+                                <span class="badge bg-success text-dark fs-6">
+                                    <b>Vous êtes déclaré Admis</b>
+                                </span>
+                            @else
+                                <span class="badge bg-danger text-dark fs-6">
+                                    <b>Vous êtes déclaré Refusé</b>
+                                </span>
+                            @endif
+                            @endif
+
+                            </td>
+
+                            </form>
+
+                            </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="{{ ($getSubject->count() ?? 0) + 2 }}"
+                                    class="text-center text-danger fw-bold">
+                                    Aucun élève trouvé pour cette classe.
+                                </td>
+                            </tr>
+                            @endif
+                        @else
+                            <tr>
+                                <td colspan="100%" class="text-center text-danger fw-bold" style="font-size:18px;">
+                                    Ce type d'évaluation n'est pas lié à cette classe.
+                                </td>
+                            </tr>
+                            @endif
+
+                            </tbody>
+                            </table>
                         </div>
+                    @else
+                        <div class="text-center text-muted fw-bold" style="padding:20px;">
+                            Veuillez sélectionner un type d’évaluation et une classe.
+                        </div>
+                        @endif
+                        </form>
+                        </tbody>
+                        </table>
+
                     </div>
+
 
                 </div>
             </div>
 
-            @include('layouts.footer')
         </div>
+    </div>
+
+    @include('layouts.footer')
+    </div>
 
     </div>
     <!--   Core JS Files   -->

@@ -210,8 +210,8 @@
                                                             <th>Date de début</th>
                                                             <th>Date de fin</th>
                                                             <th>Numéro de classe</th>
-                                                            <th>Note maximale</th>
-                                                            <th>Note de passage</th>
+                                                            <th>Total de point</th>
+                                                            <th>Point de passage</th>
                                                         </tr>
                                                     </thead>
 
