@@ -235,6 +235,18 @@ class User extends Authenticatable
         }
     }
 
+    static public function getStudentClass($class_id)     // permet de gerer le STUDENT
+    {
+        return self::select("users.id", "users.name", "users.last_name")
+            ->where("users.user_type", "=", 3)
+            ->where("users.is_delete", "=", 0)
+            ->where("users.class_id", "=", $class_id)
+            ->orderBy("id", "desc")
+            ->get();
+    }
+
+
+
     static public function getStudenTeacher($teacher_id) // permet de gerer la liste des etudiants lié aux professeurs
     {
         $return = self::select("users.*", "class.name as class_name")

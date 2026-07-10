@@ -183,82 +183,149 @@
                         </div>
 
 
-                        @if (!@empty($getRecord))
-                            <div class="app-card app-card-settings shadow-sm p-4">
-                                <div class="card-body">
-                                    <form class="settings-form" method="post"
-                                        action="{{ url('admin/examination/exam_schedule_insert') }}">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="exam_id" value=" {{ Request::get('exam_id') }}">
-                                        <input type="hidden" name="class_id" value=" {{ Request::get('class_id') }}">
-                                        <div class="row">
+                        @if (request()->filled('exam_id') && request()->filled('class_id'))
 
-                                            <table class="table table-striped mt-3">
-                                                <thead class="table-success">
-                                                    <tr>
-                                                        <th>Non de la matière</th>
-                                                        <th>Date de l'examen</th>
-                                                        <th>Date de debut</th>
-                                                        <th>Datede fin</th>
-                                                        <th>Numero de classe</th>
-                                                        <th>Note maximal</th>
-                                                        <th>Note de passage</th>
+                            @if (!empty($getRecord) && count($getRecord) > 0)
 
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @php
-                                                        $i = 1;
-                                                    @endphp
-                                                    @foreach ($getRecord as $value)
+                                <div class="app-card app-card-settings shadow-sm p-4">
+                                    <div class="card-body">
+
+                                        <form class="settings-form" method="post"
+                                            action="{{ url('admin/examination/exam_schedule_insert') }}">
+
+                                            {{ csrf_field() }}
+
+                                            <input type="hidden" name="exam_id" value="{{ Request::get('exam_id') }}">
+                                            <input type="hidden" name="class_id"
+                                                value="{{ Request::get('class_id') }}">
+
+                                            <div class="row">
+
+                                                <table class="table table-striped mt-3">
+
+                                                    <thead class="table-success">
                                                         <tr>
-                                                            {{-- <td> {{ $loop->iteration }} </td> --}}
-                                                            <td>{{ $value['subject_name'] }}
-                                                                <input type="hidden"
-                                                                    name="schedule[{{ $i }}][subject_id]"
-                                                                    class="form-control"
-                                                                    value="{{ $value['subject_id'] }}">
-                                                            </td>
-                                                            <td><input type="date"
-                                                                    name="schedule[{{ $i }}][exam_date]"
-                                                                    class="form-control"
-                                                                    value="{{ $value['exam_date'] }}"></td>
-                                                            <td><input type="time"
-                                                                    name="schedule[{{ $i }}][start_time]"
-                                                                    class="form-control"
-                                                                    value="{{ $value['start_time'] }}"></td>
-                                                            <td><input type="time"
-                                                                    name="schedule[{{ $i }}][end_time]"
-                                                                    class="form-control"
-                                                                    value="{{ $value['end_time'] }}"></td>
-                                                            <td><input type="text"
-                                                                    name="schedule[{{ $i }}][room_number]"
-                                                                    class="form-control"
-                                                                    value="{{ $value['room_number'] }}"></td>
-                                                            <td><input type="text"
-                                                                    name="schedule[{{ $i }}][full_marks]"
-                                                                    class="form-control"
-                                                                    value="{{ $value['full_marks'] }}"></td>
-                                                            <td><input type="text"
-                                                                    name="schedule[{{ $i }}][passing_mark]"
-                                                                    class="form-control"
-                                                                    value="{{ $value['passing_mark'] }}"></td>
+                                                            <th>Nom de la matière</th>
+                                                            <th>Date de l'examen</th>
+                                                            <th>Date de début</th>
+                                                            <th>Date de fin</th>
+                                                            <th>Numéro de classe</th>
+                                                            <th>Note maximale</th>
+                                                            <th>Note de passage</th>
                                                         </tr>
+                                                    </thead>
+
+                                                    <tbody>
+
                                                         @php
-                                                            $i++;
+                                                            $i = 1;
                                                         @endphp
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                            <div style="text-align: right; padding:10px">
-                                                <button class="btn btn-primary">Enregistrer</button>
+
+                                                        @foreach ($getRecord as $value)
+                                                            <tr>
+
+                                                                <td>
+                                                                    {{ $value['subject_name'] }}
+
+                                                                    <input type="hidden"
+                                                                        name="schedule[{{ $i }}][subject_id]"
+                                                                        value="{{ $value['subject_id'] }}">
+                                                                </td>
+
+
+                                                                <td>
+                                                                    <input type="date"
+                                                                        name="schedule[{{ $i }}][exam_date]"
+                                                                        class="form-control"
+                                                                        value="{{ $value['exam_date'] }}">
+                                                                </td>
+
+
+                                                                <td>
+                                                                    <input type="time"
+                                                                        name="schedule[{{ $i }}][start_time]"
+                                                                        class="form-control"
+                                                                        value="{{ $value['start_time'] }}">
+                                                                </td>
+
+
+                                                                <td>
+                                                                    <input type="time"
+                                                                        name="schedule[{{ $i }}][end_time]"
+                                                                        class="form-control"
+                                                                        value="{{ $value['end_time'] }}">
+                                                                </td>
+
+
+                                                                <td>
+                                                                    <input type="text"
+                                                                        name="schedule[{{ $i }}][room_number]"
+                                                                        class="form-control"
+                                                                        value="{{ $value['room_number'] }}">
+                                                                </td>
+
+
+                                                                <td>
+                                                                    <input type="text"
+                                                                        name="schedule[{{ $i }}][full_marks]"
+                                                                        class="form-control"
+                                                                        value="{{ $value['full_marks'] }}">
+                                                                </td>
+
+
+                                                                <td>
+                                                                    <input type="text"
+                                                                        name="schedule[{{ $i }}][passing_mark]"
+                                                                        class="form-control"
+                                                                        value="{{ $value['passing_mark'] }}">
+                                                                </td>
+
+                                                            </tr>
+
+
+                                                            @php
+                                                                $i++;
+                                                            @endphp
+                                                        @endforeach
+
+
+                                                    </tbody>
+
+                                                </table>
+
+
+                                                <div style="text-align:right; padding:10px">
+
+                                                    <button class="btn btn-primary">
+                                                        Enregistrer
+                                                    </button>
+
+                                                </div>
+
+
                                             </div>
 
-                                        </div>
+                                        </form>
 
-                                    </form>
+                                    </div>
                                 </div>
+                            @else
+                                <div class="text-center text-danger fw-bold" style="padding:20px; font-size:18px;">
+
+                                    Ce type d'évaluation n'est pas lié à cette classe.
+
+                                </div>
+
+
+                            @endif
+                        @else
+                            <div class="text-center text-muted fw-bold" style="padding:20px; font-size:18px;">
+
+                                Veuillez sélectionner un examen et une classe.
+
                             </div>
+
+
                         @endif
                     </div>
 

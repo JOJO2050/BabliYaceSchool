@@ -103,8 +103,7 @@
 
                                     <div class="row">
                                         <div class="col-md-12 mb-3">
-                                            <label for="setting-input-1" class="form-label"><b>Titre du
-                                                    devoir</b></label>
+                                            <label for="setting-input-1" class="form-label"><b>Niveau</b></label>
                                             <input type="text" class="form-control" id="setting-input-1"
                                                 name="name" value="{{ $getRecord->name }}"
                                                 placeholder="Entrez le titre du devoir">
@@ -114,10 +113,10 @@
                                         </div>
 
                                         <div class="col-md-12 mb-3">
-                                            <label for="setting-input-3" class="form-label"><b>Note
+                                            <label for="setting-input-3" class="form-label"><b>Description
                                                 </b></label>
-                                            <textarea class="form-control" id="setting-input-3" name="note" placeholder="Entrez une note">{{ $getRecord->note }}</textarea>
-                                            @error('note')
+                                            <textarea class="form-control" id="setting-input-3" name="description" placeholder="Entrez une description">{{ $getRecord->description }}</textarea>
+                                            @error('description')
                                                 <div class="text-danger"><b>{{ $message }}</b></div>
                                             @enderror
                                         </div>

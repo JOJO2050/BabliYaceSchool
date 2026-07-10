@@ -17,6 +17,7 @@ class ExamModel extends Model
         return self::find($id);
     }
 
+
     static public function getRecord()
     {
         $return = self::select("exam.*", "users.name as created_name")

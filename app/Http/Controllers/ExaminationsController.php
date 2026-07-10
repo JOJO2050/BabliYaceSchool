@@ -7,6 +7,7 @@ use App\Models\ClassSubjectModel;
 use App\Models\ClassTeacherModel;
 use App\Models\ExamModel;
 use App\Models\ExamScheduleModel;
+use App\Models\MarksRegisterModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,7 @@ class ExaminationsController extends Controller
 
         $exam = new ExamModel();
         $exam->name  = trim($request->name);
-        $exam->note = trim($request->note);
+        $exam->description = trim($request->description);
         $exam->created_by = Auth::user()->id;
         $exam->save();
         return redirect("admin/examination/exam/list")->with("success", "L'examen ($exam->name ) a bien été ajouté ");
@@ -53,7 +54,7 @@ class ExaminationsController extends Controller
     {
         $exam = ExamModel::getSingle($id);
         $exam->name  = trim($request->name);
-        $exam->note = trim($request->note);
+        $exam->description = trim($request->description);
 
         $exam->save();
 
@@ -143,7 +144,6 @@ class ExaminationsController extends Controller
         return redirect()->back()->with("success", "Le programme de l'examen  a été crée");
     }
 
-
     //En rapport avec le calendrier des examen mais espace Elève
     public function myExamTimetableStudent(Request $requet)
     {
@@ -176,7 +176,6 @@ class ExaminationsController extends Controller
         $data["header_title"] = "Calendrier des  examens";
         return view("student.my_exam_timetable", $data);
     }
-
 
     //En rapport avec le calendrier des examen mais espace Professeur
     public function myExamTimetableTeacher(Request $request)
@@ -268,4 +267,255 @@ class ExaminationsController extends Controller
         $data["header_title"] = "Calendrier des  examens de chaque de mon élève";
         return view("parent.my_exam_timetable", $data);
     }
+
+    public function marks_register(Request $request)
+    {
+        $data["getClass"] = ClassModel::getClass();
+        $data["getExam"] = ExamModel::getExam();
+
+        $data["getSubject"] = collect();
+        $data["getStudent"] = collect();
+
+        if ($request->filled('exam_id') && $request->filled('class_id')) {
+
+            $data["getSubject"] = ExamScheduleModel::getSubject(
+                $request->exam_id,
+                $request->class_id
+            );
+
+            $data["getStudent"] = User::getStudentClass($request->class_id);
+        }
+
+        $data["header_title"] = "Liste des devoirs";
+
+        return view("admin.exmination.marks_register", $data);
+    }
+
+    public function submit_marks_register(Request $request)
+    {
+        if (!empty($request->mark)) {
+
+            foreach ($request->mark as $mark) {
+
+                $Interrogation_1 = !empty($mark["Interrogation_1"]) ? $mark["Interrogation_1"] : 0;
+                $Interrogation_2 = !empty($mark["Interrogation_2"]) ? $mark["Interrogation_2"] : 0;
+                $Devoir_de_classe_1 = !empty($mark["Devoir_de_classe_1"]) ? $mark["Devoir_de_classe_1"] : 0;
+                $Devoir_de_classe_2 = !empty($mark["Devoir_de_classe_2"]) ? $mark["Devoir_de_classe_2"] : 0;
+                $Devoir_de_niveau = !empty($mark["Devoir_de_niveau"]) ? $mark["Devoir_de_niveau"] : 0;
+
+                // Calcul du total
+                $total_marks = $Interrogation_1
+                    + $Interrogation_2
+                    + $Devoir_de_classe_1
+                    + $Devoir_de_classe_2
+                    + $Devoir_de_niveau;
+
+                // Récupération du total autorisé
+                $getExamSchedule = ExamScheduleModel::getRecordSingle(
+                    $request->exam_id,
+                    $request->class_id,
+                    $mark["subject_id"]
+                );
+
+                if (!$getExamSchedule) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "Configuration de l'évaluation introuvable."
+                    ]);
+                }
+
+                $full_marks = $getExamSchedule->full_marks;
+
+                // Vérification
+                if ($total_marks > $full_marks) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "La matière dépasse le total autorisé ({$total_marks}/{$full_marks}). Aucun enregistrement n'a été effectué."
+                    ]);
+                }
+
+                // Vérifie si la note existe déjà
+                $getMark = MarksRegisterModel::CheckAlreadyMark(
+                    $request->student_id,
+                    $request->exam_id,
+                    $request->class_id,
+                    $mark["subject_id"]
+                );
+
+                if ($getMark) {
+                    $save = $getMark;
+                } else {
+                    $save = new MarksRegisterModel();
+                    $save->created_by = Auth::user()->id;
+                }
+
+                $save->student_id = $request->student_id;
+                $save->exam_id = $request->exam_id;
+                $save->class_id = $request->class_id;
+                $save->subject_id = $mark["subject_id"];
+                $save->Interrogation_1 = $Interrogation_1;
+                $save->Interrogation_2 = $Interrogation_2;
+                $save->Devoir_de_classe_1 = $Devoir_de_classe_1;
+                $save->Devoir_de_classe_2 = $Devoir_de_classe_2;
+                $save->Devoir_de_niveau = $Devoir_de_niveau;
+
+                $save->save();
+            }
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => "Les notes ont été enregistrées avec succès."
+        ]);
+    }
+
+
+
+    public function single_submit_marks_register(Request $request)
+    {
+        $id = $request->id;
+        $getExamSchedule = ExamScheduleModel::getSingle($id);
+
+        if (empty($getExamSchedule)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Programme d'examen introuvable."
+            ]);
+        }
+
+        $full_marks = $getExamSchedule->full_marks;
+
+        $Interrogation_1 = !empty($request->Interrogation_1) ? $request->Interrogation_1 : 0;
+        $Interrogation_2 = !empty($request->Interrogation_2) ? $request->Interrogation_2 : 0;
+        $Devoir_de_classe_1 = !empty($request->Devoir_de_classe_1) ? $request->Devoir_de_classe_1 : 0;
+        $Devoir_de_classe_2 = !empty($request->Devoir_de_classe_2) ? $request->Devoir_de_classe_2 : 0;
+        $Devoir_de_niveau = !empty($request->Devoir_de_niveau) ? $request->Devoir_de_niveau : 0;
+
+        $total_marks = $Interrogation_1
+            + $Interrogation_2
+            + $Devoir_de_classe_1
+            + $Devoir_de_classe_2
+            + $Devoir_de_niveau;
+
+        // Vérification du total
+        if ($total_marks > $full_marks) {
+            return response()->json([
+                'status' => false,
+                'message' => "La somme des notes ($total_marks) dépasse le total autorisé ($full_marks). Aucune donnée n'a été enregistrée."
+            ]);
+        }
+
+        // Vérifie si la note existe déjà
+        $getMark = MarksRegisterModel::CheckAlreadyMark(
+            $request->student_id,
+            $request->exam_id,
+            $request->class_id,
+            $request->subject_id
+        );
+
+        if ($getMark) {
+            $save = $getMark;
+        } else {
+            $save = new MarksRegisterModel();
+            $save->created_by = Auth::user()->id;
+        }
+
+        $save->student_id = $request->student_id;
+        $save->exam_id = $request->exam_id;
+        $save->class_id = $request->class_id;
+        $save->subject_id = $request->subject_id;
+        $save->Interrogation_1 = $Interrogation_1;
+        $save->Interrogation_2 = $Interrogation_2;
+        $save->Devoir_de_classe_1 = $Devoir_de_classe_1;
+        $save->Devoir_de_classe_2 = $Devoir_de_classe_2;
+        $save->Devoir_de_niveau = $Devoir_de_niveau;
+
+        $save->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => "La note de cette matière a bien été enregistrée avec succès."
+        ]);
+    }
+
+
+    // public function submit_marks_register(request $request)
+    // {
+    //     if (!empty($request->mark)) {
+    //         foreach ($request->mark as $mark) {
+
+    //             $Interrogation_1 = !empty($mark["Interrogation_1"]) ? $mark["Interrogation_1"] : 0;
+    //             $Interrogation_2 = !empty($mark["Interrogation_2"]) ? $mark["Interrogation_2"] : 0;
+    //             $Devoir_de_classe_1 = !empty($mark["Devoir_de_classe_1"]) ? $mark["Devoir_de_classe_1"] : 0;
+    //             $Devoir_de_classe_2 = !empty($mark["Devoir_de_classe_2"]) ? $mark["Devoir_de_classe_2"] : 0;
+    //             $Devoir_de_niveau = !empty($mark["Devoir_de_niveau"]) ? $mark["Devoir_de_niveau"] : 0;
+
+    //             $getMark = MarksRegisterModel::CheckAlreadyMark($request->student_id,  $request->exam_id,  $request->class_id, $mark["subject_id"]);
+    //             if (!empty($getMark)) {
+    //                 $save = $getMark;
+    //             } else {
+
+    //                 $save = new MarksRegisterModel;
+    //                 $save->created_by = Auth::user()->id;
+    //             }
+
+    //             $save->student_id = $request->student_id;
+    //             $save->exam_id = $request->exam_id;
+    //             $save->class_id = $request->class_id;
+    //             $save->subject_id = $mark["subject_id"];
+    //             $save->Interrogation_1 = $Interrogation_1;
+    //             $save->Interrogation_2 = $Interrogation_2;
+    //             $save->Devoir_de_classe_1 = $Devoir_de_classe_1;
+    //             $save->Devoir_de_classe_2 = $Devoir_de_classe_2;
+    //             $save->Devoir_de_niveau = $Devoir_de_niveau;
+    //             $save->save();
+    //         }
+    //     }
+    //     $json["message"] = "la note a bien été enregistré avec succès ";
+    //     echo json_encode($json);
+    // }
+
+
+    // public function single_submit_marks_register(request $request)
+    // {
+    //     $id = $request->id;
+    //     $getExamSchedule = ExamScheduleModel::getSingle($id);
+
+    //     $full_marks = $getExamSchedule->full_marks;
+
+    //     $Interrogation_1 = !empty($request->Interrogation_1) ? $request->Interrogation_1 : 0;
+    //     $Interrogation_2 = !empty($request->Interrogation_2) ? $request->Interrogation_2 : 0;
+    //     $Devoir_de_classe_1 = !empty($request->Devoir_de_classe_1) ? $request->Devoir_de_classe_1 : 0;
+    //     $Devoir_de_classe_2 = !empty($request->Devoir_de_classe_2) ? $request->Devoir_de_classe_2 : 0;
+    //     $Devoir_de_niveau = !empty($request->Devoir_de_niveau) ? $request->Devoir_de_niveau : 0;
+
+    //     $total_marks = $Interrogation_1 + $Interrogation_2 + $Devoir_de_classe_1 + $Devoir_de_classe_2  + $Devoir_de_niveau;
+
+    //     if ($full_marks >= $total_marks) {
+
+    //         if (!empty($getMark)) {
+    //             $save = $getMark;
+    //         } else {
+
+    //             $save = new MarksRegisterModel;
+    //             $save->created_by = Auth::user()->id;
+    //         }
+
+    //         $save->student_id = $request->student_id;
+    //         $save->exam_id = $request->exam_id;
+    //         $save->class_id = $request->class_id;
+    //         $save->subject_id = $request->subject_id;
+    //         $save->Interrogation_1 = $Interrogation_1;
+    //         $save->Interrogation_2 = $Interrogation_2;
+    //         $save->Devoir_de_classe_1 = $Devoir_de_classe_1;
+    //         $save->Devoir_de_classe_2 = $Devoir_de_classe_2;
+    //         $save->Devoir_de_niveau = $Devoir_de_niveau;
+    //         $save->save();
+
+    //         $json["message"] = "la note de cette matière a bien été enregistré avec succès ";
+    //     } else {
+    //         $json["message"] = "Felicitation votre notre totale de toutes les evaluations est superieur au total global ";
+    //     }
+    //     echo json_encode($json);
+    // }
 }

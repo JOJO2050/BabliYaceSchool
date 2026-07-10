@@ -105,11 +105,11 @@
 
                                     <div class="row">
                                         <div class="col-md-5 mb-3">
-                                            <label for="setting-input-1" class="form-label"><b>Titre du
-                                                    Devoir</b></label>
+                                            <label for="setting-input-1" class="form-label"><b>Niveau
+                                                </b></label>
                                             <input type="text" class="form-control" id="setting-input-1"
                                                 name="name" value="{{ Request::get('name') }}"
-                                                placeholder="Entrez le titre du Devoir">
+                                                placeholder="Entrez le Niveau">
                                         </div>
 
 
@@ -137,7 +137,7 @@
                         <div class="card-header d-flex justify-content-between align-items-center"
                             style="font-size: 20px;">
 
-                            <b>Liste des examens</b>
+                            <b>Liste des differents types Evaluations</b>
 
                             <span class="app-page-title px-3 py-1 rounded"
                                 style="background-color: #28a745; color: #fff; font-size:14px;">
@@ -157,8 +157,8 @@
                                             <thead class="table-success">
                                                 <tr>
                                                     <th>N°##</th>
-                                                    <th>Titre du devoir</th>
-                                                    <th class="text-center">Note</th>
+                                                    <th>Niveau</th>
+                                                    <th class="text-center">Description</th>
                                                     <th>Creer par</th>
                                                     <th>Date création</th>
                                                     <th>Date modification</th>
@@ -172,7 +172,7 @@
                                                         <td>{{ $value->id }}</td>
                                                         {{-- <td> {{ $loop->iteration }} </td> --}}
                                                         <td>{{ $value->name }}</td>
-                                                        <td class="text-center">{{ $value->note }}</td>
+                                                        <td class="text-center">{{ $value->description }}</td>
                                                         <td>{{ $value->created_name }}</td>
                                                         <td>{{ date('d-m-Y H:i A', strtotime($value->created_at)) }}
                                                         </td>

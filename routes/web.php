@@ -84,7 +84,8 @@ Route::group(["middleware" => "admin"], function () {
     Route::post('admin/parent/edit/{id}', [ParentController::class, "update"]);
     Route::get('admin/parent/delete/{id}', [ParentController::class, "delete"]);
     Route::get('admin/parent/my_student/{id}', [ParentController::class, "myStudent"]);
-    Route::get('admin/parent/assign_student_parent/{student_id}/{parent_id}', [ParentController::class, "assignStudentParent"]);
+    Route::get('admin/parent/assign_student_parent/{student_id}/{parent_id}', [ParentController::class, "ass
+    gnStudentParent"]);
     Route::get('admin/parent/assign_student_parent_delete/{student_id}', [ParentController::class, "assignStudentParentDelete"]);
 
     // Class URL
@@ -149,6 +150,11 @@ Route::group(["middleware" => "admin"], function () {
     // Edition personnel du profil ADMIN
     Route::get("admin/parameter", [UserController::class, "My_parameter"]);
     Route::post("admin/parameter", [UserController::class, "Update_My_parameter_admin"]);
+
+    // Examination marks_register Gestion des types d'evaluation
+    Route::get('admin/examination/marks_register', [ExaminationsController::class, "marks_register"]);
+    Route::post('admin/examination/submit_marks_register', [ExaminationsController::class, "submit_marks_register"]);
+    Route::post('admin/examination/single_submit_marks_register', [ExaminationsController::class, "single_submit_marks_register"]);
 });
 
 

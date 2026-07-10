@@ -131,7 +131,8 @@
                     </li>
 
                     @php
-                        $examinationPages = ['exam', 'examSchedule'];
+                        $examinationPages = ['exam', 'exam_schedule', 'marks_register'];
+
                         $examinationActive = in_array(Request::segment(3), $examinationPages);
                     @endphp
 
@@ -158,12 +159,21 @@
                                     <a href="{{ url('admin/examination/exam_schedule') }}"
                                         class="nav-link {{ Request::segment(3) == 'exam_schedule' ? 'active-child' : '' }}">
                                         <i class="fas fa-calendar-alt"></i>
-                                        <p>Calendrier des examens</p>
+                                        <p>Calendrier Examens</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/examination/marks_register') }}"
+                                        class="nav-link {{ Request::segment(3) == 'marks_register' ? 'active-child' : '' }}">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <p>Evaluations & Note</p>
                                     </a>
                                 </li>
 
                             </ul>
                         </div>
+
                     </li>
 
 
