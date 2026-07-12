@@ -84,8 +84,7 @@ Route::group(["middleware" => "admin"], function () {
     Route::post('admin/parent/edit/{id}', [ParentController::class, "update"]);
     Route::get('admin/parent/delete/{id}', [ParentController::class, "delete"]);
     Route::get('admin/parent/my_student/{id}', [ParentController::class, "myStudent"]);
-    Route::get('admin/parent/assign_student_parent/{student_id}/{parent_id}', [ParentController::class, "ass
-    gnStudentParent"]);
+    Route::get('admin/parent/assign_student_parent/{student_id}/{parent_id}', [ParentController::class, "assignStudentParent"]);
     Route::get('admin/parent/assign_student_parent_delete/{student_id}', [ParentController::class, "assignStudentParentDelete"]);
 
     // Class URL
@@ -183,6 +182,11 @@ Route::group(["middleware" => "teacher"], function () {
 
     //Calendrier  Teacher
     Route::get("teacher/my_calendar", [CalendarController::class, "myCalendarTeacher"]);
+
+    // Examination marks_register Gestion des types d'evaluation
+    Route::get('teacher/marks_register', [ExaminationsController::class, "marks_register_teacher"]);
+    Route::post('teacher/submit_marks_register', [ExaminationsController::class, "submit_marks_register"]);
+    Route::post('teacher/single_submit_marks_register', [ExaminationsController::class, "single_submit_marks_register"]);
 });
 
 
@@ -210,6 +214,9 @@ Route::group(["middleware" => "student"], function () {
 
     //Calendrier
     Route::get("student/my_calendar", [CalendarController::class, "myCalendar"]);
+
+    //Resultats des evaluations
+    Route::get("student/my_exam_result", [ExaminationsController::class, "myExamResult"]);
 });
 
 

@@ -225,6 +225,14 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="{{ url('teacher/marks_register') }}"
+                            class="nav-link {{ Request::segment(2) == 'marks_register' ? 'active' : '' }}">
+                            <i class="fas fa-graduation-cap"></i>
+                            <p>Evaluations & Note </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{ url('teacher/my_calendar') }}"
                             class="nav-link {{ Request::segment(2) == 'my_calendar' ? 'active' : '' }}">
                             <i class="fas fa-calendar-alt"></i>
@@ -284,6 +292,14 @@
                             class="nav-link {{ Request::segment(2) == 'my_exam_timetable' ? 'active' : '' }}">
                             <i class="fas fa-calendar-alt"></i>
                             <p>Calendrier examen </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('student/my_exam_result') }}"
+                            class="nav-link {{ Request::segment(2) == 'my_exam_result' ? 'active' : '' }}">
+                            <i class="fas fa-graduation-cap"></i>
+                            <p>Resultat des évaluations </p>
                         </a>
                     </li>
 

@@ -83,7 +83,7 @@
                         <div>
                             <h3 class="mt-1 app-page-title d-inline-block px-3 py-1 rounded"
                                 style="background-color: #28a745; color: #fff;">
-                                Espace Administrateur</h3>
+                                Espace Professeur</h3>
                         </div>
 
                         {{-- <div class="ms-md-auto py-2 py-md-0"> --}}
@@ -121,9 +121,10 @@
                                                 </option>
 
                                                 @foreach ($getExam as $exam)
-                                                    <option {{ Request::get('exam_id') == $exam->id ? 'selected' : '' }}
-                                                        value="{{ $exam->id }}">
-                                                        {{ $exam->name }}
+                                                    <option
+                                                        {{ Request::get('exam_id') == $exam->exam_id ? 'selected' : '' }}
+                                                        value="{{ $exam->exam_id }}">
+                                                        {{ $exam->exam_name }}
                                                     </option>
                                                 @endforeach
 
@@ -147,9 +148,9 @@
 
                                                 @foreach ($getClass as $class)
                                                     <option
-                                                        {{ Request::get('class_id') == $class->id ? 'selected' : '' }}
-                                                        value="{{ $class->id }}">
-                                                        {{ $class->name }}
+                                                        {{ Request::get('class_id') == $class->class_id ? 'selected' : '' }}
+                                                        value="{{ $class->class_id }}">
+                                                        {{ $class->class_name }}
                                                     </option>
                                                 @endforeach
 
@@ -287,7 +288,7 @@
 
                                                                                     <input type="hidden"
                                                                                         name="mark[{{ $i }}][passing_marks]"
-                                                                                        value="{{ $subject->passing_mark }}">
+                                                                                        value="{{ $subject->passing_marks }}">
 
                                                                                     <input type="hidden"
                                                                                         name="mark[{{ $i }}][subject_id]"
@@ -299,7 +300,6 @@
                                                                                         value="{{ !empty($getMark->Interrogation_1) ? $getMark->Interrogation_1 : '' }}"
                                                                                         class="form-control"
                                                                                         style="width: 200px">
-
                                                                                 </div>
 
                                                                                 <div style="margin-bottom: 10px;">
@@ -563,7 +563,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "{{ url('admin/examination/submit_marks_register') }}",
+                url: "{{ url('teacher/submit_marks_register') }}",
                 data: $(this).serialize(),
                 dataType: "json",
 
@@ -615,7 +615,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "{{ url('admin/examination/single_submit_marks_register') }}",
+                url: "{{ url('teacher/single_submit_marks_register') }}",
                 data: {
                     "_token": "{{ csrf_token() }}",
                     id: id,
