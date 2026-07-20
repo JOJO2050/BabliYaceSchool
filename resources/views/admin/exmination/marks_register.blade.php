@@ -296,7 +296,7 @@
                                                                                     <input type="text"
                                                                                         name="mark[{{ $i }}][Interrogation_1]"
                                                                                         id="Interrogation_1_{{ $student->id }}{{ $subject->subject_id }}"
-                                                                                        value="{{ !empty($getMark->Interrogation_1) ? $getMark->Interrogation_1 : '' }}"
+                                                                                        value="{{ $getMark->Interrogation_1 ?? '' }}"
                                                                                         class="form-control"
                                                                                         style="width: 200px">
 
@@ -308,7 +308,7 @@
                                                                                     <input type="text"
                                                                                         name="mark[{{ $i }}][Interrogation_2]"
                                                                                         id="Interrogation_2_{{ $student->id }}{{ $subject->subject_id }}"
-                                                                                        value="{{ !empty($getMark->Interrogation_2) ? $getMark->Interrogation_2 : '' }}"
+                                                                                        value="{{ $getMark->Interrogation_2 ?? '' }}"
                                                                                         class="form-control"
                                                                                         style="width: 200px">
                                                                                 </div>
@@ -319,7 +319,7 @@
                                                                                     <input type="text"
                                                                                         name="mark[{{ $i }}][Devoir_de_classe_1]"
                                                                                         id="Devoir_de_classe_1_{{ $student->id }}{{ $subject->subject_id }}"
-                                                                                        value="{{ !empty($getMark->Devoir_de_classe_1) ? $getMark->Devoir_de_classe_1 : '' }}"
+                                                                                        value="{{ $getMark->Devoir_de_classe_1 ?? '' }}"
                                                                                         class="form-control"
                                                                                         style="width: 200px">
                                                                                 </div>
@@ -330,7 +330,7 @@
                                                                                     <input type="text"
                                                                                         name="mark[{{ $i }}][Devoir_de_classe_2]"
                                                                                         id="Devoir_de_classe_2_{{ $student->id }}{{ $subject->subject_id }}"
-                                                                                        value="{{ !empty($getMark->Devoir_de_classe_2) ? $getMark->Devoir_de_classe_2 : '' }}"
+                                                                                        value="{{ $getMark->Devoir_de_classe_2 ?? '' }}"
                                                                                         class="form-control"
                                                                                         style="width: 200px">
                                                                                 </div>
@@ -341,7 +341,7 @@
                                                                                     <input type="text"
                                                                                         name="mark[{{ $i }}][Devoir_de_niveau]"
                                                                                         id="Devoir_de_niveau_{{ $student->id }}{{ $subject->subject_id }}"
-                                                                                        value="{{ !empty($getMark->Devoir_de_niveau) ? $getMark->Devoir_de_niveau : '' }}"
+                                                                                        value="{{ $getMark->Devoir_de_niveau ?? '' }}"
                                                                                         class="form-control"
                                                                                         style="width: 200px">
                                                                                 </div>

@@ -187,6 +187,10 @@
                                                                         <b>Calendrier</b>
                                                                     </a>
 
+                                                                    <a href="{{ url('/parent/my_student/exam_result/' . $value->id) }}"
+                                                                        class="btn btn-sm btn-primary">
+                                                                        <b>Resultat</b>
+                                                                    </a>
                                                                 </div>
                                                             </td>
                                                         </tr>

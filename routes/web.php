@@ -75,7 +75,6 @@ Route::group(["middleware" => "admin"], function () {
     Route::post('admin/student/edit/{id}', [StudentController::class, "update"]);
     Route::get('admin/student/delete/{id}', [StudentController::class, "delete"]);
 
-
     // Parent URL
     Route::get('admin/parent/list', [ParentController::class, "list"]);
     Route::get('admin/parent/add', [ParentController::class, "add"]);
@@ -95,7 +94,6 @@ Route::group(["middleware" => "admin"], function () {
     Route::post('admin/class/edit/{id}', [ClassController::class, "update"]);
     Route::get('admin/class/delete/{id}', [ClassController::class, "delete"]);
 
-
     // Matière (Subject) URL
     Route::get('admin/subject/list', [SubjectController::class, "list"]);
     Route::get('admin/subject/add', [SubjectController::class, "add"]);
@@ -103,7 +101,6 @@ Route::group(["middleware" => "admin"], function () {
     Route::get('admin/subject/edit/{id}', [SubjectController::class, "edit"]);
     Route::post('admin/subject/edit/{id}', [SubjectController::class, "update"]);
     Route::get('admin/subject/delete/{id}', [SubjectController::class, "delete"]);
-
 
     //Liaisons Classe & Matière (Assign_Subject) URL
     Route::get('admin/assign_subject/list', [ClassSubjectController::class, "list"]);
@@ -120,7 +117,6 @@ Route::group(["middleware" => "admin"], function () {
     Route::post('admin/class_timetable/get_subject', [ClassTimetableController::class, "get_subject"]);
     Route::post('admin/class_timetable/add', [ClassTimetableController::class, "insert_update"]);
 
-
     //Liaisons Classe & Professeur (assign_class_teacher) URL
     Route::get('admin/assign_class_teacher/list', [ClassTeacherController::class, "list"]);
     Route::get('admin/assign_class_teacher/add', [ClassTeacherController::class, "add"]);
@@ -131,7 +127,6 @@ Route::group(["middleware" => "admin"], function () {
     Route::post('admin/assign_class_teacher/edit_single/{id}', [ClassTeacherController::class, "update_single"]);
     Route::get('admin/assign_class_teacher/delete/{id}', [ClassTeacherController::class, "delete"]);
 
-
     // Examination URL
     Route::get('admin/examination/exam/list', [ExaminationsController::class, "exam_list"]);
     Route::get('admin/examination/exam/add', [ExaminationsController::class, "exam_add"]);
@@ -140,11 +135,9 @@ Route::group(["middleware" => "admin"], function () {
     Route::post('admin/examination/exam/edit/{id}', [ExaminationsController::class, "exam_update"]);
     Route::get('admin/examination/exam/delete/{id}', [ExaminationsController::class, "exam_delete"]);
 
-
     // Examination exam_schedule
     Route::get('admin/examination/exam_schedule', [ExaminationsController::class, "exam_schedule"]);
     Route::post('admin/examination/exam_schedule_insert', [ExaminationsController::class, "exam_schedule_insert"]);
-
 
     // Edition personnel du profil ADMIN
     Route::get("admin/parameter", [UserController::class, "My_parameter"]);
@@ -154,6 +147,14 @@ Route::group(["middleware" => "admin"], function () {
     Route::get('admin/examination/marks_register', [ExaminationsController::class, "marks_register"]);
     Route::post('admin/examination/submit_marks_register', [ExaminationsController::class, "submit_marks_register"]);
     Route::post('admin/examination/single_submit_marks_register', [ExaminationsController::class, "single_submit_marks_register"]);
+
+    // Observation des Notes obtenuent
+    Route::get('admin/exmination/marks_grade', [ExaminationsController::class, "marks_grade"]);
+    Route::get('admin/exmination/marks_grade/add', [ExaminationsController::class, "marks_grade_add"]);
+    Route::post('admin/exmination/marks_grade/add', [ExaminationsController::class, "marks_grade_insert"]);
+    // Route::get('admin/exmination/marks_grade-edit/{id}', [ExaminationsController::class, "marks_grade_edit"]);
+    // Route::post('admin/exmination/marks_grade_edit/{id}', [ExaminationsController::class, "marks_grade_update"]);
+    // Route::get('admin/exmination/marks_grade_delete/{id}', [ExaminationsController::class, "marks_grade_delete"]);
 });
 
 
@@ -195,18 +196,14 @@ Route::group(["middleware" => "student"], function () {
 
     Route::get("/student/dashboard", [DashboardController::class, "dashboard"]);
 
-
     // Recuperation des matières liés a l'élève connecté dans son espace
     Route::get("student/my_subject", [SubjectController::class, "mySubjectStudent"]);
-
 
     // espace emploi du temps
     Route::get("student/my_timetable", [ClassTimetableController::class, "myTimetableStudent"]);
 
-
     // Calendrier des devoirs
     Route::get("student/my_exam_timetable", [ExaminationsController::class, "myExamTimetableStudent"]);
-
 
     // Edition personnel du profil ELEVE
     Route::get("student/parameter", [UserController::class, "My_parameter"]);
@@ -234,12 +231,15 @@ Route::group(["middleware" => "parent"], function () {
     // Recuperation de l'emploie du temps des élèves liés aux parents connecté dans son espace
     Route::get('parent/my_student/subject/class_timetable/{class_id}/{subject_id}/{student_id}', [ClassTimetableController::class, "myTimetableParent"]);
 
+    //Resultat des Evaluations
+    Route::get("parent/my_student/exam_result/{student_id}", [ExaminationsController::class, "ParentmyExamResult"]);
 
     // Recuperation des matières liés a chaque élève lié au parent connecté dans son espace
     Route::get("parent/my_student", [ParentController::class, "myStudentParent"]);
 
     //Calendrier
     Route::get("parent/my_student/calendar/{student_id}", [CalendarController::class, "myCalendarParent"]);
+
 
     // Edition personnel du profil PARENT
     Route::get("parent/parameter", [UserController::class, "My_parameter"]);

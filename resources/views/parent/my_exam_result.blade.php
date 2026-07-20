@@ -97,10 +97,15 @@
 
                             <b>Resultats des évaluations</b>
 
-                            <span class="app-page-title px-3 py-1 rounded"
-                                style="background-color: #28a745; color: #fff; font-size:14px;">
-                                {{-- <b>Total de matière : {{ $getRecord->count() }}</b> --}}
+                            <span class="px-3 py-1 rounded"
+                                style="background-color:#87912c; color:#fff; font-size:14px; display:inline-block; width:auto;">
+                                {{ $getStudent->name }} {{ $getStudent->last_name }}
                             </span>
+
+                            {{-- <span class="app-page-title px-3 py-1 rounded"
+                                style="background-color: #28a745; color: #fff; font-size:14px;">
+                                <b>Total de matière : {{ $getRecord->count() }}</b>
+                            </span> --}}
 
                         </div>
 

@@ -7,6 +7,7 @@ use App\Models\ClassSubjectModel;
 use App\Models\ClassTeacherModel;
 use App\Models\ExamModel;
 use App\Models\ExamScheduleModel;
+use App\Models\MarksGradeModel;
 use App\Models\MarksRegisterModel;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -287,7 +288,6 @@ class ExaminationsController extends Controller
         }
 
         $data["header_title"] = "Liste des devoirs";
-
         return view("admin.exmination.marks_register", $data);
     }
 
@@ -447,6 +447,34 @@ class ExaminationsController extends Controller
         ]);
     }
 
+    //Gestion de l'observation 
+    public function marks_grade()
+    {
+        $data["getRecord"] = MarksGradeModel::getRecord();
+        $data["header_title"] = "Liste des observations";
+        return view("admin.exmination.marks_grade.list", $data);
+    }
+    public function marks_grade_add()
+    {
+
+        $data["header_title"] = "Ajouter une nouvelle observations";
+        return view("admin.exmination.marks_grade.add", $data);
+    }
+
+    public function marks_grade_insert(Request $request)
+    {
+        $mark = new MarksGradeModel();
+        $mark->name = trim($request->name);
+        $mark->percent_from = trim($request->percent_from);
+        $mark->percent_to = trim($request->percent_to);
+        $mark->created_by = Auth::user()->id;
+        $mark->save();
+
+        return redirect("admin/exmination/marks_grade")->with("success", "L'observation ($mark->name ) a bien été ajouté ");
+    }
+
+
+
 
     //ESPACE PROFESSEURS
     public function marks_register_teacher(Request $request)
@@ -469,19 +497,15 @@ class ExaminationsController extends Controller
         }
 
         $data["header_title"] = "Liste des devoirs";
-
         return view("teacher.marks_register", $data);
     }
 
-
     //ESPACE ELEVES
-
 
     public function myExamResult(Request $request)
     {
         $result = array();
         $getExam = MarksRegisterModel::getExam(Auth::user()->id);
-        $data["header_title"] = "Resultat des évaluations";
 
         foreach ($getExam as  $value) {
             $dataE =  array();
@@ -511,8 +535,47 @@ class ExaminationsController extends Controller
         }
 
         $data["getRecord"] = $result;
-
         $data["header_title"] = "Resultat des évaluations";
         return view("student.my_exam_result", $data);
+    }
+
+    //ESPACE ELEVES
+
+    public function  ParentmyExamResult($student_id)
+    {
+        $data["getStudent"] = User::getSingle($student_id);
+
+        $result = array();
+        $getExam = MarksRegisterModel::getExam($student_id);
+
+        foreach ($getExam as  $value) {
+            $dataE =  array();
+            $data["getExam"] =   $value->exam_name;
+            $getExamSubject = MarksRegisterModel::getExamSubject($value->exam_id, $student_id);
+
+            $dataSubject = array();
+
+            foreach ($getExamSubject as  $exam) {
+
+                $dataS =  array();
+
+                $dataE["exam_name"] = $value->exam_name;
+                $dataS["subject_name"] =  $exam["subject_name"];
+                $dataS["Interrogation_1"] =  $exam["Interrogation_1"];
+                $dataS["Interrogation_2"] =  $exam["Interrogation_2"];
+                $dataS["Devoir_de_classe_1"] =  $exam["Devoir_de_classe_1"];
+                $dataS["Devoir_de_classe_2"] =  $exam["Devoir_de_classe_2"];
+                $dataS["Devoir_de_niveau"] =  $exam["Devoir_de_niveau"];
+                $dataS["full_marks"] =  $exam["full_marks"];
+                $dataS["passing_marks"] =  $exam["passing_marks"];
+                $dataSubject[] = $dataS;
+            }
+            $dataE["subject"] = $dataSubject;
+            $result[] = $dataE;
+        }
+
+        $data["getRecord"] = $result;
+        $data["header_title"] = "Resultat des évaluations";
+        return view("parent.my_exam_result", $data);
     }
 }

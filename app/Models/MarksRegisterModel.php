@@ -35,11 +35,6 @@ class MarksRegisterModel extends Model
         return MarksRegisterModel::select("marks_register.*", "exam.name as exam_name", "subject.name as subject_name")
             ->join("exam", "exam.id", "=", "marks_register.exam_id")
             ->join("subject", "subject.id", "=", "marks_register.subject_id")
-
-            // ->join("exam_schedule", "exam_schedule.exam_id", "=", "marks_register.exam_id")
-            // ->join("exam_schedule as exam_schedule_class", "subject.id", "=", "marks_register.subject_id")
-            // ->join("exam_schedule as exam_schedule_subject", "exam_schedule_subject.subject_id", "=", "marks_register.subject_id")
-
             ->where("marks_register.exam_id", "=", $exam_id)
             ->where("marks_register.student_id", "=", $student_id)
             ->get();
