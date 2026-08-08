@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{{ !empty($header_title) ? $header_title : '' }} - BabliYaceSchoolDashboard</title>
+
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+
+    <link rel="icon" href="{{ asset('assets1/img/kaiadmin/logo_ecole.jpg') }}" type="image/x-icon" />
+
+    <!-- Fonts -->
+    <script src="{{ asset('assets1/js/plugin/webfont/webfont.min.js') }}"></script>
+
+    <script>
+        WebFont.load({
+            google: {
+                families: ["Public Sans:300,400,500,600,700"]
+            },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["{{ asset('assets1/css/fonts.min.css') }}"],
+            },
+            active: function() {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ asset('assets1/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets1/css/kaiadmin.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets1/css/demo.css') }}">
+</head>
+
+<body>
+
+    <div class="wrapper">
+        @include('layouts.sidebar')
+        <div class="main-panel">
+            <div class="main-header">
+                <div class="main-header-logo">
+                    <div class="logo-header" data-background-color="dark">
+                        <a href="#" class="logo">
+                            <img src="{{ asset('assets1/img/kaiadmin/logo_light.svg') }}" alt="navbar brand"
+                                class="navbar-brand" height="20">
+                        </a>
+                        <div class="nav-toggle">
+                            <button class="btn btn-toggle toggle-sidebar">
+                                <i class="gg-menu-right"></i>
+                            </button>
+                            <button class="btn btn-toggle sidenav-toggler">
+                                <i class="gg-menu-left"></i>
+                            </button>
+                        </div>
+                        <button class="topbar-toggler more">
+                            <i class="gg-more-vertical-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                @include('layouts.header')
+
+            </div>
+            <div class="container">
+                <div class="page-inner">
+                    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+                        <div>
+                            <h3 class="mt-1 app-page-title d-inline-block px-3 py-1 rounded"
+                                style="background-color:#28a745;color:#fff;">
+                                Espace Administrateur
+                            </h3>
+                        </div>
+                        <div class="ms-md-auto py-2 py-md-0">
+                            <a href="{{ url('admin/assign_class_subject_teacher/add') }}"
+                                class="btn btn-primary btn-round">
+                                Ajouter une liaison Classe - Matière - Professeur
+                            </a>
+                        </div>
+                    </div>
+
+                    @include('_message')
+
+                    <!-- Recherche -->
+                    <div class="card my-4 p-2">
+                        <div class="card-header" style="font-size:20px;">
+                            <b>Espace de recherche...</b>
+                        </div>
+                        <div class="app-card app-card-settings shadow-sm p-4"
+                            style="background-color:#d8e0de;color:#fff;">
+                            <div class="card-body">
+                                <form method="GET" action="">
+
+                                    {{ csrf_field() }}
+
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label">
+                                                <b>Nom de la classe</b>
+                                            </label>
+                                            <input type="text" class="form-control" name="class_name"
+                                                value="{{ Request::get('class_name') }}"
+                                                placeholder="Entrez le nom de la classe">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label">
+                                                <b>Nom de la matière</b>
+                                            </label>
+                                            <input type="text" class="form-control" name="subject_name"
+                                                value="{{ Request::get('subject_name') }}"
+                                                placeholder="Entrez le nom de la matière">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label">
+                                                <b>Nom du professeur</b>
+                                            </label>
+                                            <input type="text" class="form-control" name="teacher_name"
+                                                value="{{ Request::get('teacher_name') }}"
+                                                placeholder="Entrez le nom du professeur">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label">
+                                                <b>Status</b>
+                                            </label>
+                                            <select name="status" class="form-control">
+                                                <option value="">
+                                                    -------- Sélectionner un status --------
+                                                </option>
+                                                <option value="0"
+                                                    {{ Request::get('status') == '0' ? 'selected' : '' }}>
+                                                    Active
+                                                </option>
+                                                <option value="1"
+                                                    {{ Request::get('status') == '1' ? 'selected' : '' }}>
+                                                    Inactive
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 d-flex justify-content-end gap-3 mt-2">
+                                            <button type="submit" class="btn btn-primary px-3">
+                                                🔍 Rechercher
+                                            </button>
+                                            <a href="{{ url('admin/assign_class_subject_teacher/list') }}"
+                                                class="btn btn-danger px-3">
+
+                                                ❌ Effacer
+
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card my-4 p-4">
+                        <div class="card-header d-flex justify-content-between align-items-center"
+                            style="font-size:20px;">
+                            <b>
+                                Liste des liaisons Classe - Matière - Professeur
+                            </b>
+                            <span class="app-page-title px-3 py-1 rounded"
+                                style="background-color:#28a745;color:#fff;font-size:14px;">
+                                <b>
+                                    Total de liaison : {{ $getRecord->total() }}
+                                </b>
+                            </span>
+                        </div>
+                        <div class="app-card app-card-settings shadow-sm p-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <table class="table table-striped mt-3">
+                                        <thead class="table-success">
+                                            <tr>
+                                                <th>N°</th>
+                                                <th>Classe</th>
+                                                <th>Matière</th>
+                                                <th>Professeur</th>
+                                                <th>Status</th>
+                                                <th>Créé par</th>
+                                                <th>Date création</th>
+                                                <th>Date modification</th>
+                                                <th class="text-center">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($getRecord as $value)
+                                                <tr>
+                                                    <td>
+                                                        {{ $value->id }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $value->class_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $value->subject_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $value->teacher_name }}
+                                                        {{ $value->teacher_last_name }}
+                                                    </td>
+                                                    <td>
+                                                        @if ($value->status == 0)
+                                                            <span class="badge bg-success">
+                                                                Active
+                                                            </span>
+                                                        @else
+                                                            <span class="badge bg-danger">
+                                                                Inactive
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        {{ $value->created_by_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ date('d-m-Y H:i A', strtotime($value->created_at)) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ date('d-m-Y H:i A', strtotime($value->updated_at)) }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex justify-content-center gap-2">
+                                                            <a href="{{ url('admin/assign_class_subject_teacher/edit/' . $value->id) }}"
+                                                                class="btn btn-sm btn-warning">
+                                                                Modifier
+                                                            </a>
+                                                            <a href="{{ url('admin/assign_class_subject_teacher/delete/' . $value->id) }}"
+                                                                class="btn btn-sm btn-danger"
+                                                                onclick="return confirm('Voulez-vous vraiment supprimer cette liaison ?')">
+                                                                Supprimer
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <div class="d-flex justify-content-end mt-2">
+                                        {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @include('layouts.footer')
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Core JS Files -->
+
+    <script src="{{ asset('assets1/js/core/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('assets1/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('assets1/js/core/bootstrap.min.js') }}"></script>
+
+    <!-- Plugins -->
+
+    <script src="{{ asset('assets1/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets1/js/plugin/chart.js/chart.min.js') }}"></script>
+    <script src="{{ asset('assets1/js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ asset('assets1/js/plugin/chart-circle/circles.min.js') }}"></script>
+    <script src="{{ asset('assets1/js/plugin/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets1/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('assets1/js/plugin/jsvectormap/jsvectormap.min.js') }}"></script>
+    <script src="{{ asset('assets1/js/plugin/jsvectormap/world.js') }}"></script>
+    <script src="{{ asset('assets1/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
+
+    <!-- Kaiadmin JS -->
+
+    <script src="{{ asset('assets1/js/kaiadmin.min.js') }}"></script>
+    <script src="{{ asset('assets1/js/setting-demo.js') }}"></script>
+
+</body>
+
+</html>

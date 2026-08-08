@@ -372,9 +372,20 @@
                                                                                         <span
                                                                                             class="app-page-title d-inline-block px-1 py-1 rounded"
                                                                                             style="background-color:#72b4a2; color:#fff; font-size:20px;">
-                                                                                            {{ number_format($totalMark / 4, 2) }}
+                                                                                            {{ number_format($totalMark / 5, 2) }}
                                                                                         </span>
-                                                                                        <b>Vous êtes donc declaré</b>
+                                                                                        {{-- <b>Vous êtes donc declaré</b> --}}
+                                                                                        <br />
+                                                                                        @php
+                                                                                            $getLoopGrade = App\Models\MarksGradeModel::getGrade(
+                                                                                                $totalMark,
+                                                                                            );
+                                                                                        @endphp
+                                                                                        @if (!empty($getLoopGrade))
+                                                                                            <b>Mention :
+                                                                                            </b>{{ $getLoopGrade }}
+                                                                                            <br />
+                                                                                        @endif
                                                                                         @if ($subject->passing_mark <= $totalMark)
                                                                                             <span
                                                                                                 style="color: green; font-weight: bold;">Admis</span>
@@ -427,9 +438,13 @@
                             </div>
                             @php
                                 $percentage = ($totalStudentMark * 100) / $totalFullMarks;
+                                $getGrade = App\Models\MarksGradeModel::getGrade($percentage);
                             @endphp
                             <br>
                             <div class="mb-3"><b>Pourcentage :</b>{{ round($percentage, 2) }}%</div>
+                            @if (!empty($getGrade))
+                                <div class="mb-3"><b>Mention :</b>{{ $getGrade }}</div>
+                            @endif
 
 
                             @if ($totalStudentMark >= $totalPassingMarks)

@@ -201,10 +201,13 @@
 
                                                         @if (!empty($getSubject) && $getSubject->count() > 0)
                                                             @foreach ($getSubject as $subject)
-                                                                <th>
-                                                                    {{ $subject->subject_name }} <br />
+                                                                <th class="text-center align-middle">
+                                                                    {{ $subject->subject_name }} [
                                                                     ({{ $subject->subject_type }} :
                                                                     {{ $subject->passing_mark }}/{{ $subject->full_marks }})
+                                                                    ]
+                                                                    <br />
+
                                                                 </th>
                                                             @endforeach
                                                         @endif
@@ -279,214 +282,245 @@
                                                                             @endphp
                                                                             <td>
 
-                                                                                <div style="margin-bottom: 10px;">
-                                                                                    Interrogation 1
+                                                                                <div class="d-flex flex-wrap justify-content-center gap-3 p-3"
+                                                                                    style="background:#f8f9fa;border-radius:15px;border:1px solid #ddd;">
 
-                                                                                    <input type="hidden"
-                                                                                        name="mark[{{ $i }}][full_marks]"
-                                                                                        value="{{ $subject->full_marks }}">
+                                                                                    <div
+                                                                                        class="text-center p-2 shadow-sm rounded bg-white">
+                                                                                        <label
+                                                                                            class="fw-bold text-primary d-block mb-2">
+                                                                                            Interrogation 1
+                                                                                        </label>
+                                                                                        <input type="text"
+                                                                                            name="mark[{{ $i }}][Interrogation_1]"
+                                                                                            id="Interrogation_1_{{ $student->id }}{{ $subject->subject_id }}"
+                                                                                            value="{{ isset($getMark->Interrogation_1) ? $getMark->Interrogation_1 : '' }}"
+                                                                                            class="form-control text-center fw-bold"
+                                                                                            style="width:90px;">
+                                                                                    </div>
 
-                                                                                    <input type="hidden"
-                                                                                        name="mark[{{ $i }}][passing_marks]"
-                                                                                        value="{{ $subject->passing_marks }}">
 
-                                                                                    <input type="hidden"
-                                                                                        name="mark[{{ $i }}][subject_id]"
-                                                                                        value="{{ $subject->subject_id }}">
+                                                                                    <div
+                                                                                        class="text-center p-2 shadow-sm rounded bg-white">
+                                                                                        <label
+                                                                                            class="fw-bold text-primary d-block mb-2">
+                                                                                            Interrogation 2
+                                                                                        </label>
+                                                                                        <input type="text"
+                                                                                            name="mark[{{ $i }}][Interrogation_2]"
+                                                                                            id="Interrogation_2_{{ $student->id }}{{ $subject->subject_id }}"
+                                                                                            value="{{ isset($getMark->Interrogation_2) ? $getMark->Interrogation_2 : '' }}"
+                                                                                            class="form-control text-center fw-bold"
+                                                                                            style="width:90px;">
+                                                                                    </div>
 
-                                                                                    <input type="text"
-                                                                                        name="mark[{{ $i }}][Interrogation_1]"
-                                                                                        id="Interrogation_1_{{ $student->id }}{{ $subject->subject_id }}"
-                                                                                        value="{{ !empty($getMark->Interrogation_1) ? $getMark->Interrogation_1 : '' }}"
-                                                                                        class="form-control"
-                                                                                        style="width: 200px">
+
+                                                                                    <div
+                                                                                        class="text-center p-2 shadow-sm rounded bg-white">
+                                                                                        <label
+                                                                                            class="fw-bold text-success d-block mb-2">
+                                                                                            Devoir classe 1
+                                                                                        </label>
+                                                                                        <input type="text"
+                                                                                            name="mark[{{ $i }}][Devoir_de_classe_1]"
+                                                                                            id="Devoir_de_classe_1_{{ $student->id }}{{ $subject->subject_id }}"
+                                                                                            value="{{ isset($getMark->Devoir_de_classe_1) ? $getMark->Devoir_de_classe_1 : '' }}"
+                                                                                            class="form-control text-center fw-bold"
+                                                                                            style="width:90px;">
+                                                                                    </div>
+
+
+                                                                                    <div
+                                                                                        class="text-center p-2 shadow-sm rounded bg-white">
+                                                                                        <label
+                                                                                            class="fw-bold text-success d-block mb-2">
+                                                                                            Devoir classe 2
+                                                                                        </label>
+                                                                                        <input type="text"
+                                                                                            name="mark[{{ $i }}][Devoir_de_classe_2]"
+                                                                                            id="Devoir_de_classe_2_{{ $student->id }}{{ $subject->subject_id }}"
+                                                                                            value="{{ isset($getMark->Devoir_de_classe_2) ? $getMark->Devoir_de_classe_2 : '' }}"
+                                                                                            class="form-control text-center fw-bold"
+                                                                                            style="width:90px;">
+                                                                                    </div>
+
+
+                                                                                    <div
+                                                                                        class="text-center p-2 shadow-sm rounded bg-white">
+                                                                                        <label
+                                                                                            class="fw-bold text-warning d-block mb-2">
+                                                                                            Devoir niveau
+                                                                                        </label>
+                                                                                        <input type="text"
+                                                                                            name="mark[{{ $i }}][Devoir_de_niveau]"
+                                                                                            id="Devoir_de_niveau_{{ $student->id }}{{ $subject->subject_id }}"
+                                                                                            value="{{ isset($getMark->Devoir_de_niveau) ? $getMark->Devoir_de_niveau : '' }}"
+                                                                                            class="form-control text-center fw-bold"
+                                                                                            style="width:90px;">
+                                                                                    </div>
+
+
+                                                                                    <div
+                                                                                        class="d-flex align-items-center">
+                                                                                        <button type="button"
+                                                                                            class="btn btn-primary SaveSingleSubject shadow-sm px-4"
+                                                                                            id="{{ $student->id }}"
+                                                                                            data-val="{{ $subject->subject_id }}"
+                                                                                            data-exam="{{ Request::get('exam_id') }}"
+                                                                                            data-schedule="{{ $subject->id }}"
+                                                                                            data-class="{{ Request::get('class_id') }}">
+
+                                                                                            <i class="fas fa-save"></i>
+                                                                                            Enregistrer
+                                                                                        </button>
+                                                                                    </div>
+
                                                                                 </div>
 
-                                                                                <div style="margin-bottom: 10px;">
-                                                                                    Interrogation 2
-
-                                                                                    <input type="text"
-                                                                                        name="mark[{{ $i }}][Interrogation_2]"
-                                                                                        id="Interrogation_2_{{ $student->id }}{{ $subject->subject_id }}"
-                                                                                        value="{{ !empty($getMark->Interrogation_2) ? $getMark->Interrogation_2 : '' }}"
-                                                                                        class="form-control"
-                                                                                        style="width: 200px">
-                                                                                </div>
-
-                                                                                <div style="margin-bottom: 10px;">
-                                                                                    Devoir de classe 1
-
-                                                                                    <input type="text"
-                                                                                        name="mark[{{ $i }}][Devoir_de_classe_1]"
-                                                                                        id="Devoir_de_classe_1_{{ $student->id }}{{ $subject->subject_id }}"
-                                                                                        value="{{ !empty($getMark->Devoir_de_classe_1) ? $getMark->Devoir_de_classe_1 : '' }}"
-                                                                                        class="form-control"
-                                                                                        style="width: 200px">
-                                                                                </div>
-
-                                                                                <div style="margin-bottom: 10px;">
-                                                                                    Devoir de classe 2
-
-                                                                                    <input type="text"
-                                                                                        name="mark[{{ $i }}][Devoir_de_classe_2]"
-                                                                                        id="Devoir_de_classe_2_{{ $student->id }}{{ $subject->subject_id }}"
-                                                                                        value="{{ !empty($getMark->Devoir_de_classe_2) ? $getMark->Devoir_de_classe_2 : '' }}"
-                                                                                        class="form-control"
-                                                                                        style="width: 200px">
-                                                                                </div>
-
-                                                                                <div style="margin-bottom: 10px;">
-                                                                                    Devoir de niveau
-
-                                                                                    <input type="text"
-                                                                                        name="mark[{{ $i }}][Devoir_de_niveau]"
-                                                                                        id="Devoir_de_niveau_{{ $student->id }}{{ $subject->subject_id }}"
-                                                                                        value="{{ !empty($getMark->Devoir_de_niveau) ? $getMark->Devoir_de_niveau : '' }}"
-                                                                                        class="form-control"
-                                                                                        style="width: 200px">
-                                                                                </div>
-
-                                                                                <div style="margin-bottom: 10px;">
-                                                                                    <button type="button"
-                                                                                        class="btn btn-primary SaveSingleSubject"
-                                                                                        id="{{ $student->id }}"
-                                                                                        data-val="{{ $subject->subject_id }}"
-                                                                                        data-exam="{{ Request::get('exam_id') }}"
-                                                                                        data-schedule="{{ $subject->id }}"
-                                                                                        data-class="{{ Request::get('class_id') }}">Enregistrement
-                                                                                        unique</button>
-                                                                                </div>
 
                                                                                 @if (!empty($getMark))
-                                                                                    <div style="margin-bottom: 10px;">
-                                                                                        <b>Total de point :
-                                                                                        </b>{{ $totalMark }} <br />
+                                                                                    <div class="mt-3">
 
-                                                                                        <b>Point
-                                                                                            de passage :
-                                                                                        </b>{{ $subject->passing_mark }}
-                                                                                        <br />
+                                                                                        <b>Total :</b>
+                                                                                        {{ $totalMark }}
+                                                                                        <br>
 
-                                                                                        <b>Votre moyenne est de :</b>
-                                                                                        <br />
-                                                                                        <span
-                                                                                            class="app-page-title d-inline-block px-1 py-1 rounded"
-                                                                                            style="background-color:#72b4a2; color:#fff; font-size:20px;">
-                                                                                            {{ number_format($totalMark / 4, 2) }}
+                                                                                        <b>Point de passage :</b>
+                                                                                        {{ $subject->passing_mark }}
+                                                                                        <br>
+
+                                                                                        <b>Moyenne :</b>
+
+                                                                                        <span class="badge"
+                                                                                            style="background:#72b4a2;color:white;font-size:18px;">
+                                                                                            {{ number_format($totalMark / 5, 2) }}
                                                                                         </span>
-                                                                                        <b>Vous êtes donc declaré</b>
+
+
                                                                                         @if ($subject->passing_mark <= $totalMark)
                                                                                             <span
-                                                                                                style="color: green; font-weight: bold;">Admis</span>
+                                                                                                style="color:green;font-weight:bold;">
+                                                                                                Admis
+                                                                                            </span>
                                                                                         @else
                                                                                             <span
-                                                                                                style="color: red; font-weight: bold;">Refusé</span>
+                                                                                                style="color:red;font-weight:bold;">
+                                                                                                Refusé
+                                                                                            </span>
                                                                                         @endif
-                                                                                        @php
-                                                                                            $pass_fail_vali = 1;
-                                                                                        @endphp
+
+                                                                                    </div>
                                                                                 @endif
+
+
+                                                                            </td>
+
+                                                                            @php
+                                                                                $i++;
+                                                                            @endphp
+                                                                        @endforeach
+
+
+                                                                        <td class="text-end">
+
+                                                                            <button type="submit"
+                                                                                class="btn btn-success mb-4 px-4">
+                                                                                <i class="fas fa-save me-1"></i>
+                                                                                Enregistrer
+                                                                            </button>
+                                                                            @if (!empty($totalStudentMark))
+                                                                                <div class="mb-3"></div>
+                                                                                <strong>Total de points de toutes
+                                                                                    les
+                                                                                    matières : <span
+                                                                                        class="badge bg-danger text-dark fs-6"><b>{{ $totalFullMarks }}</b></span></strong><br>
+                                        </div>
+                                        <br />
+                                        <div class="mb-3">
+                                            <strong>Total de points de passage
+                                                de
+                                                l'élève : <span
+                                                    class="badge bg-success text-dark fs-6"><b>{{ $totalPassingMarks }}</b></span></strong><br>
+
                                         </div>
 
-
-
-                                        </td>
-
+                                        <div class="mb-3">
+                                            <strong>Total de points de l'élève
+                                                dans
+                                                toutes les matières : <span
+                                                    class="badge bg-warning text-dark fs-6"><b>{{ $totalStudentMark }}</b></span></strong><br>
+                                        </div>
                                         @php
-                                            $i++;
+                                            $percentage = ($totalStudentMark * 100) / $totalFullMarks;
+                                            $getLoopGrade = App\Models\MarksGradeModel::getGrade($totalMark);
                                         @endphp
+                                        <br>
+
+                                        @if (!empty($getLoopGrade))
+                                            <b>Mention :
+                                            </b>{{ $getLoopGrade }}
+                                            <br />
+                                        @endif
+
+                                        <div class="mb-3"><b>Pourcentage :</b>{{ round($percentage, 2) }}%</div>
+
+
+                                        @if ($totalStudentMark >= $totalPassingMarks)
+                                            <span class="badge bg-success text-dark fs-6">
+                                                <b>L'élève est déclaré Admis</b>
+                                            </span>
+                                        @else
+                                            <span class="badge bg-danger text-dark fs-6">
+                                                <b>L'élève est déclaré Refusé</b>
+                                            </span>
+                                        @endif
+                                    @endif
+
+                                    </td>
+
+                                    </form>
+
+                                    </tr>
                                     @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="{{ ($getSubject->count() ?? 0) + 2 }}"
+                                            class="text-center text-danger fw-bold">
+                                            Aucun élève trouvé pour cette classe.
+                                        </td>
+                                    </tr>
+                                    @endif
+                                @else
+                                    <tr>
+                                        <td colspan="100%" class="text-center text-danger fw-bold"
+                                            style="font-size:18px;">
+                                            Ce type d'évaluation n'est pas lié à cette classe.
+                                        </td>
+                                    </tr>
+                                    @endif
 
-
-                                    <td class="text-end">
-
-                                        <button type="submit" class="btn btn-success mb-4">
-                                            Enregistrer
-                                        </button>
-                                        @if (!empty($totalStudentMark))
-                                            <div class="mb-3"></div>
-                                            <strong>Total de points de toutes
-                                                les
-                                                matières : <span
-                                                    class="badge bg-danger text-dark fs-6"><b>{{ $totalFullMarks }}</b></span></strong><br>
+                                </tbody>
+                                </table>
                             </div>
-                            <br />
-                            <div class="mb-3">
-                                <strong>Total de points de passage
-                                    de
-                                    l'élève : <span
-                                        class="badge bg-success text-dark fs-6"><b>{{ $totalPassingMarks }}</b></span></strong><br>
-
+                        @else
+                            <div class="text-center text-muted fw-bold" style="padding:20px;">
+                                Veuillez sélectionner un type d’évaluation et une classe.
                             </div>
-
-                            <div class="mb-3">
-                                <strong>Total de points de l'élève
-                                    dans
-                                    toutes les matières : <span
-                                        class="badge bg-warning text-dark fs-6"><b>{{ $totalStudentMark }}</b></span></strong><br>
-                            </div>
-                            @php
-                                $percentage = ($totalStudentMark * 100) / $totalFullMarks;
-                            @endphp
-                            <br>
-                            <div class="mb-3"><b>Pourcentage :</b>{{ round($percentage, 2) }}%</div>
-
-
-                            @if ($totalStudentMark >= $totalPassingMarks)
-                                <span class="badge bg-success text-dark fs-6">
-                                    <b>Vous êtes déclaré Admis</b>
-                                </span>
-                            @else
-                                <span class="badge bg-danger text-dark fs-6">
-                                    <b>Vous êtes déclaré Refusé</b>
-                                </span>
                             @endif
-                            @endif
-
-                            </td>
-
                             </form>
-
-                            </tr>
-                            @endforeach
-                        @else
-                            <tr>
-                                <td colspan="{{ ($getSubject->count() ?? 0) + 2 }}"
-                                    class="text-center text-danger fw-bold">
-                                    Aucun élève trouvé pour cette classe.
-                                </td>
-                            </tr>
-                            @endif
-                        @else
-                            <tr>
-                                <td colspan="100%" class="text-center text-danger fw-bold" style="font-size:18px;">
-                                    Ce type d'évaluation n'est pas lié à cette classe.
-                                </td>
-                            </tr>
-                            @endif
-
                             </tbody>
                             </table>
+
                         </div>
-                    @else
-                        <div class="text-center text-muted fw-bold" style="padding:20px;">
-                            Veuillez sélectionner un type d’évaluation et une classe.
-                        </div>
-                        @endif
-                        </form>
-                        </tbody>
-                        </table>
+
 
                     </div>
-
-
                 </div>
+
             </div>
-
         </div>
-    </div>
 
-    @include('layouts.footer')
+        @include('layouts.footer')
     </div>
 
     </div>

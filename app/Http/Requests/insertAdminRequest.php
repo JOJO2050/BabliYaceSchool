@@ -28,12 +28,9 @@ class insertAdminRequest extends FormRequest
             "password" => "required"
         ];
     }
-
-
     public function messages()
     {
         return [
-
             "name.required" => "le nom de est requis",
             "mobile_number.required" => "Le contact de l'administrateur est requis",
             "email.required" => "L'email est requis",

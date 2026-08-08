@@ -44,7 +44,6 @@ class ClassTeacherModel extends Model
             $return = $return->whereDate("assign_class_teacher.created_at", "=", Request::get("date"));
         }
 
-
         $return = $return->orderBy("assign_class_teacher.id", "desc")
             ->paginate(10);
 
@@ -69,15 +68,34 @@ class ClassTeacherModel extends Model
 
     static public function getCalendarTeacher($teacher_id)
     {
-        return ClassTeacherModel::select("class_subject_timetable.*", "class.name as class_name", "subject.name as subject_name", "week.name as week_name", "week.fullcalendar_day")
-            ->join("class", "class.id", "=", "assign_class_teacher.class_id")
-            ->join("class_subject", "class_subject.class_id", "=", "class.id")
-            ->join("class_subject_timetable", "class_subject_timetable.subject_id", "=", "class_subject.subject_id")
-            ->join("subject", "subject.id", "=",  "class_subject.subject_id")
-            ->join("week", "week.id", "=",  "class_subject_timetable.week_id")
-            ->where("assign_class_teacher.teacher_id", "=", $teacher_id)
-            ->where("assign_class_teacher.status", "=", 0)
-            ->where("assign_class_teacher.is_delete", "=", 0)
+        return self::select(
+            "class_subject_timetable.*",
+            "class.name as class_name",
+            "subject.name as subject_name",
+            "week.name as week_name",
+            "week.fullcalendar_day"
+        )
+
+            ->join("class", "class.id", "=", "assign_class_subject_teacher.class_id")
+            ->join("subject", "subject.id", "=", "assign_class_subject_teacher.subject_id")
+            ->join(
+                "class_subject_timetable",
+                function ($join) {
+                    $join->on(
+                        "class_subject_timetable.class_id",
+                        "=",
+                        "assign_class_subject_teacher.class_id"
+                    );
+
+                    $join->on("class_subject_timetable.subject_id", "=", "assign_class_subject_teacher.subject_id");
+                }
+            )
+            ->join("week", "week.id", "=", "class_subject_timetable.week_id")
+            ->where("assign_class_subject_teacher.teacher_id", "=", $teacher_id)
+            ->where("assign_class_subject_teacher.status", "=", 0)
+            ->where("assign_class_subject_teacher.is_delete", "=", 0)
+            ->orderBy("class_subject_timetable.week_id")
+            ->orderBy("class_subject_timetable.start_time")
             ->get();
     }
 
@@ -107,24 +125,6 @@ class ClassTeacherModel extends Model
     {
         return self::where("class_id", "=", $class_id)->delete();
     }
-
-    //Fontion qui permet de gerer les jours lier a une classe et aux matières
-    // static public function getMyTimeTable($class_id, $subject_id)
-    // {
-    //     $today = date("l");
-
-    //     $getWeek = WeekModel::getWeekUsingName($today);
-
-    //     if (!$getWeek) {
-    //         return null;
-    //     }
-
-    //     return ClassSubjectTimetableModel::getRecordClassSubject(
-    //         $class_id,
-    //         $subject_id,
-    //         $getWeek->id
-    //     );
-    // }
 
     static public function getMyTimeTable($class_id, $subject_id)
     {

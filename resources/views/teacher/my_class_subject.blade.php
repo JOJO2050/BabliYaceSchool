@@ -122,7 +122,7 @@
                                                     <th>Nom de la classe</th>
                                                     <th>Nom de la matière</th>
                                                     <th>Type de la matière</th>
-                                                    <th class="text-center">emploie du temps de ma classe</th>
+                                                    {{-- <th class="text-center">emploie du temps de ma classe</th> --}}
                                                     <th>Date création</th>
                                                     <th>Date modification</th>
                                                     <th class="text-center">Action</th>
@@ -135,7 +135,7 @@
                                                         <td>{{ $value->class_name }}</td>
                                                         <td>{{ $value->subject_name }}</td>
                                                         <td>{{ $value->subject_type }}</td>
-                                                        <td>
+                                                        {{-- <td>
                                                             @php
                                                                 $classSubject = $value->getMyTimeTable(
                                                                     $value->class_id,
@@ -143,20 +143,26 @@
                                                                 );
 
                                                             @endphp
-                                                            @if (!empty($classSubject))
-                                                                De {{ $classSubject->start_time }} à
-                                                                {{ $classSubject->end_time }}
-                                                                <br />
-                                                                Numero de classe : {{ $classSubject->room_number }}
+                                                            @if ($classSubject->count() > 0)
+                                                                @foreach ($classSubject as $time)
+                                                                    De {{ $time->start_time }} à {{ $time->end_time }}
+                                                                    <br>
+                                                                    Salle : {{ $time->room_number }}
+
+                                                                    <br>
+                                                                @endforeach
                                                             @endif
-                                                        </td>
+                                                        </td> --}}
                                                         <td>{{ date('d-m-Y H:i A', strtotime($value->created_at)) }}
                                                         </td>
                                                         <td>{{ date('d-m-Y H:i A', strtotime($value->updated_at)) }}
                                                         </td>
-                                                        <td><a href="{{ url('teacher/my_class_subject/class_timetable/' . $value->class_id . '/' . $value->subject_id) }}"
-                                                                class="btn btn-warning">Emploie du
-                                                                temps</a></td>
+                                                        <td class="text-center">
+                                                            <a href="{{ url('teacher/my_class_subject/class_timetable/' . $value->class_id . '/' . $value->subject_id) }}"
+                                                                class="btn btn-warning">
+                                                                Emploi du temps
+                                                            </a>
+                                                        </td>
 
                                                     </tr>
                                                 @endforeach

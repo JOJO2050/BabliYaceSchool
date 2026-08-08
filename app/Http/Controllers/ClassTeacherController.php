@@ -69,7 +69,6 @@ class ClassTeacherController extends Controller
 
     public function update(Request $request)
     {
-
         ClassTeacherModel::deleteTeacher($request->class_id);
 
         if (!empty($request->teacher_id)) {
@@ -111,7 +110,6 @@ class ClassTeacherController extends Controller
 
     public function update_single($id, Request $request)
     {
-
         $getAlreadyFirst = ClassTeacherModel::getAlreadyFirst($request->class_id, $request->teacher_id);
         if (!empty($getAlreadyFirst)) {
             $getAlreadyFirst->status = $request->status;
@@ -129,7 +127,6 @@ class ClassTeacherController extends Controller
 
     public function delete($id)
     {
-
         $save = ClassTeacherModel::getSingle($id);
         $save->is_delete = 1;
         $save->save();

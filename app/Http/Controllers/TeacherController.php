@@ -76,7 +76,6 @@ class TeacherController extends Controller
 
     public function update($id, Request $request)
     {
-
         $teacher = User::getSingle($id);
         $teacher->name  = trim($request->name);
         $teacher->last_name = trim($request->last_name);
@@ -88,8 +87,6 @@ class TeacherController extends Controller
         if (!empty($request->admission_date)) {
             $teacher->admission_date = trim($request->admission_date);
         }
-
-
 
         if (!empty($request->file("profile_pic"))) {
             $ext = $request->file("profile_pic")->getClientOriginalExtension();

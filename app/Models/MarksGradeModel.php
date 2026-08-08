@@ -10,24 +10,27 @@ class MarksGradeModel extends Model
     use HasFactory;
     protected $table = "marks_grade";
 
+        static public function getSingle($id)
+    {
+        return self::find($id);
+    }
+    
     static public function getRecord()
     {
         return  MarksGradeModel::select("marks_grade.*", "users.name as created_name")
             ->join("users", "users.id", "=", "marks_grade.created_by")
             ->get();
 
-        // if (!empty(Request::get("name"))) {
-        //     $return = $return->where("exam.name", "like", "%" . Request::get("name") . "%");
-        // }
-
-        // if (!empty(Request::get("date"))) {
-        //     $return = $return->whereDate("exam.created_at", Request::get("date"));
-        // }
-
-        // $return = $return->where("exam.is_delete", "=", 0)
-        //     ->orderBy("exam.id", "desc")
-        //     ->paginate(10);
-
-        // return $return;
     }
+    static public function getGrade($percent)
+    {
+        $return =  MarksGradeModel::select("marks_grade.*")
+            ->where("percent_from", "<=", $percent)
+            ->where("percent_to", ">=", $percent)
+            ->first();
+
+            return !empty($return->name) ? $return->name : "";
+
+    }
+
 }

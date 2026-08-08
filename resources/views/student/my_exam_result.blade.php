@@ -162,48 +162,43 @@
 
                                                                         $total_general += $totalDePointObtenu;
 
-                                                                        $total_general_full_marks +=
-                                                                            $subject['full_marks'];
+                                                                        $total_general_full_marks += !empty(
+                                                                            $subject['full_marks']
+                                                                        )
+                                                                            ? $subject['full_marks']
+                                                                            : 0;
 
                                                                         $total_passing_marks +=
                                                                             $subject['passing_marks'];
                                                                     @endphp
+
                                                                     <tr>
                                                                         <td style="width: 250px">
-                                                                            {{ $subject['subject_name'] }}</td>
+                                                                            {{ $subject['subject_name'] }}
+                                                                        </td>
 
                                                                         <td>{{ $subject['Interrogation_1'] }}</td>
 
                                                                         <td>{{ $subject['Interrogation_2'] }}</td>
 
-                                                                        <td>{{ $subject['Devoir_de_classe_1'] }}
-                                                                        </td>
+                                                                        <td>{{ $subject['Devoir_de_classe_1'] }}</td>
 
-                                                                        <td>{{ $subject['Devoir_de_classe_2'] }}
-                                                                        </td>
+                                                                        <td>{{ $subject['Devoir_de_classe_2'] }}</td>
 
                                                                         <td>{{ $subject['Devoir_de_niveau'] }}</td>
 
-                                                                        <td> {{ $subject['Interrogation_1'] +
-                                                                            $subject['Interrogation_2'] +
-                                                                            $subject['Devoir_de_classe_1'] +
-                                                                            $subject['Devoir_de_classe_2'] +
-                                                                            $subject['Devoir_de_niveau'] }}
+                                                                        <td>
+                                                                            {{ $totalDePointObtenu }}
                                                                         </td>
 
-                                                                        <td>
-                                                                            {{ $subject['passing_marks'] }}
-                                                                        </td>
+                                                                        <td>{{ $subject['passing_marks'] }}</td>
 
                                                                         <td>{{ $subject['full_marks'] }}</td>
 
-
                                                                         <td>
-                                                                            {{ $totalDePointObtenu }}
-                                                                            / {{ $subject['full_marks'] }}
+                                                                            {{ $totalDePointObtenu }} /
+                                                                            {{ $subject['full_marks'] }}
                                                                         </td>
-
-
 
                                                                         <td>
                                                                             @if ($totalDePointObtenu >= $subject['passing_marks'])
@@ -214,30 +209,70 @@
                                                                                     style="color: red"><b>Refusé</b></span>
                                                                             @endif
                                                                         </td>
-
-
                                                                     </tr>
                                                                 @endforeach
 
+                                                                {{-- Ligne de séparation --}}
                                                                 <tr>
+                                                                    <td colspan="11"
+                                                                        style="padding:0; border-top:2px solid #000;">
+                                                                    </td>
+                                                                </tr>
+
+                                                                {{-- Totaux --}}
                                                                 <tr>
                                                                     <td colspan="2">
-                                                                        <b>TOTAL Général : {{ $total_general }} /
-                                                                            {{ $total_general_full_marks }}</b>
+                                                                        <b>
+                                                                            TOTAL Général :
+                                                                            {{ $total_general }} /
+                                                                            {{ $total_general_full_marks }}
+                                                                        </b>
+                                                                    </td>
+
+
+
+                                                                    <td colspan="2">
+                                                                        <b>
+                                                                            POURCENTAGE :
+                                                                            @if ($total_general_full_marks > 0)
+                                                                                {{ round(($total_general * 100) / $total_general_full_marks, 2) }}%
+                                                                            @else
+                                                                                0%
+                                                                            @endif
+                                                                        </b>
+                                                                    </td>
+
+                                                                    @php
+                                                                        $percentage =
+                                                                            ($total_general * 100) /
+                                                                            $total_general_full_marks;
+
+                                                                        //    $percentage = ($totalStudentMark * 100) / $totalFullMarks;
+                                                                        $getGrade = App\Models\MarksGradeModel::getGrade(
+                                                                            $percentage,
+                                                                        );
+                                                                    @endphp
+
+                                                                    <td colspan="2">
+                                                                        <b>
+                                                                            MENTION :
+                                                                            @if ($total_general_full_marks > 0)
+                                                                                {{ $getGrade }}
+                                                                            @else
+                                                                                0%
+                                                                            @endif
+                                                                        </b>
                                                                     </td>
 
                                                                     <td colspan="2">
-                                                                        <b>POURCENTAGE :
-                                                                            {{ round(($total_general * 100) / $total_general_full_marks, 2) }}%</b>
+                                                                        <b>
+                                                                            POINT DE PASSAGE OBTENU :
+                                                                            {{ $total_general }} /
+                                                                            {{ $total_passing_marks }}
+                                                                        </b>
                                                                     </td>
 
                                                                     <td colspan="3">
-                                                                        <b>POINT DE PASSAGE OBTENU :
-                                                                            {{ $total_general }} /
-                                                                            {{ $total_passing_marks }}</b>
-                                                                    </td>
-
-                                                                    <td colspan="4">
                                                                         <b>DECISION GLOBALE DEFINITIVE :</b>
 
                                                                         @if ($total_general >= $total_passing_marks)
@@ -249,15 +284,9 @@
                                                                                 Vous êtes déclaré Refusé
                                                                             </span>
                                                                         @endif
-
                                                                     </td>
-
                                                                 </tr>
-
-                                                                </tr>
-
                                                             </tbody>
-
                                                         </table>
 
                                                     </div>

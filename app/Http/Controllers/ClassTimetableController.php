@@ -15,13 +15,9 @@ class ClassTimetableController extends Controller
 {
     public function list(Request $request)
     {
-
         $data["getClass"] = ClassModel::getClass();
 
-        if (!empty($request->class_id)) {
-            $data["getSubject"] = ClassSubjectModel::MySubject($request->class_id);
-        }
-
+        if (!empty($request->class_id)) {$data["getSubject"] = ClassSubjectModel::MySubject($request->class_id);}
 
         $getWeek = WeekModel::getRecord();
         $week = array();
@@ -51,7 +47,6 @@ class ClassTimetableController extends Controller
         }
         $data["week"] = $week;
 
-
         $data["header_title"] = "Emplois du temps";
         return view("admin.class_timetable.list", $data);
     }
@@ -59,14 +54,12 @@ class ClassTimetableController extends Controller
     public function get_subject(Request $request)
     {
         $getSubject = ClassSubjectModel::MySubject($request->class_id);
-
-        if ($getSubject->isEmpty()) { // si aucune matière
-            $html = '<option value="">Aucune matière ne correspond à cette classe</option>';
-        } else {
+        // si aucune matière
+        if ($getSubject->isEmpty()) { $html = '<option value="">Aucune matière ne correspond à cette classe</option>';} 
+        else {
             $html = '<option value="">~~~~~~~~~~~~~~~~ Sélectionner Matière ~~~~~~~~~~~~~~~~</option>';
-            foreach ($getSubject as $value) {
-                $html .= '<option value="' . $value->subject_id . '">' . $value->subject_name . '</option>';
-            }
+            foreach ($getSubject as $value) {$html .= '<option value="' . $value->subject_id . '">' . $value->subject_name . '</option>';
+}
         }
 
         $json["html"] = $html;
@@ -134,10 +127,8 @@ class ClassTimetableController extends Controller
 
     public function myTimetableTeacher($class_id, $subject_id)
     {
-
         $data["getClass"] = ClassModel::getSingle($class_id);
         $data["getSubject"] = SubjectModel::getSingle($subject_id);
-
 
         $getWeek = WeekModel::getRecord();
         $week = array();
@@ -159,7 +150,6 @@ class ClassTimetableController extends Controller
             $result[] = $dataW;
         }
 
-
         $data["getRecord"] = $result;
         $data["header_title"] = "Mon Emplois du temps";
         return view("teacher.my_timetable", $data);
@@ -172,7 +162,6 @@ class ClassTimetableController extends Controller
         $data["getUser"] = User::getSingle($student_id);
         $data["getClass"] = ClassModel::getSingle($class_id);
         $data["getSubject"] = SubjectModel::getSingle($subject_id);
-
 
         $getWeek = WeekModel::getRecord();
         $week = array();

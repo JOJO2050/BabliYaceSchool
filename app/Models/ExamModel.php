@@ -9,43 +9,49 @@ use Illuminate\Support\Facades\Request;
 class ExamModel extends Model
 {
     use HasFactory;
-    // Table associée
+
     protected $table = "exam";
 
-    static public function getSingle($id)
+    /*
+     Retourne un examen
+    */
+
+    public static function getSingle($id)
     {
         return self::find($id);
     }
 
+    /*
+     Liste paginée
+    */
 
-    static public function getRecord()
+    public static function getRecord()
     {
-        $return = self::select("exam.*", "users.name as created_name")
-            ->join("users", "users.id", "=", "exam.created_by");
+        $query = self::select('exam.*', 'users.name as created_name')
+            ->join('users', 'users.id', '=', 'exam.created_by')
+            ->where('exam.is_delete', 0);
 
-        if (!empty(Request::get("name"))) {
-            $return = $return->where("exam.name", "like", "%" . Request::get("name") . "%");
+        if (!empty(Request::get('name'))) {
+            $query->where('exam.name', 'like', '%' . Request::get('name') . '%');
         }
 
-        if (!empty(Request::get("date"))) {
-            $return = $return->whereDate("exam.created_at", Request::get("date"));
+        if (!empty(Request::get('date'))) {
+            $query->whereDate('exam.created_at', Request::get('date'));
         }
 
-        $return = $return->where("exam.is_delete", "=", 0)
-            ->orderBy("exam.id", "desc")
+        return $query
+            ->orderBy('exam.id', 'desc')
             ->paginate(10);
-
-        return $return;
     }
 
-    static public function getExam()
-    {
-        $return = self::select("exam.*")
-            ->join("users", "users.id", "=", "exam.created_by")
-            ->where("exam.is_delete", "=", 0)
-            ->orderBy("exam.name", "asc")
-            ->get();
+    /*
+     Tous les examens actifs
+    */
 
-        return $return;
+    public static function getExam()
+    {
+        return self::where('is_delete', 0)
+            ->orderBy('name', 'asc')
+            ->get();
     }
 }

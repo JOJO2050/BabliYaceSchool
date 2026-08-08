@@ -70,13 +70,11 @@ class User extends Authenticatable
     }
 
 
-
     static public function getTeacher()     // permet de gerer le TEACHER
     {
         $return = self::select("users.*")
             ->where("users.user_type", "=", 2)
             ->where("users.is_delete", "=", 0);
-
 
         if (!empty(Request::get("name"))) {
             $return = $return->where("users.name", "like", "%" . Request::get("name") . "%");
@@ -114,7 +112,6 @@ class User extends Authenticatable
             $status = (Request::get("status") == 100) ? 0 : 1;
             $return = $return->where("users.status", "=", $status);
         }
-
 
 
         $return = $return->orderBy("id", "desc")
@@ -194,13 +191,28 @@ class User extends Authenticatable
         }
 
 
-
         $return = $return->orderBy("id", "desc")
             ->paginate(10);
 
         return $return;
     }
 
+    public static function getStudentByClassAttendance($class_id)
+    {
+        return self::select(
+            "users.*",
+            "class.name as class_name",
+            "parent.name as parent_name",
+            "parent.last_name as parent_last_name"
+        )
+            ->leftJoin("users as parent", "parent.id", "=", "users.parent_id")
+            ->leftJoin("class", "class.id", "=", "users.class_id")
+            ->where("users.user_type", 3)
+            ->where("users.is_delete", 0)
+            ->where("users.class_id", $class_id)
+            ->orderBy("users.name", "asc")
+            ->get();
+    }
 
     static public function getSearchStudent() // permet de gerer la recherche du STUDENT dans la liason de l'élève et le parent
     {
@@ -251,15 +263,14 @@ class User extends Authenticatable
     {
         $return = self::select("users.*", "class.name as class_name")
             ->join("class", "class.id", "=", "users.class_id")
-            ->join("assign_class_teacher", "assign_class_teacher.class_id", "=", "class.id")
-            ->where("assign_class_teacher.teacher_id", "=", $teacher_id)
-            ->where("assign_class_teacher.status", "=", 0)
-            ->where("assign_class_teacher.is_delete", "=", 0)
+            ->join("assign_class_subject_teacher", "assign_class_subject_teacher.class_id", "=", "class.id")
+            ->where("assign_class_subject_teacher.teacher_id", "=", $teacher_id)
+            ->where("assign_class_subject_teacher.status", "=", 0)
+            ->where("assign_class_subject_teacher.is_delete", "=", 0)
             ->where("users.user_type", "=", 3)
-            ->where("users.is_delete", "=", 0);
-
-        $return = $return->orderBy("id", "desc")
-            ->groupBy("users.id")
+            ->where("users.is_delete", "=", 0)
+            ->groupBy("users.id", "class.name")
+            ->orderBy("users.id", "desc")
             ->paginate(10);
 
         return $return;
@@ -305,7 +316,6 @@ class User extends Authenticatable
             $return = $return->where("users.status", "=", $status);
         }
 
-
         $return = $return->orderBy("id", "desc")
             ->paginate(5);
 
@@ -333,10 +343,15 @@ class User extends Authenticatable
         return User::where("email", "=", $email)->first();
     }
 
-
     static public function getTokenSingle($remember_token)
     {
         return User::where("remember_token", "=", $remember_token)->first();
+    }
+
+    //fonction permettant de gerer le pointage des élèves en fonction des classes et des matières
+    static function getAttendance($class_id, $subject_id, $attendance_date, $student_id)
+    {
+        return StudentAttendanceModel::CheckAlreadyAttendance($class_id, $subject_id, $attendance_date, $student_id);
     }
 
     public function getProfile()
@@ -344,5 +359,10 @@ class User extends Authenticatable
         if (!empty($this->profile_pic) && file_exists("upload/profile/" . $this->profile_pic)) {
             return url("upload/profile/" . $this->profile_pic);
         }
+    }
+
+    public function classSubjects()
+    {
+        return $this->hasMany(ClassSubjectTeacherModel::class, 'teacher_id');
     }
 }

@@ -182,11 +182,11 @@
                                                         </td>
                                                         <td class="text-center">
                                                             <div class="d-flex justify-content-center gap-2">
-                                                                <a href="{{ url('admin/examination/exam/edit/' . $value->id) }}"
+                                                                <a href="{{ url('admin/exmination/marks_grade/edit/' . $value->id) }}"
                                                                     class="btn btn-sm btn-primary">
                                                                     Modifier
                                                                 </a>
-                                                                <a href="{{ url('admin/examination/exam/delete/' . $value->id) }}"
+                                                                <a href="{{ url('admin/exmination/marks_grade/delete/' . $value->id) }}"
                                                                     class="btn btn-sm btn-danger">
                                                                     Supprimer
                                                                 </a>

@@ -26,7 +26,6 @@ class updateAdminResquest extends FormRequest
             "email" => "required|email|unique:users,email",
         ];
     }
-
     public function messages()
     {
         return [

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ClassModel;
 use App\Models\ClassSubjectModel;
-use App\Models\ClassTeacherModel;
+use App\Models\ClassSubjectTeacherModel;
 use App\Models\ExamModel;
 use App\Models\ExamScheduleModel;
 use App\Models\MarksGradeModel;
@@ -30,7 +30,6 @@ class ExaminationsController extends Controller
 
     public function exam_insert(Request $request)
     {
-
         $exam = new ExamModel();
         $exam->name  = trim($request->name);
         $exam->description = trim($request->description);
@@ -64,7 +63,6 @@ class ExaminationsController extends Controller
 
     public function exam_delete($id)
     {
-
         $getRecord = ExamModel::getSingle($id);
         if (!empty($getRecord)) {
             $getRecord->is_delete = 1;
@@ -86,6 +84,7 @@ class ExaminationsController extends Controller
             $getSubject = ClassSubjectModel::MySubject($request->get("class_id"));
 
             foreach ($getSubject as $value) {
+                
                 $dataS = array();
                 $dataS["subject_id"] = $value->subject_id;
                 $dataS["class_id"] = $value->class_id;
@@ -179,60 +178,59 @@ class ExaminationsController extends Controller
     }
 
     //En rapport avec le calendrier des examen mais espace Professeur
-    public function myExamTimetableTeacher(Request $request)
-    {
-        $getClass = ClassTeacherModel::getMyClassSubjectGroup(Auth::user()->id);
+public function myExamTimetableTeacher(Request $request)
+{
+    $getClass = ClassSubjectTeacherModel::getMyClassSubject(Auth::user()->id)
+        ->groupBy('class_id');
+    $result = array();
 
-        $result = array(); // création du tableau final
+    foreach ($getClass as $class_id => $subjects) {
+        $class = $subjects->first();
+        $examArray = array();
+        $dataC = array();
+        $dataC["class_name"] = $class->class_name;
 
-        foreach ($getClass as $class) {
+        $getExam = ExamScheduleModel::getExam($class->class_id);
 
-            $examArray = array(); // reset pour chaque classe
+        foreach ($getExam as $exam) {
+            $dataE = array();
+            $dataE["exam_name"] = $exam->exam_name;
 
-            $dataC = array();
-            $dataC["class_name"] = $class->class_name;
+    $getExamTimetable = ExamScheduleModel::getTeacherExamTimetable(
+    $exam->exam_id,
+    $class->class_id,
+    Auth::id()
+);
+            $subjectArray = array();
 
-            $getExam = ExamScheduleModel::getExam($class->class_id);
+            foreach ($getExamTimetable as $valueS) {
 
-            foreach ($getExam as $exam) {
+                $dataS = array();
 
-                $dataE = array();
-                $dataE["exam_name"] = $exam->exam_name;
+                $dataS["subject_name"] = $valueS->subject_name;
+                $dataS["exam_date"] = $valueS->exam_date;
+                $dataS["start_time"] = $valueS->start_time;
+                $dataS["end_time"] = $valueS->end_time;
+                $dataS["room_number"] = $valueS->room_number;
+                $dataS["full_marks"] = $valueS->full_marks;
+                $dataS["passing_mark"] = $valueS->passing_mark;
 
-                $getExamTimetable = ExamScheduleModel::getExamTimetable($exam->exam_id, $class->class_id);
-
-                $subjectArray = array();
-
-                foreach ($getExamTimetable as $valueS) {
-
-                    $dataS  = array();
-                    $dataS["subject_name"] = $valueS->subject_name;
-                    $dataS["exam_date"] = $valueS->exam_date;
-                    $dataS["start_time"] = $valueS->start_time;
-                    $dataS["end_time"] = $valueS->end_time;
-                    $dataS["room_number"] = $valueS->room_number;
-                    $dataS["full_marks"] = $valueS->full_marks;
-                    $dataS["passing_mark"] = $valueS->passing_mark;
-
-                    $subjectArray[] = $dataS;
-                }
-
-                $dataE["subject"] = $subjectArray;
-
-                $examArray[] = $dataE;
+                $subjectArray[] = $dataS;
             }
 
-            $dataC["exam"] = $examArray;
-
-            $result[] = $dataC;
+            $dataE["subject"] = $subjectArray;
+            $examArray[] = $dataE;
         }
 
-        $data["getRecord"] = $result;
-
-        $data["header_title"] = "Calendrier des examens";
-
-        return view("teacher.my_exam_timetable", $data);
+        $dataC["exam"] = $examArray;
+        $result[] = $dataC;
     }
+
+    $data["getRecord"] = $result;
+    $data["header_title"] = "Calendrier des examens";
+
+    return view("teacher.my_exam_timetable", $data);
+}
 
     //ExamTimetableStudentForParent la fonction qui permet de recuperer les examens de chaque élève lié a un parent bien précis
     public function ExamTimetableStudentForParent($student_id)
@@ -278,12 +276,7 @@ class ExaminationsController extends Controller
         $data["getStudent"] = collect();
 
         if ($request->filled('exam_id') && $request->filled('class_id')) {
-
-            $data["getSubject"] = ExamScheduleModel::getSubject(
-                $request->exam_id,
-                $request->class_id
-            );
-
+            $data["getSubject"] = ExamScheduleModel::getSubjectAdmin($request->exam_id,$request->class_id);
             $data["getStudent"] = User::getStudentClass($request->class_id);
         }
 
@@ -295,10 +288,7 @@ class ExaminationsController extends Controller
 
     public function submit_marks_register(Request $request)
     {
-
-
         if (!empty($request->mark)) {
-
 
             foreach ($request->mark as $mark) {
 
@@ -451,13 +441,13 @@ class ExaminationsController extends Controller
     public function marks_grade()
     {
         $data["getRecord"] = MarksGradeModel::getRecord();
-        $data["header_title"] = "Liste des observations";
+        $data["header_title"] = "Liste des mentions";
         return view("admin.exmination.marks_grade.list", $data);
     }
     public function marks_grade_add()
     {
 
-        $data["header_title"] = "Ajouter une nouvelle observations";
+        $data["header_title"] = "Ajouter une nouvelle mention";
         return view("admin.exmination.marks_grade.add", $data);
     }
 
@@ -470,17 +460,37 @@ class ExaminationsController extends Controller
         $mark->created_by = Auth::user()->id;
         $mark->save();
 
-        return redirect("admin/exmination/marks_grade")->with("success", "L'observation ($mark->name ) a bien été ajouté ");
+        return redirect("admin/exmination/marks_grade")->with("success", "L'observation ($mark->name) a bien été ajouté ");
     }
-
-
-
+    
+    public function marks_grade_edit($id)
+    {
+        $data["getRecord"] = MarksGradeModel::getSingle($id);
+        $data["header_title"] = "Modifier une mention";
+        return view("admin.exmination.marks_grade.edit", $data);
+        }
+    public function marks_grade_update($id, Request $request)
+        {
+            $mark = MarksGradeModel::getSingle($id);
+            $mark->name = trim($request->name);
+            $mark->percent_from = trim($request->percent_from);
+            $mark->percent_to = trim($request->percent_to);
+            $mark->save();
+            
+            return redirect("admin/exmination/marks_grade")->with("success", "L'observation ($mark->name) a bien été mis à jour ");
+            }
+      public function marks_grade_delete($id)
+            {
+                $mark= MarksGradeModel::getSingle($id);
+                $mark->delete();
+               return redirect("admin/exmination/marks_grade")->with("success", "L'observation ($mark->name) a bien été supprimé ");
+                }
+        
 
     //ESPACE PROFESSEURS
     public function marks_register_teacher(Request $request)
     {
-
-        $data["getClass"] = ClassTeacherModel::getMyClassSubjectGroup(Auth::user()->id);
+        $data["getClass"] = ClassSubjectTeacherModel::getMyClassGroup(Auth::user()->id);
         $data["getExam"] = ExamScheduleModel::getExamTeacher(Auth::user()->id);
 
         $data["getSubject"] = collect();
@@ -488,11 +498,7 @@ class ExaminationsController extends Controller
 
         if ($request->filled('exam_id') && $request->filled('class_id')) {
 
-            $data["getSubject"] = ExamScheduleModel::getSubject(
-                $request->exam_id,
-                $request->class_id
-            );
-
+            $data["getSubject"] = ExamScheduleModel::getSubject(Auth::id(),$request->exam_id,$request->class_id);
             $data["getStudent"] = User::getStudentClass($request->class_id);
         }
 
@@ -510,7 +516,6 @@ class ExaminationsController extends Controller
         foreach ($getExam as  $value) {
             $dataE =  array();
             $data["getExam"] =   $value->exam_name;
-
 
             $getExamSubject = MarksRegisterModel::getExamSubject($value->exam_id, Auth::user()->id);
             $dataSubject = array();
@@ -539,7 +544,7 @@ class ExaminationsController extends Controller
         return view("student.my_exam_result", $data);
     }
 
-    //ESPACE ELEVES
+    //ESPACE PARENTS
 
     public function  ParentmyExamResult($student_id)
     {
@@ -578,4 +583,5 @@ class ExaminationsController extends Controller
         $data["header_title"] = "Resultat des évaluations";
         return view("parent.my_exam_result", $data);
     }
+    
 }

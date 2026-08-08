@@ -25,7 +25,6 @@ class ClassController extends Controller
 
     public function insert(Request $request)
     {
-
         $save = new ClassModel();
         $save->name = $request->name;
         $save->status = $request->status;
@@ -50,7 +49,6 @@ class ClassController extends Controller
 
     public function update($id,  Request $request)
     {
-
         $save = ClassModel::getSingle($id);
         $save->name = $request->name;
         $save->status = $request->status;
@@ -60,7 +58,6 @@ class ClassController extends Controller
 
     public function delete($id)
     {
-
         $save = ClassModel::getSingle($id);
         $save->is_delete = 1;
         $save->save();

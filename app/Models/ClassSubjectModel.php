@@ -25,10 +25,10 @@ class ClassSubjectModel extends Model
             ->join("users", "users.id", "=", "class_subject.created_by")
             ->where("class_subject.is_delete", "=", 0);
 
-
         if (!empty(Request::get("class_name"))) {
             $return = $return->where("class.name", "like", "%" . Request::get("class_name") . "%");
         }
+
         if (!empty(Request::get("subject_name"))) {
             $return = $return->where("subject.name", "like", "%" . Request::get("subject_name") . "%");
         }
@@ -36,7 +36,6 @@ class ClassSubjectModel extends Model
         if (!empty(Request::get("date"))) {
             $return = $return->whereDate("class_subject.created_at", "=", Request::get("date"));
         }
-
 
         $return = $return->orderBy("class_subject.id", "desc")
             ->paginate(10);

@@ -69,9 +69,7 @@ class UserController extends Controller
         $student->last_name = trim($request->last_name);
         $student->gender = trim($request->gender);
 
-        if (!empty($request->date_of_birth)) {
-            $student->date_of_birth = trim($request->date_of_birth);
-        }
+        if (!empty($request->date_of_birth)) {$student->date_of_birth = trim($request->date_of_birth);}
 
         if (!empty($request->file("profile_pic"))) {
 
@@ -123,12 +121,9 @@ class UserController extends Controller
         $parent->address = trim($request->address);
         $parent->email = trim($request->email);
 
-
         $parent->save();
         return redirect()->back()->with("success", "La mise à jour de l'élève ($parent->name $parent->last_name) a bien été éffectué ");
     }
-
-
     public function Update_My_parameter_admin(Request $request)
     {
         $id = Auth::user()->id;
@@ -160,7 +155,6 @@ class UserController extends Controller
         $data["header_title"] = "Changement de mot passe";
         return view("profile.change_password",  $data);
     }
-
     public function update_change_password(Request $request, User $user)
     {
         $user = User::getSingle(Auth::user()->id);

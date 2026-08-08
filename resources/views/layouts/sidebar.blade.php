@@ -70,8 +70,9 @@
                             'class',
                             'subject',
                             'assign_subject',
-                            'assign_class_teacher',
+                            // 'assign_class_teacher',
                             'class_timetable',
+                            'assign_class_subject_teacher',
                         ];
                         $academicActive = in_array(Request::segment(2), $academicPages);
                     @endphp
@@ -106,19 +107,22 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/assign_teacher_subject/list') }}"
-                                        class="nav-link {{ Request::segment(2) == 'assign_teacher_subject' ? 'active-child' : '' }}">
+                                    <a href="{{ url('admin/assign_class_subject_teacher/list') }}"
+                                        class="nav-link {{ Request::segment(2) == 'assign_class_subject_teacher' ? 'active-child' : '' }}">
+
                                         <i class="fas fa-sitemap"></i>
-                                        <p>Professeur + Matière</p>
+
+                                        <p>Classe & Matière & Teacher</p>
+
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="{{ url('admin/assign_class_teacher/list') }}"
                                         class="nav-link {{ Request::segment(2) == 'assign_class_teacher' ? 'active-child' : '' }}">
                                         <i class="fas fa-sitemap"></i>
                                         <p>Classe + Professeur</p>
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item">
                                     <a href="{{ url('admin/class_timetable/list') }}"
                                         class="nav-link {{ Request::segment(2) == 'class_timetable' ? 'active-child' : '' }}">
@@ -177,6 +181,67 @@
                                         <p>Mention</p>
                                     </a>
                                 </li>
+
+                            </ul>
+                        </div>
+
+
+                    </li>
+                    @php
+                        $presencePages = ['student', 'report'];
+
+                        $presenceActive = in_array(Request::segment(3), $presencePages);
+                    @endphp
+
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#presenceMenu"
+                            class="nav-link {{ $presenceActive ? 'active' : '' }}">
+                            <i class="fas fa-clipboard-check"></i>
+                            <p>Presence</p>
+                            <span class="caret"></span>
+                        </a>
+
+                        <div class="collapse {{ $presenceActive ? 'show' : '' }}" id="presenceMenu">
+                            <ul class="nav nav-collapse">
+
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/attendance/student') }}"
+                                        class="nav-link {{ Request::segment(3) == 'student' ? 'active-child' : '' }}">
+                                        <i class="fas fa-book"></i>
+                                        <p>Présence des élèves</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/attendance/report') }}"
+                                        class="nav-link {{ Request::segment(3) == 'report' ? 'active-child' : '' }}">
+                                        <i class="fas fa-book"></i>
+                                        <p>Rapport de présence</p>
+                                    </a>
+                                </li>
+
+                                {{-- <li class="nav-item">
+                                    <a href="{{ url('admin/attendance/exam_schedule') }}"
+                                        class="nav-link {{ Request::segment(3) == 'exam_schedule' ? 'active-child' : '' }}">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <p>Calendrier Examens</p>
+                                    </a>
+                                </li> --}}
+
+                                {{-- <li class="nav-item">
+                                    <a href="{{ url('admin/examination/marks_register') }}"
+                                        class="nav-link {{ Request::segment(3) == 'marks_register' ? 'active-child' : '' }}">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <p>Evaluations & Note</p>
+                                    </a>
+
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/exmination/marks_grade') }}"
+                                        class="nav-link {{ Request::segment(3) == 'marks_grade' ? 'active-child' : '' }}">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <p>Mention</p>
+                                    </a>
+                                </li> --}}
 
                             </ul>
                         </div>

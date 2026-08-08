@@ -44,7 +44,6 @@ class ParentController extends Controller
 
         $parent->occupation = trim($request->occupation);
         $parent->address = trim($request->address);
-
         $parent->status = trim($request->status);
         $parent->email = trim($request->email);
         $parent->password = Hash::make($request->password);
@@ -66,7 +65,6 @@ class ParentController extends Controller
 
     public function update($id, Request $request)
     {
-
         $parent = User::getSingle($id);
 
         $parent->name  = trim($request->name);
@@ -86,10 +84,8 @@ class ParentController extends Controller
 
         $parent->occupation = trim($request->occupation);
         $parent->address = trim($request->address);
-
         $parent->status = trim($request->status);
         $parent->email = trim($request->email);
-
 
         if (!empty($request->password)) {
             $parent->password = Hash::make($request->password);
@@ -138,7 +134,6 @@ class ParentController extends Controller
 
     public function assignStudentParentDelete($student_id,)
     {
-
         $student = User::getSingle($student_id);
         $student->parent_id = null;
         $student->save();

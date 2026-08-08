@@ -197,50 +197,173 @@
     <script src="{{ asset('assets1/fullcalendar/index.global.min.js') }}"></script>
 
 
-
     <script type="text/javascript">
         var events = new Array();
 
 
-        //pour le calandrier des matieres ou des cours
+        // Calendrier professeur : Classe + Matière + Horaire
         @foreach ($getClassTimetable as $value)
 
             events.push({
-                title: "{{ $value->class_name }} - {{ $value->subject_name }}",
-                daysOfWeek: [{{ $value->fullcalendar_day }}],
+
+                title: "{{ addslashes($value->class_name) }} - {{ addslashes($value->subject_name) }}",
+
+                daysOfWeek: [
+                    {{ $value->fullcalendar_day }}
+                ],
+
                 startTime: "{{ $value->start_time }}",
+
                 endTime: "{{ $value->end_time }}",
 
-            })
+                extendedProps: {
+
+                    room_number: "{{ $value->room_number }}",
+
+                }
+
+            });
         @endforeach
+
+
+
+        console.log(events);
 
 
 
         var calendarID = document.getElementById("calendar");
 
+
+
         var calendar = new FullCalendar.Calendar(calendarID, {
+
+
             locale: 'fr',
 
+
+            initialView: "timeGridWeek",
+
+
             initialDate: "<?= date('Y-m-d') ?>",
+
+
             navLinks: true,
+
+
             editable: false,
+
+
             events: events,
 
-            headerToolbar: {
-                left: "prev,next today",
-                center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth"
+
+
+            eventContent: function(arg) {
+
+
+                let salle = "";
+
+
+                if (arg.event.extendedProps.room_number) {
+
+                    salle = "<br>Salle : " +
+                        arg.event.extendedProps.room_number;
+
+                }
+
+
+
+                return {
+
+                    html:
+
+                        "<div>" +
+
+                        "<b>" + arg.event.title + "</b>" +
+
+                        salle +
+
+                        "<br>" +
+
+                        arg.event.start.toLocaleTimeString('fr-FR', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })
+
+                        +
+
+                        " - "
+
+                        +
+
+                        arg.event.end.toLocaleTimeString('fr-FR', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })
+
+                        +
+
+                        "</div>"
+
+                };
+
+
             },
 
+
+
+            slotMinTime: "07:00:00",
+
+
+            slotMaxTime: "18:00:00",
+
+
+
+            height: 650,
+
+
+
+            headerToolbar: {
+
+
+                left: "prev,next today",
+
+
+                center: "title",
+
+
+                right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth"
+
+
+            },
+
+
+
             buttonText: {
+
+
                 today: "Aujourd'hui",
+
+
                 month: "Mois",
+
+
                 week: "Semaine",
+
+
                 day: "Jour",
+
+
                 list: "Liste"
+
+
             }
+
+
         });
 
+
+
+        // AFFICHAGE DU CALENDRIER
         calendar.render();
     </script>
 

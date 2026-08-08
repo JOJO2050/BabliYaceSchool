@@ -88,7 +88,6 @@ class StudentController extends Controller
 
     public function update($id, Request $request)
     {
-
         $student = User::getSingle($id);
         $student->name  = trim($request->name);
         $student->last_name = trim($request->last_name);
@@ -100,9 +99,6 @@ class StudentController extends Controller
         if (!empty($request->date_of_birth)) {
             $student->date_of_birth = trim($request->date_of_birth);
         }
-
-
-
 
         if (!empty($request->file("profile_pic"))) {
 
@@ -123,9 +119,8 @@ class StudentController extends Controller
         $student->religion = trim($request->religion);
         $student->mobile_number = trim($request->mobile_number);
 
-        if (!empty($request->admission_date)) {
-            $student->admission_date = trim($request->admission_date);
-        }
+        if (!empty($request->admission_date)) {$student->admission_date = trim($request->admission_date);}
+        
         $student->blood_group = trim($request->blood_group);
         $student->heigth = trim($request->heigth);
         $student->weigth = trim($request->weigth);
@@ -137,7 +132,6 @@ class StudentController extends Controller
         $student->save();
         return redirect("admin/student/list")->with("success", "La mise à jour de l'élève ($student->name ) a bien été éffectué ");
     }
-
 
     public function delete($id)
     {

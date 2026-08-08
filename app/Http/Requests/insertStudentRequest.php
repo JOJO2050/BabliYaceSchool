@@ -34,11 +34,9 @@ class insertStudentRequest extends FormRequest
         ];
     }
 
-
     public function messages()
     {
         return [
-
             "name.required" => "le nom de est requis",
             "email.required" => "L'email est requis",
             "email.unique" => "L'email est dejà utilisé",

@@ -23,7 +23,6 @@ class SubjectController extends Controller
         return view("admin.subject.add", $data);
     }
 
-
     public function insert(Request $request)
     {
         $save = new SubjectModel();
@@ -50,7 +49,6 @@ class SubjectController extends Controller
 
     public function update($id,  Request $request)
     {
-
         $save =  SubjectModel::getSingle($id);
         $save->name = trim($request->name);
         $save->type = trim($request->type);
@@ -61,7 +59,6 @@ class SubjectController extends Controller
 
     public function delete($id)
     {
-
         $save = SubjectModel::getSingle($id);
         $save->is_delete = 1;
         $save->save();
@@ -72,7 +69,6 @@ class SubjectController extends Controller
 
     public function mySubjectStudent()
     {
-
         $data["getRecord"] = ClassSubjectModel::MySubject(Auth::user()->class_id);;
         $data["header_title"] = "Mes Matières";
         return view("student.my_subject", $data);

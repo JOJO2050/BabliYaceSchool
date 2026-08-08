@@ -1,8 +1,11 @@
 {
-    "name": "laravel/laravel",
+    "name": "BABLI_YACE_SCHOOL",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "PROJET D'ECOLE BABLI_YACE_SCHOOL.",
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.1",
