@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <title>
         {{ !empty($header_title) ? $header_title : '' }} - BabliYaceSchoolDashboard
@@ -14,7 +13,7 @@
 
     <link rel="icon" href="{{ asset('assets1/img/kaiadmin/logo_ecole.jpg') }}" type="image/x-icon" />
 
-    <!-- Fonts and icons -->
+    <!-- Fonts -->
     <script src="{{ asset('assets1/js/plugin/webfont/webfont.min.js') }}"></script>
 
     <script>
@@ -27,32 +26,33 @@
                     "Font Awesome 5 Solid",
                     "Font Awesome 5 Regular",
                     "Font Awesome 5 Brands",
-                    "simple-line-icons",
+                    "simple-line-icons"
                 ],
-                urls: ["{{ asset('assets1/css/fonts.min.css') }}"],
+                urls: ["{{ asset('assets1/css/fonts.min.css') }}"]
             },
             active: function() {
                 sessionStorage.fonts = true;
-            },
+            }
         });
     </script>
 
-    <!-- CSS Files -->
+    <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('assets1/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets1/css/kaiadmin.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets1/css/demo.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('assets1/css/kaiadmin.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('assets1/css/demo.css') }}">
 
 </head>
 
 <body>
-
 
     <div class="wrapper">
 
         <!-- Sidebar -->
         @include('layouts.sidebar')
         <!-- End Sidebar -->
+
 
         <div class="main-panel">
 
@@ -61,10 +61,9 @@
 
                 <div class="main-header-logo">
 
-                    <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
 
-                        <a href="index.html" class="logo">
+                        <a href="#" class="logo">
 
                             <img src="{{ asset('assets1/img/kaiadmin/logo_light.svg') }}" alt="navbar brand"
                                 class="navbar-brand" height="20" />
@@ -88,13 +87,10 @@
                         </button>
 
                     </div>
-                    <!-- End Logo Header -->
 
                 </div>
 
-                <!-- Navbar Header -->
                 @include('layouts.header')
-                <!-- End Navbar -->
 
             </div>
             <!-- End Header -->
@@ -104,14 +100,17 @@
 
                 <div class="page-inner">
 
-                    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+                    <!-- Titre -->
+                    <div
+                        class="d-flex align-items-left align-items-md-center
+                    flex-column flex-md-row pt-2 pb-4">
 
                         <div>
 
                             <h3 class="mt-1 app-page-title d-inline-block px-3 py-1 rounded"
                                 style="background-color: #28a745; color: #fff;">
 
-                                Espace Administrateur
+                                Espace Professeur
 
                             </h3>
 
@@ -131,9 +130,9 @@
                     </div>
 
 
-
-                    <!-- ESPACE DE RECHERCHE -->
-
+                    <!-- ================================================= -->
+                    <!-- RECHERCHE -->
+                    <!-- ================================================= -->
 
                     <div class="card my-4 p-2">
 
@@ -150,12 +149,14 @@
                             <div class="card-body">
 
                                 <form class="settings-form" method="GET"
-                                    action="{{ url('admin/attendance/report') }}">
+                                    action="{{ url('teacher/attendance/report') }}">
 
                                     <div class="row">
 
 
+                                        <!-- ================================================= -->
                                         <!-- CLASSE -->
+                                        <!-- ================================================= -->
 
                                         <div class="col-md-2 mb-3">
 
@@ -163,17 +164,19 @@
                                                 <b>Classe</b>
                                             </label>
 
+
                                             <select name="class_id" class="form-control" id="getClass">
 
                                                 <option value="">
                                                     ~~~ Veuillez choisir une classe ~~~
                                                 </option>
 
-                                                @foreach ($getClass as $class)
-                                                    <option value="{{ $class->id }}"
-                                                        {{ Request::get('class_id') == $class->id ? 'selected' : '' }}>
 
-                                                        {{ $class->name }}
+                                                @foreach ($getClass as $class)
+                                                    <option value="{{ $class->class_id }}"
+                                                        {{ Request::get('class_id') == $class->class_id ? 'selected' : '' }}>
+
+                                                        {{ $class->class_name }}
 
                                                     </option>
                                                 @endforeach
@@ -183,7 +186,9 @@
                                         </div>
 
 
+                                        <!-- ================================================= -->
                                         <!-- MATIERE -->
+                                        <!-- ================================================= -->
 
                                         <div class="col-md-3 mb-3">
 
@@ -191,11 +196,13 @@
                                                 <b>Matière</b>
                                             </label>
 
+
                                             <select name="subject_id" class="form-control" id="getSubject">
 
                                                 <option value="">
-                                                    ~ Sélectionnez une classe pour avoir accès aux matières ~
+                                                    ~ Sélectionnez une classe pour voir vos matières ~
                                                 </option>
+
 
                                                 @if (!empty($getSubject))
 
@@ -215,7 +222,9 @@
                                         </div>
 
 
-                                        <!-- MATRICULE -->
+                                        <!-- ================================================= -->
+                                        <!-- MATRICULE ELEVE -->
+                                        <!-- ================================================= -->
 
                                         <div class="col-md-2 mb-3">
 
@@ -223,14 +232,17 @@
                                                 <b>Matricule de l'élève</b>
                                             </label>
 
+
                                             <input type="text" name="student_id" class="form-control"
-                                                placeholder="Entrez le matricule"
+                                                placeholder="Ex : 15 ou #MAJ#15"
                                                 value="{{ Request::get('student_id') }}">
 
                                         </div>
 
 
+                                        <!-- ================================================= -->
                                         <!-- TYPE DE POINTAGE -->
+                                        <!-- ================================================= -->
 
                                         <div class="col-md-2 mb-3">
 
@@ -238,24 +250,23 @@
                                                 <b>Type de pointage</b>
                                             </label>
 
+
                                             <select name="attendance_type" class="form-control">
 
                                                 <option value="">
-                                                    ~~~ Choisir le type de pointage ~~~
+                                                    ~~~ Choisir le type ~~~
                                                 </option>
+
 
                                                 <option value="1"
                                                     {{ Request::get('attendance_type') == 1 ? 'selected' : '' }}>
-
                                                     Présent
-
                                                 </option>
+
 
                                                 <option value="2"
                                                     {{ Request::get('attendance_type') == 2 ? 'selected' : '' }}>
-
                                                     Absent
-
                                                 </option>
 
                                             </select>
@@ -263,7 +274,9 @@
                                         </div>
 
 
+                                        <!-- ================================================= -->
                                         <!-- DATE -->
+                                        <!-- ================================================= -->
 
                                         <div class="col-md-2 mb-3">
 
@@ -271,13 +284,16 @@
                                                 <b>Date de pointage</b>
                                             </label>
 
+
                                             <input type="date" class="form-control" name="attendance_date"
-                                                value="{{ Request::get('attendance_date') }}" id="getAttendanceDate">
+                                                value="{{ Request::get('attendance_date') }}">
 
                                         </div>
 
 
+                                        <!-- ================================================= -->
                                         <!-- BOUTONS -->
+                                        <!-- ================================================= -->
 
                                         <div class="col-md-1 mb-3">
 
@@ -289,7 +305,7 @@
                                             </button>
 
 
-                                            <a href="{{ url('admin/attendance/report') }}" class="btn btn-danger"
+                                            <a href="{{ url('teacher/attendance/report') }}" class="btn btn-danger"
                                                 style="margin-top:30px" title="Effacer les filtres">
 
                                                 <i class="fas fa-trash"></i>
@@ -297,6 +313,7 @@
                                             </a>
 
                                         </div>
+
 
                                     </div>
 
@@ -309,9 +326,9 @@
                     </div>
 
 
-
+                    <!-- ================================================= -->
                     <!-- LISTE DES POINTAGES -->
-
+                    <!-- ================================================= -->
 
                     <div class="app-card app-card-settings shadow-sm p-4">
 
@@ -344,15 +361,15 @@
                                             </th>
 
                                             <th>
-                                                Classe de l'élève
+                                                Classe
                                             </th>
 
                                             <th>
-                                                Matière de l'élève
+                                                Matière
                                             </th>
 
                                             <th>
-                                                Pointage de l'élève
+                                                Pointage
                                             </th>
 
                                             <th>
@@ -377,6 +394,8 @@
                                         @forelse ($getRecord as $value)
                                             <tr>
 
+                                                <!-- Matricule -->
+
                                                 <td>
 
                                                     #MAJ#{{ $value->student_id }}
@@ -384,12 +403,18 @@
                                                 </td>
 
 
+                                                <!-- Nom -->
+
                                                 <td>
 
                                                     {{ $value->student_name }}
+
                                                     {{ $value->student_last_name }}
 
                                                 </td>
+
+
+                                                <!-- Classe -->
 
                                                 <td>
 
@@ -397,11 +422,17 @@
 
                                                 </td>
 
+
+                                                <!-- Matière -->
+
                                                 <td>
 
                                                     {{ $value->subject_name }}
 
                                                 </td>
+
+
+                                                <!-- Pointage -->
 
                                                 <td>
 
@@ -422,6 +453,8 @@
                                                 </td>
 
 
+                                                <!-- Date pointage -->
+
                                                 <td>
 
                                                     <b>Le</b>
@@ -431,6 +464,7 @@
                                                 </td>
 
 
+                                                <!-- Créé par -->
 
                                                 <td>
 
@@ -439,9 +473,12 @@
                                                 </td>
 
 
+                                                <!-- Date création -->
+
                                                 <td>
 
                                                     Le
+
                                                     {{ date('d-m-Y', strtotime($value->created_at)) }}
 
                                                     à
@@ -452,9 +489,8 @@
 
                                             </tr>
 
+
                                         @empty
-
-
 
                                             <tr>
 
@@ -485,9 +521,9 @@
                             </div>
 
 
-
+                            <!-- ================================================= -->
                             <!-- PAGINATION -->
-
+                            <!-- ================================================= -->
 
                             @if ($getRecord instanceof \Illuminate\Pagination\LengthAwarePaginator)
                                 <div class="d-flex justify-content-end mt-3">
@@ -501,12 +537,14 @@
 
                     </div>
 
+
                 </div>
 
             </div>
 
 
             <!-- Footer -->
+
             @include('layouts.footer')
 
         </div>
@@ -515,7 +553,7 @@
 
 
     <!-- ===================================================== -->
-    <!-- CORE JS -->
+    <!-- JAVASCRIPT -->
     <!-- ===================================================== -->
 
     <script src="{{ asset('assets1/js/core/jquery-3.7.1.min.js') }}"></script>
@@ -524,97 +562,31 @@
 
     <script src="{{ asset('assets1/js/core/bootstrap.min.js') }}"></script>
 
-
-    <!-- jQuery Scrollbar -->
     <script src="{{ asset('assets1/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
 
-
-    <!-- Chart JS -->
     <script src="{{ asset('assets1/js/plugin/chart.js/chart.min.js') }}"></script>
 
-
-    <!-- jQuery Sparkline -->
     <script src="{{ asset('assets1/js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}"></script>
 
-
-    <!-- Chart Circle -->
     <script src="{{ asset('assets1/js/plugin/chart-circle/circles.min.js') }}"></script>
 
-
-    <!-- Datatables -->
     <script src="{{ asset('assets1/js/plugin/datatables/datatables.min.js') }}"></script>
 
-
-    <!-- Bootstrap Notify -->
     <script src="{{ asset('assets1/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 
-
-    <!-- jQuery Vector Maps -->
     <script src="{{ asset('assets1/js/plugin/jsvectormap/jsvectormap.min.js') }}"></script>
 
     <script src="{{ asset('assets1/js/plugin/jsvectormap/world.js') }}"></script>
 
-
-    <!-- Sweet Alert -->
     <script src="{{ asset('assets1/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
 
-
-    <!-- Kaiadmin JS -->
     <script src="{{ asset('assets1/js/kaiadmin.min.js') }}"></script>
 
-
-    <!-- Setting Demo -->
     <script src="{{ asset('assets1/js/setting-demo.js') }}"></script>
 
 
-    <!-- Sparkline -->
-    <script src="{{ asset('assets1/js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}"></script>
-
-
     <!-- ===================================================== -->
-    <!-- SPARKLINE -->
-    <!-- ===================================================== -->
-
-    <script>
-        $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#177dff",
-            fillColor: "rgba(23, 125, 255, 0.14)",
-
-        });
-
-
-        $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#f3545d",
-            fillColor: "rgba(243, 84, 93, .14)",
-
-        });
-
-
-        $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#ffa534",
-            fillColor: "rgba(255, 165, 52, .14)",
-
-        });
-    </script>
-
-
-    <!-- ===================================================== -->
-    <!-- CHARGEMENT DES MATIERES -->
+    <!-- CHARGEMENT DES MATIERES DU PROFESSEUR -->
     <!-- ===================================================== -->
 
     <script>
@@ -623,9 +595,30 @@
             var class_id = $(this).val();
 
 
+            // Réinitialiser les matières
+
+            $('#getSubject').html(
+                '<option value="">Chargement des matières...</option>'
+            );
+
+
+            // Aucune classe sélectionnée
+
+            if (class_id === '') {
+
+                $('#getSubject').html(
+                    '<option value="">~~~ Veuillez choisir une classe ~~~</option>'
+                );
+
+                return;
+            }
+
+
+            // AJAX
+
             $.ajax({
 
-                url: "{{ url('admin/attendance/get-subject') }}",
+                url: "{{ url('teacher/attendance/get-subject') }}",
 
                 type: "GET",
 
@@ -641,12 +634,14 @@
                     $('#getSubject').html('');
 
 
+                    // Matières trouvées
+
                     if (data.length > 0) {
 
                         $('#getSubject').append(
 
                             '<option value="">' +
-                            '~~~~~~~~~~~~~~ Veuillez choisir une matière ~~~~~~~~~~~~' +
+                            '~~~~~~~~ Veuillez choisir une matière ~~~~~~~~' +
                             '</option>'
 
                         );
@@ -668,12 +663,16 @@
 
                         });
 
-                    } else {
+                    }
+
+
+                    // Aucune matière
+                    else {
 
                         $('#getSubject').html(
 
                             '<option value="">' +
-                            '~~~~~~~~~~~ Aucune matière pour cette classe ~~~~~~~~~~~' +
+                            '~~~~~~~~~ Aucune matière pour cette classe ~~~~~~~~~' +
                             '</option>'
 
                         );
@@ -683,10 +682,9 @@
                 },
 
 
-                error: function(xhr, status, error) {
+                error: function(xhr) {
 
                     console.log(xhr.responseText);
-
 
                     $('#getSubject').html(
 

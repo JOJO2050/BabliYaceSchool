@@ -121,15 +121,15 @@
                                                         <th>Numero d'admission</th>
                                                         <th>Numero maricule</th>
                                                         <th>Classe</th>
-                                                        <th>Genre</th>
+                                                        {{-- <th>Genre</th>
                                                         <th>Date de naissance</th>
-                                                        <th>Contact</th>
+                                                        <th>Contact</th> --}}
                                                         <th>Date d'Inscription</th>
-                                                        <th>Groupe Sanguin</th>
+                                                        {{-- <th>Groupe Sanguin</th>
                                                         <th>Taille</th>
-                                                        <th>Poids</th>
-                                                        <th>Date création</th>
-                                                        <th>Date modification</th>
+                                                        <th>Poids</th> --}}
+                                                        {{-- <th>Date création</th>
+                                                        <th>Date modification</th> --}}
                                                         <th class="text-center">Action</th>
 
                                                     </tr>
@@ -150,31 +150,36 @@
                                                             <td>{{ $value->admission_number }}</td>
                                                             <td>{{ $value->roll_number }}</td>
                                                             <td>{{ $value->class_name }}</td>
-                                                            <td>{{ $value->gender }}</td>
-                                                            <td>
+                                                            {{-- <td>{{ $value->gender }}</td> --}}
+                                                            {{-- <td>
                                                                 @if (!empty($value->date_of_birth))
                                                                     {{ date('d-m-y', strtotime($value->date_of_birth)) }}
                                                                 @endif
-                                                            </td>
-                                                            <td>{{ $value->mobile_number }}</td>
+                                                            </td> --}}
+                                                            {{-- <td>{{ $value->mobile_number }}</td> --}}
                                                             <td>
                                                                 @if (!empty($value->admission_date))
                                                                     {{ date('d-m-y', strtotime($value->admission_date)) }}
                                                                 @endif
                                                             </td>
-                                                            <td>{{ $value->blood_group }}</td>
-                                                            <td>{{ $value->heigth }}</td>
-                                                            <td>{{ $value->weigth }}</td>
-                                                            <td>{{ date('d-m-Y H:i A', strtotime($value->created_at)) }}
+                                                            {{-- <td>{{ $value->blood_group }}</td> --}}
+                                                            {{-- <td>{{ $value->heigth }}</td>
+                                                            <td>{{ $value->weigth }}</td> --}}
+                                                            {{-- <td>{{ date('d-m-Y H:i A', strtotime($value->created_at)) }}
                                                             </td>
                                                             <td>{{ date('d-m-Y H:i A', strtotime($value->updated_at)) }}
-                                                            </td>
+                                                            </td> --}}
                                                             <td style="width:500px;">
                                                                 <div class="d-flex justify-content-center gap-2">
 
                                                                     <a href="{{ url('/parent/my_student/subject/' . $value->id) }}"
                                                                         class="btn btn-sm btn-warning">
                                                                         <b>Matières</b>
+                                                                    </a>
+
+                                                                    <a href="{{ url('/parent/my_student/my_attendance/' . $value->id) }}"
+                                                                        class="btn btn-sm btn-secondary">
+                                                                        <b>Pointage</b>
                                                                     </a>
 
                                                                     <a href="{{ url('/parent/my_student/exam_timetable/' . $value->id) }}"

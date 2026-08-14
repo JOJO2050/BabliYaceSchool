@@ -9,6 +9,7 @@ use App\Http\Controllers\ClassSubjectController;
 use App\Http\Controllers\ClassSubjectTeacherController;
 use App\Http\Controllers\ClassTeacherController;
 use App\Http\Controllers\ClassTimetableController;
+use App\Http\Controllers\CommunicateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExaminationsController;
 use App\Http\Controllers\ParentController;
@@ -171,13 +172,16 @@ Route::group(["middleware" => "admin"], function () {
 
     //Gestion des pésences des élèves debut
     Route::get('admin/attendance/get-subject', [AttendanceController::class, "getSubject"]);
-
     Route::get('admin/attendance/student', [AttendanceController::class, "AttendanceStudent"]);
     Route::post('admin/attendance/student/save', [AttendanceController::class, "AttendanceStudentSubmit"]);
-
     Route::get('admin/attendance/report', [AttendanceController::class, "AttendanceReport"]);
-
     //Gestion des pésences des élèves fin
+
+
+    //Gestion des envoies de mail 
+    Route::get('admin/communicate/notice_board/list', [CommunicateController::class, "NoticeBoard"]);
+    Route::get('admin/communicate/notice_board/add', [CommunicateController::class, "AddNoticeBoard"]);
+    Route::post('admin/communicate/notice_board/add', [CommunicateController::class, "InsertNoticeBoard"]);
 });
 
 
@@ -209,6 +213,16 @@ Route::group(["middleware" => "teacher"], function () {
     Route::get('teacher/marks_register', [ExaminationsController::class, "marks_register_teacher"]);
     Route::post('teacher/submit_marks_register', [ExaminationsController::class, "submit_marks_register"]);
     Route::post('teacher/single_submit_marks_register', [ExaminationsController::class, "single_submit_marks_register"]);
+
+    //Gestion des pésences des élèves debut
+    Route::get('teacher/attendance/get-subject', [AttendanceController::class, "getSubject"]);
+
+    Route::get('teacher/attendance/student', [AttendanceController::class, "AttendanceStudentTeacher"]);
+    Route::post('teacher/attendance/student/save', [AttendanceController::class, "AttendanceStudentSubmitTeacher"]);
+
+    Route::get('teacher/attendance/report', [AttendanceController::class, "AttendanceTeacherReport"]);
+
+    //Gestion des pésences des élèves fin
 });
 
 
@@ -229,7 +243,11 @@ Route::group(["middleware" => "student"], function () {
     Route::get("student/my_calendar", [CalendarController::class, "myCalendar"]);
     //Resultats des evaluations
     Route::get("student/my_exam_result", [ExaminationsController::class, "myExamResult"]);
+    //Liste de présence
+    Route::get("student/my_attendance", [AttendanceController::class, "myStudentAttendance"]);
 });
+
+
 
 // les routes definis pour les parents
 Route::group(["middleware" => "parent"], function () {
@@ -248,6 +266,9 @@ Route::group(["middleware" => "parent"], function () {
 
     //Calendrier
     Route::get("parent/my_student/calendar/{student_id}", [CalendarController::class, "myCalendarParent"]);
+
+    //Liste de présence
+    Route::get("parent/my_student/my_attendance/{student_id}", [AttendanceController::class, "myParentAttendance"]);
 
     // Edition personnel du profil PARENT
     Route::get("parent/parameter", [UserController::class, "My_parameter"]);

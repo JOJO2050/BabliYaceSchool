@@ -13,7 +13,65 @@ class StudentAttendanceModel extends Model
 
     static public function CheckAlreadyAttendance($class_id, $subject_id, $attendance_date, $student_id)
     {
-        return StudentAttendanceModel::where("class_id", "=", $class_id)->where("subject_id", "=", $subject_id)->where("attendance_date", "=", $attendance_date)->where("student_id", "=", $student_id)->first();
+        return self::where("class_id", "=", $class_id)
+            ->where("subject_id", "=", $subject_id)
+            ->where("attendance_date", "=", $attendance_date)
+            ->where("student_id", "=", $student_id)
+            ->first();
+    }
+
+    public static function getStudentSubjects($student_id)
+    {
+        return self::select(
+            "student_attendance.subject_id",
+            "subject.name as subject_name"
+        )
+            ->join("subject", "subject.id", "=", "student_attendance.subject_id")
+            ->where("student_attendance.student_id", "=", $student_id)
+            ->distinct()
+            ->orderBy("subject.name", "asc")
+            ->get();
+    }
+
+    public static function getStudentRecord($student_id, $request)
+    {
+        $return = self::select(
+            "student_attendance.*",
+            "class.name as class_name",
+            "subject.name as subject_name"
+        )
+            ->join("class", "class.id", "=", "student_attendance.class_id")
+            ->join("subject", "subject.id", "=", "student_attendance.subject_id")
+            ->where("student_attendance.student_id", "=", $student_id);
+
+        if ($request->filled("subject_id")) {
+            $return->where(
+                "student_attendance.subject_id",
+                "=",
+                $request->subject_id
+            );
+        }
+
+        if ($request->filled("attendance_type")) {
+            $return->where(
+                "student_attendance.attendance_type",
+                "=",
+                $request->attendance_type
+            );
+        }
+
+        if ($request->filled("attendance_date")) {
+            $return->whereDate(
+                "student_attendance.attendance_date",
+                "=",
+                $request->attendance_date
+            );
+        }
+
+        return $return
+            ->orderBy("student_attendance.attendance_date", "desc")
+            ->paginate(10)
+            ->appends($request->except("page"));
     }
 
     public static function getRecord($request)
@@ -31,26 +89,106 @@ class StudentAttendanceModel extends Model
             ->join("users as createdby", "createdby.id", "=", "student_attendance.created_by")
             ->join("subject", "subject.id", "=", "student_attendance.subject_id");
 
-        if ($request->filled('class_id')) {
-            $return->where('student_attendance.class_id', $request->class_id);
-        }
-        if ($request->filled('student_id')) {
-            $return->where('student_attendance.student_id', $request->student_id);
-        }
-
-        if ($request->filled('subject_id')) {
-            $return->where('student_attendance.subject_id', $request->subject_id);
+        if ($request->filled("class_id")) {
+            $return->where(
+                "student_attendance.class_id",
+                "=",
+                $request->class_id
+            );
         }
 
-        if ($request->filled('attendance_type')) {
-            $return->where('student_attendance.attendance_type', $request->attendance_type);
+        if ($request->filled("student_id")) {
+            $return->where(
+                "student_attendance.student_id",
+                "=",
+                $request->student_id
+            );
         }
 
-        if ($request->filled('attendance_date')) {
-            $return->whereDate('student_attendance.attendance_date', $request->attendance_date);
+        if ($request->filled("subject_id")) {
+            $return->where(
+                "student_attendance.subject_id",
+                "=",
+                $request->subject_id
+            );
         }
 
-        return $return->orderBy('student_attendance.id', 'desc')
+        if ($request->filled("attendance_type")) {
+            $return->where(
+                "student_attendance.attendance_type",
+                "=",
+                $request->attendance_type
+            );
+        }
+
+        if ($request->filled("attendance_date")) {
+            $return->whereDate(
+                "student_attendance.attendance_date",
+                "=",
+                $request->attendance_date
+            );
+        }
+
+        return $return
+            ->orderBy("student_attendance.id", "desc")
             ->paginate(10);
+    }
+
+    public static function getParentStudentRecord($student_id, $request)
+    {
+        $return = self::select(
+            "student_attendance.*",
+            "class.name as class_name",
+            "subject.name as subject_name"
+        )
+            ->join(
+                "class",
+                "class.id",
+                "=",
+                "student_attendance.class_id"
+            )
+            ->join(
+                "subject",
+                "subject.id",
+                "=",
+                "student_attendance.subject_id"
+            )
+            ->where(
+                "student_attendance.student_id",
+                "=",
+                $student_id
+            );
+
+        if ($request->filled("subject_id")) {
+            $return->where(
+                "student_attendance.subject_id",
+                "=",
+                $request->subject_id
+            );
+        }
+
+        if ($request->filled("attendance_type")) {
+            $return->where(
+                "student_attendance.attendance_type",
+                "=",
+                $request->attendance_type
+            );
+        }
+
+        if ($request->filled("attendance_date")) {
+            $return->whereDate(
+                "student_attendance.attendance_date",
+                "=",
+                $request->attendance_date
+            );
+        }
+
+        return $return
+            ->orderBy(
+                "student_attendance.attendance_date",
+                "desc"
+            )
+            ->paginate(10)
+            ->appends($request->except("page"));
     }
 }

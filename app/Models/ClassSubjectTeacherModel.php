@@ -87,27 +87,29 @@ class ClassSubjectTeacherModel extends Model
     Matières professeur
     */
 
-    public static function getSubjectsTeacher($teacher_id)
-    {
+    // public static function getSubjectsTeacher($teacher_id)
+    // {
 
-        return self::select(
-            'assign_class_subject_teacher.*',
-            'class.name as class_name',
-            'class.id as class_id',
-            'subject.name as subject_name',
-            'subject.id as subject_id',
-            'subject.type as subject_type'
-        )
-            ->join('class', 'class.id', '=', 'assign_class_subject_teacher.class_id')
-            ->join('subject', 'subject.id', '=', 'assign_class_subject_teacher.subject_id')
-            ->where('assign_class_subject_teacher.teacher_id', $teacher_id)
-            ->where('assign_class_subject_teacher.status', 0)
-            ->where('assign_class_subject_teacher.is_delete', 0)
-            ->orderBy('class.name')
-            ->orderBy('subject.name')
+    //     return self::select(
+    //         'assign_class_subject_teacher.*',
+    //         'class.name as class_name',
+    //         'class.id as class_id',
+    //         'subject.name as subject_name',
+    //         'subject.id as subject_id',
+    //         'subject.type as subject_type'
+    //     )
+    //         ->join('class', 'class.id', '=', 'assign_class_subject_teacher.class_id')
+    //         ->join('subject', 'subject.id', '=', 'assign_class_subject_teacher.subject_id')
+    //         ->where('assign_class_subject_teacher.teacher_id', $teacher_id)
+    //         ->where('assign_class_subject_teacher.status', 0)
+    //         ->where('assign_class_subject_teacher.is_delete', 0)
+    //         ->orderBy('class.name')
+    //         ->orderBy('subject.name')
 
-            ->get();
-    }
+    //         ->get();
+    // }
+
+
 
     /*
     Calendrier professeur
@@ -135,6 +137,85 @@ class ClassSubjectTeacherModel extends Model
             ->get();
     }
 
+
+    public static function getSubjectsTeacher($teacher_id)
+    {
+        return self::select(
+            'assign_class_subject_teacher.*',
+            'class.name as class_name',
+            'class.id as class_id',
+            'subject.name as subject_name',
+            'subject.id as subject_id',
+            'subject.type as subject_type'
+        )
+            ->join(
+                'class',
+                'class.id',
+                '=',
+                'assign_class_subject_teacher.class_id'
+            )
+            ->join(
+                'subject',
+                'subject.id',
+                '=',
+                'assign_class_subject_teacher.subject_id'
+            )
+            ->where(
+                'assign_class_subject_teacher.teacher_id',
+                $teacher_id
+            )
+            ->where(
+                'assign_class_subject_teacher.status',
+                0
+            )
+            ->where(
+                'assign_class_subject_teacher.is_delete',
+                0
+            )
+            ->orderBy('class.name')
+            ->orderBy('subject.name')
+            ->get();
+    }
+
+    public static function getSubjectsByTeacherAndClass($teacher_id, $class_id)
+    {
+        return self::select(
+            'assign_class_subject_teacher.subject_id',
+            'subject.name as subject_name'
+        )
+            ->join(
+                'subject',
+                'subject.id',
+                '=',
+                'assign_class_subject_teacher.subject_id'
+            )
+            ->where(
+                'assign_class_subject_teacher.teacher_id',
+                $teacher_id
+            )
+            ->where(
+                'assign_class_subject_teacher.class_id',
+                $class_id
+            )
+            ->where(
+                'assign_class_subject_teacher.status',
+                0
+            )
+            ->where(
+                'assign_class_subject_teacher.is_delete',
+                0
+            )
+            ->where(
+                'subject.status',
+                0
+            )
+            ->where(
+                'subject.is_delete',
+                0
+            )
+            ->orderBy('subject.name')
+            ->get();
+    }
     /*
     Emploi du temps matière
     */

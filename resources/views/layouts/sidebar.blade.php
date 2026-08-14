@@ -116,13 +116,7 @@
 
                                     </a>
                                 </li>
-                                {{-- <li class="nav-item">
-                                    <a href="{{ url('admin/assign_class_teacher/list') }}"
-                                        class="nav-link {{ Request::segment(2) == 'assign_class_teacher' ? 'active-child' : '' }}">
-                                        <i class="fas fa-sitemap"></i>
-                                        <p>Classe + Professeur</p>
-                                    </a>
-                                </li> --}}
+
                                 <li class="nav-item">
                                     <a href="{{ url('admin/class_timetable/list') }}"
                                         class="nav-link {{ Request::segment(2) == 'class_timetable' ? 'active-child' : '' }}">
@@ -220,32 +214,38 @@
                                     </a>
                                 </li>
 
-                                {{-- <li class="nav-item">
-                                    <a href="{{ url('admin/attendance/exam_schedule') }}"
-                                        class="nav-link {{ Request::segment(3) == 'exam_schedule' ? 'active-child' : '' }}">
-                                        <i class="fas fa-calendar-alt"></i>
-                                        <p>Calendrier Examens</p>
-                                    </a>
-                                </li> --}}
-
-                                {{-- <li class="nav-item">
-                                    <a href="{{ url('admin/examination/marks_register') }}"
-                                        class="nav-link {{ Request::segment(3) == 'marks_register' ? 'active-child' : '' }}">
-                                        <i class="fas fa-calendar-alt"></i>
-                                        <p>Evaluations & Note</p>
-                                    </a>
-
-                                <li class="nav-item">
-                                    <a href="{{ url('admin/exmination/marks_grade') }}"
-                                        class="nav-link {{ Request::segment(3) == 'marks_grade' ? 'active-child' : '' }}">
-                                        <i class="fas fa-calendar-alt"></i>
-                                        <p>Mention</p>
-                                    </a>
-                                </li> --}}
-
                             </ul>
                         </div>
 
+                    </li>
+
+                    @php
+                        $communicate = ['notice_board'];
+
+                        $communicateActive = in_array(Request::segment(3), $communicate);
+                    @endphp
+
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#communicateMenu"
+                            class="nav-link {{ $communicateActive ? 'active' : '' }}">
+                            <i class="fas fa-envelope"></i>
+                            <p>Communicate</p>
+                            <span class="caret"></span>
+                        </a>
+
+                        <div class="collapse {{ $communicateActive ? 'show' : '' }}" id="communicateMenu">
+                            <ul class="nav nav-collapse">
+
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/communicate/notice_board') }}"
+                                        class="nav-link {{ Request::segment(3) == 'notice_board' ? 'active-child' : '' }}">
+                                        <i class="fas fa-envelope"></i>
+                                        <p>Information</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
                     </li>
 
 
@@ -303,6 +303,45 @@
                             <p>Evaluations & Note </p>
                         </a>
                     </li>
+
+                    @php
+                        $presencePages = ['student', 'report'];
+
+                        $presenceActive = in_array(Request::segment(3), $presencePages);
+                    @endphp
+
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#presenceMenu"
+                            class="nav-link {{ $presenceActive ? 'active' : '' }}">
+                            <i class="fas fa-clipboard-check"></i>
+                            <p>Presence</p>
+                            <span class="caret"></span>
+                        </a>
+
+                        <div class="collapse {{ $presenceActive ? 'show' : '' }}" id="presenceMenu">
+                            <ul class="nav nav-collapse">
+
+                                <li class="nav-item">
+                                    <a href="{{ url('teacher/attendance/student') }}"
+                                        class="nav-link {{ Request::segment(3) == 'student' ? 'active-child' : '' }}">
+                                        <i class="fas fa-book"></i>
+                                        <p>Présence des élèves</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ url('teacher/attendance/report') }}"
+                                        class="nav-link {{ Request::segment(3) == 'report' ? 'active-child' : '' }}">
+                                        <i class="fas fa-book"></i>
+                                        <p>Rapport de présence</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                    </li>
+
 
                     <li class="nav-item">
                         <a href="{{ url('teacher/my_calendar') }}"
@@ -372,6 +411,13 @@
                             class="nav-link {{ Request::segment(2) == 'my_exam_result' ? 'active' : '' }}">
                             <i class="fas fa-graduation-cap"></i>
                             <p>Resultat des évaluations </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('student/my_attendance') }}"
+                            class="nav-link {{ Request::segment(2) == 'my_attendance' ? 'active' : '' }}">
+                            <i class="fas fa-clipboard-check"></i>
+                            <p>Liste de présence </p>
                         </a>
                     </li>
 
