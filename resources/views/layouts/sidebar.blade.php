@@ -237,7 +237,7 @@
                             <ul class="nav nav-collapse">
 
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/communicate/notice_board') }}"
+                                    <a href="{{ url('admin/communicate/notice_board/list') }}"
                                         class="nav-link {{ Request::segment(3) == 'notice_board' ? 'active-child' : '' }}">
                                         <i class="fas fa-envelope"></i>
                                         <p>Information</p>
@@ -337,6 +337,8 @@
                                     </a>
                                 </li>
 
+
+
                             </ul>
                         </div>
 
@@ -348,6 +350,14 @@
                             class="nav-link {{ Request::segment(2) == 'my_calendar' ? 'active' : '' }}">
                             <i class="fas fa-calendar-alt"></i>
                             <p>Mon Calendrier global</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('teacher/my_notice_board') }}"
+                            class="nav-link {{ Request::segment(2) == 'notice_board' ? 'active-child' : '' }}">
+                            <i class="fas fa-envelope"></i>
+                            <p>Information</p>
                         </a>
                     </li>
 
@@ -421,6 +431,14 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="{{ url('student/my_notice_board') }}"
+                            class="nav-link {{ Request::segment(2) == 'notice_board' ? 'active-child' : '' }}">
+                            <i class="fas fa-envelope"></i>
+                            <p>Information</p>
+                        </a>
+                    </li>
+
 
                     <li class="nav-item">
                         <a href="{{ url('student/parameter') }}"
@@ -450,6 +468,22 @@
                             class="nav-link {{ Request::segment(2) == 'my_student' ? 'active' : '' }}">
                             <i class="fas fa-child"></i>
                             <p>Mes Enfants</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('parent/my_student_notice_board') }}"
+                            class="nav-link {{ Request::segment(2) == 'my_student_notice_board' ? 'active' : '' }}">
+                            <i class="fas fa-envelope"></i>
+                            <p>Information élève </p>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a href="{{ url('parent/my_notice_board') }}"
+                            class="nav-link {{ Request::segment(2) == 'notice_board' ? 'active-child' : '' }}">
+                            <i class="fas fa-envelope"></i>
+                            <p>Information</p>
                         </a>
                     </li>
 

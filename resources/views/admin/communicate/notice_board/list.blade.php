@@ -41,6 +41,22 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
 
     <link rel="stylesheet" href="{{ asset('assets1/css/demo.css') }}">
+
+    <style>
+        .btn-action {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 
 <body>
@@ -95,7 +111,7 @@
                     </div>
                     @include('_message')
 
-                    {{-- <div class="card my-4 p-2">
+                    <div class="card my-4 p-2">
                         <div class="card-header" style="font-size: 20px;"><b>Espace de recherche...</b>
                         </div>
                         <div class="app-card app-card-settings shadow-sm p-4"
@@ -105,38 +121,85 @@
                                 <form class="settings-form" method="GET" action="">
                                     {{ csrf_field() }}
 
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
-                                            <label for="setting-input-1" class="form-label"><b>Nom Complet</b></label>
+                                    <div class="row align-items-end">
+                                        <div class="col-md-2 mb-3">
+                                            <label for="setting-input-1" class="form-label">
+                                                <b>Titre de l'information</b>
+                                            </label>
                                             <input type="text" class="form-control" id="setting-input-1"
-                                                name="name" value="{{ Request::get('name') }}"
-                                                placeholder="Entrez votre Nom complet">
+                                                name="title" value="{{ Request::get('title') }}"
+                                                placeholder="Entrez le titre de l'information">
                                         </div>
 
-                                        <div class="col-md-3 mb-3">
-                                            <label for="setting-input-3" class="form-label"><b>Email</b></label>
-                                            <input type="email" class="form-control" id="setting-input-3"
-                                                name="email" value="{{ Request::get('email') }}"
-                                                placeholder="Entrez l'email">
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label for="setting-input-3" class="form-label"><b>Veillez choisir une
-                                                    Date</b></label>
-                                            <input type="date" class="form-control" id="setting-input-3"
-                                                name="date" value="{{ Request::get('date') }}">
-                                        </div>
-                                        <div class="col-md-2 mb-3"><button type="submit" class="btn btn-primary"
-                                                style="margin-top: 30px"><b>Rechercher</b></button>
-                                            <a href="{{ url('admin/admin/list') }}" class="btn btn-danger"
-                                                style="margin-top: 30px">Effacer</a>
+                                        <div class="col-md-2 mb-3">
+                                            <label for="notice_date_to" class="form-label">
+                                                <b>Date de publication à partir du ?</b>
+                                            </label>
+                                            <input type="date" class="form-control" id="notice_date_to"
+                                                name="notice_date_to" value="{{ Request::get('notice_date_to') }}">
                                         </div>
 
+                                        <div class="col-md-2 mb-3">
+                                            <label for="notice_date_from" class="form-label">
+                                                <b>Date de publication jusqu'au ?</b>
+                                            </label>
+                                            <input type="date" class="form-control" id="notice_date_from"
+                                                name="notice_date_from" value="{{ Request::get('notice_date_from') }}">
+                                        </div>
+
+                                        <div class="col-md-2 mb-3">
+                                            <label for="publish_date_to" class="form-label">
+                                                <b>Date de création</b>
+                                            </label>
+                                            <input type="date" class="form-control" id="publish_date_to"
+                                                name="publish_date_to" value="{{ Request::get('publish_date_to') }}">
+                                        </div>
+
+                                        <div class="col-md-2 mb-3">
+                                            <label for="publish_date_from" class="form-label">
+                                                <b>Date de modification</b>
+                                            </label>
+                                            <input type="date" class="form-control" id="publish_date_from"
+                                                name="publish_date_from"
+                                                value="{{ Request::get('publish_date_from') }}">
+                                        </div>
+
+                                        <div class="col-md-2 mb-3">
+                                            <label for="recipient" class="form-label">
+                                                <b>Destinataire</b>
+                                            </label>
+                                            <select class="form-control" name="message_to">
+                                                <option value="">Selectionnez</option>
+                                                <option {{ Request::get('message_to') == 2 ? 'selected' : '' }}
+                                                    value="2">Professeur</option>
+                                                <option {{ Request::get('message_to') == 3 ? 'selected' : '' }}
+                                                    value="3">Elève</option>
+                                                <option {{ Request::get('message_to') == 4 ? 'selected' : '' }}
+                                                    value="4">Parent</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button type="submit" class="btn btn-primary px-4"
+                                                    title="Rechercher">
+                                                    <i class="fas fa-search me-1"></i>
+
+                                                </button>
+
+                                                <a href="{{ url('admin/communicate/notice_board/list') }}"
+                                                    class="btn btn-danger px-4" title="Effacer les filtres">
+                                                    <i class="fas fa-trash me-1"></i>
+
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </form>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
 
 
                     <div class="card my-4 p-4">
@@ -147,7 +210,7 @@
 
                             <span class="app-page-title px-3 py-1 rounded"
                                 style="background-color: #28a745; color: #fff; font-size:14px;">
-                                {{-- <b> Total Administrateur : {{ $getRecord->total() }}</b> --}}
+                                <b> Total Information : {{ $getRecord->total() }}</b>
                             </span>
 
                         </div>
@@ -164,9 +227,9 @@
                                                 <tr>
                                                     <th>N°##</th>
                                                     <th>Titre de l'information</th>
-                                                    <th>Date de l'information</th>
-                                                    <th>date de publication</th>
-                                                    <th class="text-center">Message informelle</th>
+                                                    <th>Date de publication à partir du ?</th>
+                                                    <th>Date de publication jusqu'au ?</th>
+                                                    {{-- <th class="text-center">Message informelle</th> --}}
                                                     <th>Destinataire</th>
                                                     <th>Auteur de création</th>
                                                     <th>Date de création</th>
@@ -182,13 +245,13 @@
                                                         <td>{{ $value->title }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($value->notice_date)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($value->publish_date)) }}</td>
-                                                        <td>{{ $value->message }}</td>
+                                                        {{-- <td>{{ $value->message }}</td> --}}
                                                         <td>
                                                             @foreach ($value->getMessage as $message)
                                                                 @if ($message->message_to == 2)
                                                                     <div><b>**</b> Professeur</div>
                                                                 @elseif ($message->message_to == 3)
-                                                                    <div><b>**</b> Élève</div>
+                                                                    <div><b>**</b> Elève</div>
                                                                 @elseif ($message->message_to == 4)
                                                                     <div><b>**</b> Parent</div>
                                                                 @endif
@@ -204,15 +267,17 @@
 
                                                         <td class="text-center">
                                                             <div class="d-flex justify-content-center gap-2">
-                                                                <a href="{{ url('admin/communicate/edit/' . $value->id) }}"
-                                                                    class="btn btn-sm btn-primary">
-                                                                    Modifier
-                                                                </a>
-                                                                <a href="{{ url('admin/communicate/delete/' . $value->id) }}"
-                                                                    class="btn btn-sm btn-danger">
-                                                                    Supprimer
+                                                                <a href="{{ url('admin/communicate/notice_board/edit/' . $value->id) }}"
+                                                                    class="btn btn-sm btn-primary btn-action"
+                                                                    title="Modifier">
+                                                                    <i class="fas fa-edit"></i>
                                                                 </a>
 
+                                                                <a href="{{ url('admin/communicate/notice_board/delete/' . $value->id) }}"
+                                                                    class="btn btn-sm btn-danger btn-action"
+                                                                    title="Supprimer">
+                                                                    <i class="fas fa-trash-alt"></i>
+                                                                </a>
                                                             </div>
                                                         </td>
                                                 @endforeach

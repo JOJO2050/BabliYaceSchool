@@ -41,6 +41,7 @@ Route::get("reset/{token}", [AuthController::class, "reset"]);
 Route::post("reset/{token}", [AuthController::class, "Postreset"]);
 
 
+
 //Changement de mot de passe (change_password) URL
 Route::group(["middleware" => "auth"], function () {
 
@@ -178,10 +179,13 @@ Route::group(["middleware" => "admin"], function () {
     //Gestion des pésences des élèves fin
 
 
-    //Gestion des envoies de mail 
+    //Gestion des envoies d'information NOTICE_BOARD 
     Route::get('admin/communicate/notice_board/list', [CommunicateController::class, "NoticeBoard"]);
     Route::get('admin/communicate/notice_board/add', [CommunicateController::class, "AddNoticeBoard"]);
     Route::post('admin/communicate/notice_board/add', [CommunicateController::class, "InsertNoticeBoard"]);
+    Route::get('admin/communicate/notice_board/edit/{id}', [CommunicateController::class, "NoticeBoardEdit"]);
+    Route::post('admin/communicate/notice_board/edit/{id}', [CommunicateController::class, "NoticeBoardUpdate"]);
+    Route::get('admin/communicate/notice_board/delete/{id}', [CommunicateController::class, "NoticeBoardDelete"]);
 });
 
 
@@ -216,13 +220,13 @@ Route::group(["middleware" => "teacher"], function () {
 
     //Gestion des pésences des élèves debut
     Route::get('teacher/attendance/get-subject', [AttendanceController::class, "getSubject"]);
-
     Route::get('teacher/attendance/student', [AttendanceController::class, "AttendanceStudentTeacher"]);
     Route::post('teacher/attendance/student/save', [AttendanceController::class, "AttendanceStudentSubmitTeacher"]);
-
     Route::get('teacher/attendance/report', [AttendanceController::class, "AttendanceTeacherReport"]);
-
     //Gestion des pésences des élèves fin
+
+    //Liste des informations
+    Route::get("teacher/my_notice_board", [CommunicateController::class, "myNoticeBoardTeacher"]);
 });
 
 
@@ -245,6 +249,8 @@ Route::group(["middleware" => "student"], function () {
     Route::get("student/my_exam_result", [ExaminationsController::class, "myExamResult"]);
     //Liste de présence
     Route::get("student/my_attendance", [AttendanceController::class, "myStudentAttendance"]);
+    //Liste des informations
+    Route::get("student/my_notice_board", [CommunicateController::class, "myNoticeBoardStudent"]);
 });
 
 
@@ -273,4 +279,9 @@ Route::group(["middleware" => "parent"], function () {
     // Edition personnel du profil PARENT
     Route::get("parent/parameter", [UserController::class, "My_parameter"]);
     Route::post("parent/parameter", [UserController::class, "Update_My_parameter_parent"]);
+
+    //Liste des informations lié aux élèves
+    Route::get("parent/my_student_notice_board", [CommunicateController::class, "myNoticeBoardParentStudent"]);
+    //Liste des informations
+    Route::get("parent/my_notice_board", [CommunicateController::class, "myNoticeBoardParent"]);
 });

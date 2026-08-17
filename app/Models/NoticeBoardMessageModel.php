@@ -11,11 +11,8 @@ class NoticeBoardMessageModel extends Model
 
     protected $table = "notice_board_message";
 
-    // static public function getRecord()
-    // {
-    //     return self::select("notice_board.*", "users.name as created_by_name")
-    //         ->join("users", "users.id", "=", "notice_board.created_by")
-    //         ->orderBy("notice_board.id", "desc")
-    //         ->paginate(20);
-    // }
+    static public function DeleteRecord($id)
+    {
+        NoticeBoardMessageModel::where("notice_board_id", "=", $id)->delete();
+    }
 }
