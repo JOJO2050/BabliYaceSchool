@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Request;
 use Laravel\Sanctum\HasApiTokens;
 
+use function Laravel\Prompts\search;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -246,6 +248,16 @@ class User extends Authenticatable
             return $return;
         }
     }
+
+
+    static public function getUser($user_type)
+    {
+        return self::select("users.*")
+            ->where("user_type", "=", $user_type)
+            ->where("is_delete", "=", 0)
+            ->get();
+    }
+
 
     static public function getStudentClass($class_id)     // permet de gerer le STUDENT
     {

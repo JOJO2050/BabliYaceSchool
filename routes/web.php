@@ -12,6 +12,7 @@ use App\Http\Controllers\ClassTimetableController;
 use App\Http\Controllers\CommunicateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExaminationsController;
+use App\Http\Controllers\HomeworkController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
@@ -21,12 +22,13 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Routes Web
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| Voici où vous pouvez enregistrer les routes Web de votre application. 
+| Ces routes sont chargées par le RouteServiceProvider et seront toutes
+| attribuées au groupe de middlewares « web » Créez quelque chose de génial !
+|
 |
 */
 
@@ -186,6 +188,20 @@ Route::group(["middleware" => "admin"], function () {
     Route::get('admin/communicate/notice_board/edit/{id}', [CommunicateController::class, "NoticeBoardEdit"]);
     Route::post('admin/communicate/notice_board/edit/{id}', [CommunicateController::class, "NoticeBoardUpdate"]);
     Route::get('admin/communicate/notice_board/delete/{id}', [CommunicateController::class, "NoticeBoardDelete"]);
+
+    // Gestion des envoies d'Email 
+    Route::get('admin/communicate/send_email', [CommunicateController::class, "SendEmail"]);
+    Route::post('admin/communicate/send_email', [CommunicateController::class, "SendEmailUser"]);
+    Route::get('admin/communicate/search_user', [CommunicateController::class, "SearchUser"]);
+
+    // Gestion des devoir
+    Route::get('admin/homework/homework_list', [HomeworkController::class, 'HomeworkList']);
+    Route::get('admin/homework/homework_add', [HomeworkController::class, 'HomeworkAdd']);
+    Route::post('admin/homework/homework_add', [HomeworkController::class, 'HomeworkStore']);
+    Route::get('admin/homework/homework_edit/{id}', [HomeworkController::class, 'HomeworkEdit']);
+    Route::post('admin/homework/homework_update/{id}', [HomeworkController::class, 'HomeworkUpdate']);
+    Route::get('admin/homework/homework_delete/{id}', [HomeworkController::class, 'HomeworkDelete']);
+    Route::post('admin/ajax_get_subject/add', [HomeworkController::class, 'AjaxGetSubjectAdd']);
 });
 
 
@@ -227,6 +243,15 @@ Route::group(["middleware" => "teacher"], function () {
 
     //Liste des informations
     Route::get("teacher/my_notice_board", [CommunicateController::class, "myNoticeBoardTeacher"]);
+
+    // Gestion des devoir
+    Route::get('teacher/homework/homework_list', [HomeworkController::class, 'HomeworkTeacherList']);
+    Route::get('teacher/homework/homework_add', [HomeworkController::class, 'HomeworkTeacherAdd']);
+    Route::post('teacher/homework/homework_add', [HomeworkController::class, 'HomeworkTeacherStore']);
+    Route::get('teacher/homework/homework_edit/{id}', [HomeworkController::class, 'HomeworkTeacherEdit']);
+    Route::post('teacher/homework/homework_update/{id}', [HomeworkController::class, 'HomeworkTeacherUpdate']);
+    Route::get('teacher/homework/homework_delete/{id}', [HomeworkController::class, 'HomeworkTeacherDelete']);
+    Route::post('teacher/ajax_get_subject/add', [HomeworkController::class, 'AjaxGetSubjectTeacherAdd']);
 });
 
 
@@ -251,6 +276,12 @@ Route::group(["middleware" => "student"], function () {
     Route::get("student/my_attendance", [AttendanceController::class, "myStudentAttendance"]);
     //Liste des informations
     Route::get("student/my_notice_board", [CommunicateController::class, "myNoticeBoardStudent"]);
+
+    // Gestion des devoir
+    Route::get('student/homework/homework_list', [HomeworkController::class, 'HomeworkStudentList']);
+    Route::post('student/ajax_get_subject/add', [HomeworkController::class, 'AjaxGetSubjectStudentAdd']);
+    Route::get("student/my_homework/submit_homework/{id}", [HomeworkController::class, 'SubmitHomework']);
+    Route::post("student/my_homework/submit_homework/{id}", [HomeworkController::class, 'SubmitHomeworkStore']);
 });
 
 

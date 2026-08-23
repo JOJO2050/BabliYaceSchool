@@ -16,18 +16,20 @@ class AuthController extends Controller
 {
     public function login()
     {
-        // dd(Hash::make("azerty"));
-        return view("auth.login");
-
-
-        if (!empty(Auth::check())) {
+        if (Auth::check()) {
             if (Auth::user()->user_type == 1) {
                 return redirect("admin/dashboard");
-            } elseif (Auth::user()->user_type == 2) {
+            }
+
+            if (Auth::user()->user_type == 2) {
                 return redirect("teacher/dashboard");
-            } elseif (Auth::user()->user_type == 3) {
+            }
+
+            if (Auth::user()->user_type == 3) {
                 return redirect("student/dashboard");
-            } elseif (Auth::user()->user_type == 4) {
+            }
+
+            if (Auth::user()->user_type == 4) {
                 return redirect("parent/dashboard");
             }
         }

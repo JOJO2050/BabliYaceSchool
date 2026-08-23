@@ -220,7 +220,7 @@
                     </li>
 
                     @php
-                        $communicate = ['notice_board'];
+                        $communicate = ['notice_board', 'send_email'];
 
                         $communicateActive = in_array(Request::segment(3), $communicate);
                     @endphp
@@ -229,7 +229,7 @@
                         <a data-bs-toggle="collapse" href="#communicateMenu"
                             class="nav-link {{ $communicateActive ? 'active' : '' }}">
                             <i class="fas fa-envelope"></i>
-                            <p>Communicate</p>
+                            <p>Communication</p>
                             <span class="caret"></span>
                         </a>
 
@@ -243,6 +243,49 @@
                                         <p>Information</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/communicate/send_email') }}"
+                                        class="nav-link {{ Request::segment(3) == 'send_email' ? 'active-child' : '' }}">
+                                        <i class="fas fa-envelope"></i>
+                                        <p>Email</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                    @php
+                        $homework = ['homework_list'];
+
+                        $homeworkActive = in_array(Request::segment(3), $homework);
+                    @endphp
+
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#homeworkMenu"
+                            class="nav-link {{ $homeworkActive ? 'active' : '' }}">
+                            <i class="fas fa-graduation-cap"></i>
+                            <p>Espace Devoir</p>
+                            <span class="caret"></span>
+                        </a>
+
+                        <div class="collapse {{ $homeworkActive ? 'show' : '' }}" id="homeworkMenu">
+                            <ul class="nav nav-collapse">
+
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/homework/homework_list') }}"
+                                        class="nav-link {{ Request::segment(3) == 'homework_list' ? 'active-child' : '' }}">
+                                        <i class="fas fa-book"></i>
+                                        <p>Devoir</p>
+                                    </a>
+                                </li>
+                                {{-- <li class="nav-item">
+                                    <a href="{{ url('admin/homework/homework_report') }}"
+                                        class="nav-link {{ Request::segment(3) == 'homework_report' ? 'active-child' : '' }}">
+                                        <i class="fas fa-chart-bar"></i>
+                                        <p>Rapport de devoir</p>
+                                    </a>
+                                </li> --}}
 
                             </ul>
                         </div>
@@ -257,6 +300,7 @@
                         </a>
                     </li>
                 @endif
+
 
                 {{-- ESPACE PROFESSEUR --}}
                 @if (Auth::user()->user_type == 2)
@@ -337,13 +381,44 @@
                                     </a>
                                 </li>
 
-
-
                             </ul>
                         </div>
-
                     </li>
 
+                    @php
+                        $homework = ['homework_list'];
+
+                        $homeworkActive = in_array(Request::segment(3), $homework);
+                    @endphp
+
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#homeworkMenu"
+                            class="nav-link {{ $homeworkActive ? 'active' : '' }}">
+                            <i class="fas fa-graduation-cap"></i>
+                            <p>Espace Devoir</p>
+                            <span class="caret"></span>
+                        </a>
+
+                        <div class="collapse {{ $homeworkActive ? 'show' : '' }}" id="homeworkMenu">
+                            <ul class="nav nav-collapse">
+
+                                <li class="nav-item">
+                                    <a href="{{ url('teacher/homework/homework_list') }}"
+                                        class="nav-link {{ Request::segment(3) == 'homework_list' ? 'active-child' : '' }}">
+                                        <i class="fas fa-book"></i>
+                                        <p>Devoir</p>
+                                    </a>
+                                </li>
+                                {{-- <li class="nav-item">
+                                    <a href="{{ url('teacher/homework/homework_report') }}"
+                                        class="nav-link {{ Request::segment(3) == 'homework_report' ? 'active-child' : '' }}">
+                                        <i class="fas fa-chart-bar"></i>
+                                        <p>Rapport de devoir</p>
+                                    </a>
+                                </li> --}}
+                            </ul>
+                        </div>
+                    </li>
 
                     <li class="nav-item">
                         <a href="{{ url('teacher/my_calendar') }}"
@@ -438,6 +513,13 @@
                             <p>Information</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ url('student/homework/homework_list') }}"
+                            class="nav-link {{ Request::segment(2) == 'homework_list' ? 'active-child' : '' }}">
+                            <i class="fas fa-book"></i>
+                            <p>Mes devoir</p>
+                        </a>
+                    </li>
 
 
                     <li class="nav-item">
@@ -448,6 +530,7 @@
                         </a>
                     </li>
                 @endif
+
 
                 {{--  ESPACE PARENT --}}
                 @if (Auth::user()->user_type == 4)

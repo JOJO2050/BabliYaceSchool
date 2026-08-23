@@ -1,20 +1,117 @@
 <?php
 
+
+
 namespace App\Http\Controllers;
 
+use App\Mail\SenEmailUserMail;
 use App\Models\NoticeBoardMessageModel;
 use App\Models\NoticeBoardModel;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CommunicateController extends Controller
 {
+    //Espace Administrateur
+
+
+    //Envoie de mail debut
+
+    public function SendEmail()
+    {
+        $data["header_title"] = "Envoyer un email";
+        return view('admin.communicate.send_email', $data);
+    }
+    public function SearchUser(Request $request)
+    {
+        $search = trim($request->input('search', ''));
+        $userType = $request->input('user_type');
+
+        if ($search === '' || empty($userType)) {
+            return response()->json([]);
+        }
+
+        $userType = (int) $userType;
+
+        if (!in_array($userType, [2, 3, 4])) {
+            return response()->json([]);
+        }
+
+        $users = User::query()
+            ->where('user_type', $userType)
+            ->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('email', 'LIKE', '%' . $search . '%');
+            })
+            ->whereNotNull('email')
+            ->where('email', '!=', '')
+            ->orderBy('name', 'asc')
+            ->limit(10)
+            ->get();
+
+        $results = $users->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'text' => $user->name . (!empty($user->email) ? ' - ' . $user->email : ''),
+            ];
+        });
+
+        return response()->json($results);
+    }
+    public function SendEmailUser(Request $request)
+    {
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required',
+            'user_id' => 'required|exists:users,id',
+            'message_to' => 'required|in:2,3,4',
+        ]);
+
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Utilisateur introuvable.');
+        }
+
+        if (empty($user->email)) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Cet utilisateur ne possède pas d’adresse email.');
+        }
+
+        if ((int) $user->user_type !== (int) $request->message_to) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Le type de l’utilisateur sélectionné ne correspond pas au destinataire choisi.');
+        }
+
+        $user->send_message = $request->message;
+        $user->send_subject = $request->subject;
+
+        Mail::to($user->email)->send(
+            new SenEmailUserMail($user)
+        );
+
+        return redirect()->back()->with(
+            'success',
+            'Votre email a bien été envoyé à ' . $user->name . '.'
+        );
+    }
+
     public function NoticeBoard(Request $request)
     {
         $data['getRecord'] = NoticeBoardModel::getRecord();
         $data['header_title'] = "Liste des informations";
         return view('admin.communicate.notice_board.list', $data);
     }
+
+    //Envoie de mail fin
+
+    //Envoie d'information général debut
 
     public function AddNoticeBoard(Request $request)
     {
@@ -87,7 +184,11 @@ class CommunicateController extends Controller
         return redirect()->back()->with("success", "cette information a bien été supprimé");
     }
 
-    //Espace Elève
+    //Envoie d'information général fin
+
+
+    //Espace Elève gestion d'information générale debut
+
     public function myNoticeBoardStudent(Request $request)
     {
         $message_to = Auth::user()->user_type;

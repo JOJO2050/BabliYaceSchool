@@ -313,4 +313,14 @@ class ClassSubjectTeacherModel extends Model
             ->groupBy('assign_class_subject_teacher.class_id', 'class.name')
             ->get();
     }
+
+    public static function checkTeacherAssignment($teacher_id, $class_id, $subject_id)
+    {
+        return self::where('teacher_id', $teacher_id)
+            ->where('class_id', $class_id)
+            ->where('subject_id', $subject_id)
+            ->where('status', 0)
+            ->where('is_delete', 0)
+            ->exists();
+    }
 }
