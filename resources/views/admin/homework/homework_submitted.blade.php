@@ -102,124 +102,79 @@
                                 Espace Administrateur</h3>
                         </div>
 
-                        <div class="ms-md-auto py-2 py-md-0">
-                            {{-- <a href="#" class="btn btn-label-primary btn-round me-2">Liste Année</a> --}}
-                            <a href="{{ url('admin/homework/homework_add') }}" class="btn btn-primary btn-round">Ajouter
-                                un devoir</a>
+                        <div class="ms-md-auto py-2py-md-0">
+                            <a href="{{ url('admin/homework/homework_list') }}" class="btn btn-primary btn-round">Retour
+                                sur la
+                                liste
+                                des devoirs</a>
                         </div>
                     </div>
                     @include('_message')
 
                     <div class="card my-4 p-2">
+
+
                         <div class="card-header" style="font-size:20px;">
                             <b>Espace de recherche</b>
                         </div>
+
                         <div class="card my-4 p-2">
-
-
                             <div class="app-card app-card-settings shadow-sm p-4" style="background-color:#d8e0de;">
                                 <div class="card-body">
-
-                                    <form method="GET" action="{{ url('admin/homework/homework_list') }}">
-
+                                    <form method="GET"
+                                        action="{{ url('admin/homework/homework_submitted/' . $homework_id) }}">
                                         <div class="row align-items-end">
-
                                             <div class="col-md-2 mb-3">
-                                                <label for="getClass" class="form-label">
-                                                    <b>Classe</b>
-                                                </label>
-
-                                                <select name="class_id" id="getClass" class="form-select">
-                                                    <option value="">
-                                                        Sélectionnez une classe
-                                                    </option>
-
-                                                    @foreach ($getClass as $class)
-                                                        <option value="{{ $class->id }}"
-                                                            {{ Request::get('class_id') == $class->id ? 'selected' : '' }}>
-                                                            {{ $class->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
+                                                <label for="student_id" class="form-label"><b>ID Élève</b></label>
+                                                <input type="text" name="student_id" id="student_id"
+                                                    class="form-control" value="{{ Request::get('student_id') }}"
+                                                    placeholder="ID élève">
                                             </div>
 
-                                            <div class="col-md-2 mb-3">
-                                                <label for="getSubject" class="form-label">
-                                                    <b>Matière</b>
-                                                </label>
-
-                                                <select name="subject_id" id="getSubject" class="form-select">
-                                                    <option value="">
-                                                        Sélectionnez une matière
-                                                    </option>
-                                                </select>
+                                            <div class="col-md-3 mb-3">
+                                                <label for="last_name" class="form-label"><b>Nom</b></label>
+                                                <input type="text" name="last_name" id="last_name"
+                                                    class="form-control" value="{{ Request::get('last_name') }}"
+                                                    placeholder="Nom">
                                             </div>
-
-                                            <div class="col-md-2 mb-3">
-                                                <label for="created_by" class="form-label">
-                                                    <b>Administrateur</b>
-                                                </label>
-
-                                                <select name="created_by" id="created_by" class="form-select">
-
-                                                    <option value="">
-                                                        Choisir un administrateur
-                                                    </option>
-
-                                                    @foreach ($getAdmin as $admin)
-                                                        <option value="{{ $admin->id }}"
-                                                            {{ Request::get('created_by') == $admin->id ? 'selected' : '' }}>
-                                                            {{ $admin->name }}
-                                                        </option>
-                                                    @endforeach
-
-                                                </select>
+                                            <div class="col-md-3 mb-3">
+                                                <label for="first_name" class="form-label"><b>Prénom</b></label>
+                                                <input type="text" name="first_name" id="first_name"
+                                                    class="form-control" value="{{ Request::get('first_name') }}"
+                                                    placeholder="Prénom">
                                             </div>
-
                                             <div class="col-md-2 mb-3">
-                                                <label for="homework_date" class="form-label">
-                                                    <b>Date d'émission</b>
-                                                </label>
-
+                                                <label for="homework_date" class="form-label"><b>Date
+                                                        d'émission</b></label>
                                                 <input type="date" name="homework_date" id="homework_date"
                                                     class="form-control" value="{{ Request::get('homework_date') }}">
                                             </div>
-
                                             <div class="col-md-2 mb-3">
-                                                <label for="submission_date" class="form-label">
-                                                    <b>Date de rendu</b>
-                                                </label>
-
+                                                <label for="submission_date" class="form-label"><b>Date de
+                                                        rendu</b></label>
                                                 <input type="date" name="submission_date" id="submission_date"
                                                     class="form-control" value="{{ Request::get('submission_date') }}">
                                             </div>
-
-                                            <div class="col-md-2 mb-3">
-                                                <div class="text-end">
-
-
-                                                    <div class="d-flex justify-content-end gap-2">
-                                                        <button type="submit" class="btn btn-primary btn-action"
-                                                            title="Rechercher">
-                                                            <i class="fas fa-search"></i>
-                                                        </button>
-
-                                                        <a href="{{ url('admin/homework/homework_list') }}"
-                                                            class="btn btn-danger btn-action" title="Réinitialiser">
-                                                            <i class="fas fa-times"></i>
-                                                        </a>
-                                                    </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    <button type="submit" class="btn btn-primary btn-action"
+                                                        title="Rechercher">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                    <a href="{{ url('admin/homework/homework_submitted/' . $homework_id) }}"
+                                                        class="btn btn-danger btn-action" title="Réinitialiser">
+                                                        <i class="fas fa-times"></i>
+                                                    </a>
                                                 </div>
                                             </div>
-
                                         </div>
-
                                     </form>
-
                                 </div>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
 
@@ -232,7 +187,7 @@
 
                         <span class="app-page-title px-3 py-1 rounded"
                             style="background-color: #28a745; color: #fff; font-size:14px;">
-                            <b> Total liste devoir : {{ $getRecord->total() }}</b>
+                            <b> Total devoir rendu : {{ $getRecord->total() }}</b>
                         </span>
 
                     </div>
@@ -249,77 +204,52 @@
 
                                             <thead class="table-success">
                                                 <tr>
-                                                    <th>N°</th>
+                                                    <th>N°#MAJ#</th>
+                                                    <th>Nom et prénom</th>
                                                     <th>Classe</th>
                                                     <th>Matière</th>
-                                                    <th>Date d'émission du devoir</th>
-                                                    <th>Date de rendu du devoir</th>
                                                     <th>Fichier PDF du devoir</th>
                                                     <th>Description</th>
-                                                    <th>Créé par</th>
-                                                    <th>Date de création</th>
-                                                    {{-- <th>Date de modification</th> --}}
-                                                    <th class="text-center">Action</th>
+                                                    <th>Date de soumission</th>
                                                 </tr>
                                             </thead>
 
                                             <tbody>
                                                 @forelse ($getRecord as $value)
                                                     <tr>
-                                                        <td>{{ $value->id }}</td>
+                                                        <td>#MAJ#{{ $value->student_id }}</td>
+                                                        <td>{{ $value->first_name }} {{ $value->last_name }}</td>
                                                         <td>{{ $value->class_name }}</td>
                                                         <td>{{ $value->subject_name }}</td>
-                                                        <td>{{ date('d-m-Y', strtotime($value->homework_date)) }}
-                                                        </td>
-                                                        <td>{{ date('d-m-Y', strtotime($value->submission_date)) }}
-                                                        </td>
-                                                        <td>
-                                                            @if (!empty($value->getDocument()))
-                                                                <a href="{{ $value->getDocument() }}"
-                                                                    class="btn btn-primary" download>
-                                                                    <i class="fas fa-file-pdf me-1"></i>Télécharger
-                                                                </a>
-                                                            @else
-                                                                <span class="text-muted">Aucun fichier</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>{!! $value->description !!}</td>
-                                                        <td>{{ $value->created_by_name }}</td>
-                                                        <td>{{ date('d-m-Y H:i', strtotime($value->created_at)) }}
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <div class="d-flex justify-content-center gap-2">
-                                                                <a href="{{ url('admin/homework/homework_edit/' . $value->id) }}"
-                                                                    class="btn btn-sm btn-primary btn-action"
-                                                                    title="Modifier">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </a>
-                                                                <a href="{{ url('admin/homework/homework_delete/' . $value->id) }}"
-                                                                    class="btn btn-sm btn-danger btn-action"
-                                                                    title="Supprimer">
-                                                                    <i class="fas fa-trash-alt"></i>
-                                                                </a>
-                                                                <a href="{{ url('admin/homework/homework_submitted/' . $value->id) }}"
-                                                                    class="btn btn-sm btn-secondary btn-action"
-                                                                    title="Devoirs rendus">
-                                                                    <i class="fas fa-inbox"></i>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="10" class="text-center py-4">
-                                                            <div class="text-muted">
-                                                                <i class="fas fa-search fa-2x mb-2"></i>
-                                                                <h5 class="mb-1">Aucun résultat trouvé</h5>
-                                                                <p class="mb-0">Aucun devoir ne correspond à
-                                                                    votre requête.</p>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                        <td ">
+                                                                         @if (!empty($value->getDocument()))
+                                                            <a href="{{ $value->getDocument() }}"
+                                                                class="btn btn-success" download>
+                                                                <i class="fas fa-file-pdf me-1"></i>Télécharger
+                                                            </a>
+                                                        @else
+                                                            <span class="text-muted">Aucun fichier</span>
+                                                @endif
+                                                </td>
+
+                                                <td>{!! $value->description !!}</td>
+                                                <td>{{ date('d-m-Y', strtotime($value->getHomework->submission_date)) }}
+                                                </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="7" class="text-center py-4">
+                                                        <div class="text-muted">
+                                                            <i class="fas fa-search fa-2x mb-2"></i>
+                                                            <h5 class="mb-1">Aucun devoir rendu</h5>
+                                                            <p class="mb-0">Aucun élève n'a encore envoyé ce
+                                                                devoir.</p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                                 @endforelse
                                             </tbody>
+
 
                                         </table>
                                     </div>

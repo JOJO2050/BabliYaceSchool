@@ -6,6 +6,7 @@ use App\Models\ClassModel;
 use App\Models\ClassSubjectModel;
 use App\Models\ClassSubjectTeacherModel;
 use App\Models\homeworkModel;
+use App\Models\HomeworkSubmitModel;
 use App\Models\SubjectModel;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,6 +15,9 @@ use Illuminate\Support\Str;
 
 class HomeworkController extends Controller
 {
+
+    //ESPACE ADMIN
+
     public function HomeworkList(Request $request)
     {
         $data["getClass"] = ClassModel::getClass();
@@ -129,6 +133,27 @@ class HomeworkController extends Controller
         $homework->save();
 
         return redirect()->back()->with("success", "Le Devoir a bien été supprimé ");
+    }
+
+    public function HomeworkAdminSubmitted($homework_id)
+    {
+        $data["getClass"] = ClassModel::getClass();
+        $data["getAdmin"] = User::where('user_type', 1)
+            ->where('is_delete', 0)
+            ->orderBy('name', 'asc')
+            ->get();
+
+        $homework = homeworkModel::getSingle($homework_id);
+
+        if (!empty($homework)) {
+            $data["homework_id"] = $homework_id;
+            $data["getRecord"] = homeworkSubmitModel::getRecord($homework_id);
+            $data["header_title"] = "Espace de devoir rendu";
+
+            return view('admin/homework/homework_submitted', $data);
+        } else {
+            abort(404);
+        }
     }
 
 
@@ -287,15 +312,34 @@ class HomeworkController extends Controller
             ->with('success', 'Votre devoir a bien été supprimé');
     }
 
+    public function HomeworkTeacherSubmitted($homework_id)
+    {
+        $data["getClass"] = ClassModel::getClass();
+        $homework = homeworkModel::getSingle($homework_id);
+
+        if (!empty($homework)) {
+            $data["homework_id"] = $homework_id;
+            $data["getRecord"] = homeworkSubmitModel::getTeacherRecord($homework_id);
+            $data["header_title"] = "Espace de devoir rendu";
+
+            return view('teacher/homework/homework_submitted', $data);
+        } else {
+            abort(404);
+        }
+    }
+
+
     //ESPACE ELEVE
 
 
     public function HomeworkStudentList()
     {
+
         $class_id = Auth::user()->class_id;
-        $getRecord = HomeworkModel::getStudentRecord($class_id);
+        $student_id = Auth::user()->id;
+        $getRecord = HomeworkModel::getStudentRecord($class_id, $student_id);
         $data['getRecord'] = $getRecord;
-        $data['header_title'] = 'Espace de devoir';
+        $data['header_title'] = 'Espace de devoir reçu';
         return view('student.homework.homework_list', $data);
     }
 
@@ -307,9 +351,37 @@ class HomeworkController extends Controller
         return view('student.homework.homework_submit', $data);
     }
 
-    public function SubmitHomeworkStore($id, Request $request)
+    public function SubmitHomeworkStore($homework_id, Request $request)
     {
-        dd($request->all());
+        $homework = new HomeworkSubmitModel();
+
+        $homework->homework_id = $homework_id;
+        $homework->student_id = Auth::user()->id;
+        $homework->description = trim($request->description);
+
+        if ($request->hasFile('document_file')) {
+            $file = $request->file('document_file');
+            $ext = $file->getClientOriginalExtension();
+            $filename = strtolower(date("Ymdhis") . Str::random(20) . "." . $ext);
+
+            $file->move("upload/homework/", $filename);
+
+            $homework->document_file = $filename;
+        }
+
+        $homework->save();
+
+        return redirect("student/homework/homework_list")
+            ->with("success", "Votre devoir a bien été soumis.");
+    }
+
+    public function HomeworkStudentSubmit(Request $request)
+    {
+        $student_id = Auth::user()->id;
+        $getRecord = HomeworkSubmitModel::getStudentRecord($student_id);
+        $data['getRecord'] = $getRecord;
+        $data['header_title'] = 'Espace de devoir envoyé';
+        return view('student.homework.homework_student_submit', $data);
     }
 
     public function AjaxGetSubjectStudentAdd(Request $request)

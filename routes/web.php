@@ -201,6 +201,7 @@ Route::group(["middleware" => "admin"], function () {
     Route::get('admin/homework/homework_edit/{id}', [HomeworkController::class, 'HomeworkEdit']);
     Route::post('admin/homework/homework_update/{id}', [HomeworkController::class, 'HomeworkUpdate']);
     Route::get('admin/homework/homework_delete/{id}', [HomeworkController::class, 'HomeworkDelete']);
+    Route::get('admin/homework/homework_submitted/{id}', [HomeworkController::class, 'HomeworkAdminSubmitted']);
     Route::post('admin/ajax_get_subject/add', [HomeworkController::class, 'AjaxGetSubjectAdd']);
 });
 
@@ -251,6 +252,7 @@ Route::group(["middleware" => "teacher"], function () {
     Route::get('teacher/homework/homework_edit/{id}', [HomeworkController::class, 'HomeworkTeacherEdit']);
     Route::post('teacher/homework/homework_update/{id}', [HomeworkController::class, 'HomeworkTeacherUpdate']);
     Route::get('teacher/homework/homework_delete/{id}', [HomeworkController::class, 'HomeworkTeacherDelete']);
+    Route::get('teacher/homework/homework_submitted/{id}', [HomeworkController::class, 'HomeworkTeacherSubmitted']);
     Route::post('teacher/ajax_get_subject/add', [HomeworkController::class, 'AjaxGetSubjectTeacherAdd']);
 });
 
@@ -282,6 +284,8 @@ Route::group(["middleware" => "student"], function () {
     Route::post('student/ajax_get_subject/add', [HomeworkController::class, 'AjaxGetSubjectStudentAdd']);
     Route::get("student/my_homework/submit_homework/{id}", [HomeworkController::class, 'SubmitHomework']);
     Route::post("student/my_homework/submit_homework/{id}", [HomeworkController::class, 'SubmitHomeworkStore']);
+
+    Route::get('student/homework/homework_student_submit', [HomeworkController::class, 'HomeworkStudentSubmit']);
 });
 
 

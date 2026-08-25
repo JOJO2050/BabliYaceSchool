@@ -515,9 +515,16 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ url('student/homework/homework_list') }}"
-                            class="nav-link {{ Request::segment(2) == 'homework_list' ? 'active-child' : '' }}">
+                            class="nav-link {{ Request::segment(3) == 'homework_list' ? 'active-child' : '' }}">
                             <i class="fas fa-book"></i>
-                            <p>Mes devoir</p>
+                            <p>Devoir reçu</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('student/homework/homework_student_submit') }}"
+                            class="nav-link {{ Request::segment(3) == 'homework_student_submit' ? 'active-child' : '' }}">
+                            <i class="fas fa-book"></i>
+                            <p>Devoir envoyé</p>
                         </a>
                     </li>
 

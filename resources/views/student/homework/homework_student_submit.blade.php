@@ -41,6 +41,7 @@
             justify-content: center;
             border-radius: 6px;
             transition: all 0.2s ease;
+            padding: 0;
         }
 
         .btn-action:hover {
@@ -110,43 +111,54 @@
                         <div class="card my-4 p-2">
                             <div class="app-card app-card-settings shadow-sm p-4" style="background-color:#d8e0de;">
                                 <div class="card-body">
+                                    <form method="GET" action="{{ url('student/homework/homework_student_submit') }}">
+                                        <div class="row g-3 align-items-end">
 
-                                    <form method="GET" action="{{ url('student/homework/homework_list') }}">
-                                        <div class="row align-items-end">
-
-                                            <div class="col-md-4 mb-3">
+                                            <div class="col-md-3">
                                                 <label for="getSubject" class="form-label">
                                                     <b>Matière</b>
                                                 </label>
-                                                <select name="subject_id" id="getSubject" class="form-select">
+                                                <select name="subject_id" id="getSubject" class="form-select"
+                                                    style="height:40px;">
                                                     <option value="">Toutes les matières</option>
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-3 mb-3">
+                                            <div class="col-md-2">
                                                 <label for="homework_date" class="form-label">
                                                     <b>Date d'émission</b>
                                                 </label>
                                                 <input type="date" name="homework_date" id="homework_date"
-                                                    class="form-control" value="{{ Request::get('homework_date') }}">
+                                                    class="form-control" style="height:40px;"
+                                                    value="{{ Request::get('homework_date') }}">
                                             </div>
 
-                                            <div class="col-md-3 mb-3">
+                                            <div class="col-md-2">
                                                 <label for="submission_date" class="form-label">
                                                     <b>Date de rendu</b>
                                                 </label>
                                                 <input type="date" name="submission_date" id="submission_date"
-                                                    class="form-control" value="{{ Request::get('submission_date') }}">
+                                                    class="form-control" style="height:40px;"
+                                                    value="{{ Request::get('submission_date') }}">
                                             </div>
 
-                                            <div class="col-md-2 mb-3">
-                                                <div class="d-flex justify-content-end gap-2">
+                                            <div class="col-md-2">
+                                                <label for="sent_date" class="form-label">
+                                                    <b>Date de soumission</b>
+                                                </label>
+                                                <input type="date" name="sent_date" id="sent_date"
+                                                    class="form-control" style="height:40px;"
+                                                    value="{{ Request::get('sent_date') }}">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="d-flex gap-2">
                                                     <button type="submit" class="btn btn-primary btn-action"
                                                         title="Rechercher">
                                                         <i class="fas fa-search"></i>
                                                     </button>
 
-                                                    <a href="{{ url('student/homework/homework_list') }}"
+                                                    <a href="{{ url('/student/homework/homework_student_submit') }}"
                                                         class="btn btn-danger btn-action" title="Réinitialiser">
                                                         <i class="fas fa-times"></i>
                                                     </a>
@@ -155,7 +167,6 @@
 
                                         </div>
                                     </form>
-
                                 </div>
                             </div>
                         </div>
@@ -165,11 +176,11 @@
 
                         <div class="card-header d-flex justify-content-between align-items-center"
                             style="font-size:20px;">
-                            <b>Liste des devoirs reçu</b>
+                            <b>Liste des devoirs envoyé</b>
 
                             <span class="app-page-title px-3 py-1 rounded"
                                 style="background-color:#28a745;color:#fff;font-size:14px;">
-                                <b>Total devoir reçu : {{ $getRecord->total() }}</b>
+                                <b>Total devoir envoyé : {{ $getRecord->total() }}</b>
                             </span>
                         </div>
 
@@ -185,67 +196,60 @@
                                                 <th>Matière</th>
                                                 <th>Date d'émission</th>
                                                 <th>Date de rendu</th>
-                                                <th>Fichier PDF</th>
-                                                <th>Description</th>
-                                                <th>Créé par</th>
-                                                {{-- <th>Date de création</th> --}}
-                                                <th class="text-center align-middle">Action</th>
+                                                <th class="text-center">Fichier reçu</th>
+                                                <th>Description du devoir</th>
+                                                <th class="text-center">Document envoyé</th>
+                                                <th>Description du document</th>
+                                                <th class="text-center">Date de soumission</th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
                                             @forelse ($getRecord as $value)
                                                 <tr>
                                                     <td>{{ $value->id }}</td>
                                                     <td>{{ $value->class_name }}</td>
                                                     <td>{{ $value->subject_name }}</td>
-                                                    <td>{{ date('d-m-Y', strtotime($value->homework_date)) }}</td>
-                                                    <td>{{ date('d-m-Y', strtotime($value->submission_date)) }}</td>
-
-                                                    <td>
-                                                        @if (!empty($value->getDocument()))
-                                                            <a href="{{ $value->getDocument() }}"
-                                                                class="btn btn-primary" download>
-                                                                <i class="fas fa-file-pdf me-1"></i>
-                                                                Télécharger
+                                                    <td>{{ date('d-m-Y', strtotime($value->getHomework->homework_date)) }}
+                                                    </td>
+                                                    <td>{{ date('d-m-Y', strtotime($value->getHomework->submission_date)) }}
+                                                    </td>
+                                                    <td class="text-center" style="background:#eff6ff;">
+                                                        @if (!empty($value->getHomework->getDocument()))
+                                                            <a href="{{ $value->getHomework->getDocument() }}"
+                                                                class="btn btn-primary btn-sm" download>
+                                                                <i class="fas fa-file-pdf me-1"></i>Télécharger
                                                             </a>
                                                         @else
-                                                            <span class="text-muted">Aucun fichier</span>
+                                                            <span class="badge bg-secondary">Aucun fichier</span>
                                                         @endif
                                                     </td>
-
-                                                    <td>{!! $value->description !!}</td>
-
-                                                    <td>
-                                                        {{ $value->created_by_name }}
-                                                    </td>
-
-                                                    {{-- <td>
-                                                        {{ date('d-m-Y H:i', strtotime($value->created_at)) }}
-                                                    </td> --}}
-
-                                                    <td class="text-center align-middle">
-                                                        <div class="d-flex justify-content-center align-items-center">
-                                                            <a href="{{ url('student/my_homework/submit_homework/' . $value->id) }}"
-                                                                class="btn btn-warning d-flex align-items-center justify-content-center px-3"
-                                                                style="min-width: 100px; height: 42px;"
-                                                                title="Soumettre le devoir">
-                                                                <i class="fas fa-upload me-2"></i>
-                                                                <span>Envoyer le devoir</span>
+                                                    <td style="background:#eff6ff;">{!! $value->getHomework->description !!}</td>
+                                                    <td class="text-center" style="background:#f0fdf4;">
+                                                        @if (!empty($value->getDocument()))
+                                                            <a href="{{ $value->getDocument() }}"
+                                                                class="btn btn-success btn-sm" download>
+                                                                <i class="fas fa-file-pdf me-1"></i>Télécharger
                                                             </a>
-                                                        </div>
+                                                        @else
+                                                            <span class="badge bg-secondary">Aucun fichier</span>
+                                                        @endif
                                                     </td>
-
+                                                    <td style="background:#f0fdf4;">{!! $value->description !!}</td>
+                                                    <td class="text-center" style="background:#f0fdf4;">
+                                                        <span class="badge bg-success">
+                                                            <i class="fas fa-check me-1"></i>
+                                                            {{ date('d-m-Y', strtotime($value->created_at)) }}
+                                                        </span>
+                                                    </td>
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="9" class="text-center py-4">
+                                                    <td colspan="10" class="text-center py-4">
                                                         <div class="text-muted">
                                                             <i class="fas fa-search fa-2x mb-2"></i>
                                                             <h5 class="mb-1">Aucun résultat trouvé</h5>
-                                                            <p class="mb-0">
-                                                                Aucun devoir ne correspond à votre recherche.
-                                                            </p>
+                                                            <p class="mb-0">Aucun devoir ne correspond à votre
+                                                                recherche.</p>
                                                         </div>
                                                     </td>
                                                 </tr>

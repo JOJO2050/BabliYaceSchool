@@ -151,7 +151,7 @@ class homeworkModel extends Model
     }
 
 
-    public static function getStudentRecord($class_id)
+    public static function getStudentRecord($class_id, $student_id)
     {
         $query = self::select(
             "homework.*",
@@ -163,18 +163,32 @@ class homeworkModel extends Model
             ->join("class", "class.id", "=", "homework.class_id")
             ->join("subject", "subject.id", "=", "homework.subject_id")
             ->where("homework.class_id", $class_id)
-            ->where("homework.is_delete", 0);
+            ->where("homework.is_delete", 0)
+            ->whereNotIn("homework.id", function ($query) use ($student_id) {
+                $query->select("homework_id")
+                    ->from("homework_submit")
+                    ->where("student_id", $student_id);
+            });
 
         if (!empty(request('subject_id'))) {
-            $query->where("homework.subject_id", request('subject_id'));
+            $query->where(
+                "homework.subject_id",
+                request('subject_id')
+            );
         }
 
         if (!empty(request('homework_date'))) {
-            $query->whereDate("homework.homework_date", request('homework_date'));
+            $query->whereDate(
+                "homework.homework_date",
+                request('homework_date')
+            );
         }
 
         if (!empty(request('submission_date'))) {
-            $query->whereDate("homework.submission_date", request('submission_date'));
+            $query->whereDate(
+                "homework.submission_date",
+                request('submission_date')
+            );
         }
 
         return $query

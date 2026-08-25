@@ -353,6 +353,12 @@
 
                                                             </a>
 
+                                                            <a href="{{ url('teacher/homework/homework_submitted/' . $value->id) }}"
+                                                                class="btn btn-sm btn-secondary btn-action"
+                                                                title="Devoirs rendus">
+                                                                <i class="fas fa-inbox"></i>
+                                                            </a>
+
                                                         </div>
 
                                                     </td>

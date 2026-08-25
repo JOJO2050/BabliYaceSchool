@@ -76,7 +76,7 @@
                             <a href="{{ url('student/homework/homework_list') }}"
                                 class="btn btn-primary btn-round">Retour sur la
                                 liste
-                                des devoirs</a>
+                                des devoirs reçu</a>
                         </div>
                     </div>
 
@@ -84,7 +84,7 @@
                     <div class="card my-4 p-4">
 
                         <div class="card-header" style="font-size:20px;">
-                            <b>Formulaire d'ajout de devoir</b>
+                            <b>Formulaire de soumission de devoir</b>
                         </div>
 
                         <div class="app-card app-card-settings shadow-sm p-4">
