@@ -377,4 +377,52 @@ class User extends Authenticatable
     {
         return $this->hasMany(ClassSubjectTeacherModel::class, 'teacher_id');
     }
+
+
+    //Gestion de scolarité
+    static public function getStudentFees()
+    {
+        $return = self::select(
+            "users.*",
+            "class.name as class_name",
+            "class.amount as amount"
+        )
+            ->leftJoin("class", "class.id", "=", "users.class_id")
+            ->where("users.user_type", "=", 3)
+            ->where("users.is_delete", "=", 0);
+
+        if (!empty(Request::get("class_id"))) {
+            $return = $return->where("users.class_id", "=", Request::get("class_id"));
+        }
+
+        if (!empty(Request::get("student_id"))) {
+            $return = $return->where("users.id", "=", Request::get("student_id"));
+        }
+
+        if (!empty(Request::get("name"))) {
+            $return = $return->where("users.name", "like", "%" . Request::get("name") . "%");
+        }
+
+        if (!empty(Request::get("last_name"))) {
+            $return = $return->where("users.last_name", "like", "%" . Request::get("last_name") . "%");
+        }
+
+        return $return
+            ->orderBy("users.name", "asc")
+            ->paginate(10);
+    }
+
+    static public function getSingleStudentFees($student_id)
+    {
+        return self::select(
+            "users.*",
+            "class.name as class_name",
+            "class.amount as amount"
+        )
+            ->leftJoin("class", "class.id", "=", "users.class_id")
+            ->where("users.id", $student_id)
+            ->where("users.user_type", 3)
+            ->where("users.is_delete", 0)
+            ->first();
+    }
 }

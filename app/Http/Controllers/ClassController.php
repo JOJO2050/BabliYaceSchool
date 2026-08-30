@@ -27,6 +27,7 @@ class ClassController extends Controller
     {
         $save = new ClassModel();
         $save->name = $request->name;
+        $save->amount = $request->amount;
         $save->status = $request->status;
         $save->created_by = Auth::user()->id;
         $save->save();
@@ -51,6 +52,7 @@ class ClassController extends Controller
     {
         $save = ClassModel::getSingle($id);
         $save->name = $request->name;
+        $save->amount = $request->amount;
         $save->status = $request->status;
         $save->save();
         return redirect("admin/class/list")->with("success", "la Classe ($save->name ) a bien été mis a jour ");

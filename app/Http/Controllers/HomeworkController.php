@@ -331,7 +331,6 @@ class HomeworkController extends Controller
 
     //ESPACE ELEVE
 
-
     public function HomeworkStudentList()
     {
 
@@ -408,6 +407,56 @@ class HomeworkController extends Controller
             $html .= '<option value="' . $subject->id . '">' .
                 e($subject->name) .
                 '</option>';
+        }
+
+        return response()->json([
+            'success' => true,
+            'html' => $html
+        ]);
+    }
+
+    //ESPACE PARENT
+
+    public function HomeworkStudentParent(Request $request, $student_id)
+    {
+        $getStudent = User::getSingle($student_id);
+        $data['getRecord'] = HomeworkModel::getParentStudentRecord(
+            $getStudent->class_id,
+            $getStudent->student_id,
+            $request->subject_id,
+            $request->homework_date,
+            $request->submission_date
+        );
+        $data['getStudent'] = $getStudent;
+        $data['header_title'] = 'Espace de devoir reçu';
+        return view('parent.homework.homework_list', $data);
+    }
+    public function HomeworkSumittedStudentParent($student_id)
+    {
+        $getStudent = User::getSingle($student_id);
+        $data['getRecord'] = HomeworkSubmitModel::getStudentRecord($getStudent->id);
+        $data['getStudent'] = $getStudent;
+        $data['header_title'] = 'Espace de devoir rendu';
+        return view('parent.homework.homework_submitted', $data);
+    }
+
+
+    public function ajax_get_subject(Request $request)
+    {
+        $subjects = SubjectModel::select('subject.*')
+            ->join('class_subject', 'class_subject.subject_id', '=', 'subject.id')
+            ->where('class_subject.class_id', $request->class_id)
+            ->where('class_subject.is_delete', 0)
+            ->where('class_subject.status', 0)
+            ->where('subject.is_delete', 0)
+            ->where('subject.status', 0)
+            ->orderBy('subject.name', 'asc')
+            ->get();
+
+        $html = '';
+
+        foreach ($subjects as $subject) {
+            $html .= '<option value="' . $subject->id . '">' . $subject->name . '</option>';
         }
 
         return response()->json([

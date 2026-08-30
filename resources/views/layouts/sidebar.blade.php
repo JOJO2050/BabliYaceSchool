@@ -129,6 +129,35 @@
                     </li>
 
                     @php
+                        $ScolaritePages = ['collect_fees'];
+
+                        $scolariteActive = in_array(Request::segment(3), $ScolaritePages);
+                    @endphp
+                    <li class="nav-item">
+
+                        <a data-bs-toggle="collapse" href="#scolariteMenu"
+                            class="nav-link {{ $scolariteActive ? 'active' : '' }}">
+                            <i class="fas fa-user-tie"></i>
+                            <p>Scolarité</p>
+                            <span class="caret"></span>
+                        </a>
+
+                        <div class="collapse {{ $scolariteActive ? 'show' : '' }}" id="scolariteMenu">
+                            <ul class="nav nav-collapse">
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/fees_collection/collect_fees') }}"
+                                        class="nav-link {{ Request::segment(3) == 'collect_fees' ? 'active-child' : '' }}">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                        <p>Scolarité reçue</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </li>
+
+
+                    @php
                         $examinationPages = ['exam', 'exam_schedule', 'marks_register', 'marks_grade'];
 
                         $examinationActive = in_array(Request::segment(3), $examinationPages);

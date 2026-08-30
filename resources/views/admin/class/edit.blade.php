@@ -101,7 +101,7 @@
                                     {{ csrf_field() }}
 
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-4 mb-3">
                                             <label for="setting-input-1" class="form-label"><b>Nom de la
                                                     classe</b></label>
                                             <input type="text" class="form-control" id="setting-input-1"
@@ -112,7 +112,17 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="setting-input-1" class="form-label"><b>Scolarité</b></label>
+                                            <input type="number" class="form-control" id="setting-input-1"
+                                                name="amount" placeholder="Entrez la scolarité de cette classe"
+                                                value="{{ $getRecord->amount }}">
+                                            @error('amount')
+                                                <div class="text-danger"><b>{{ $message }}</b></div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
                                             <label for="setting-input-3" class="form-label"><b>Status</b></label>
                                             <select name="status" class="form-control">
                                                 <option value="">

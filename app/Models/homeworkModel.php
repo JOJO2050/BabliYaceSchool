@@ -196,4 +196,32 @@ class homeworkModel extends Model
             ->paginate(10)
             ->appends(request()->query());
     }
+
+    static public function getParentStudentRecord($class_id, $student_id, $subject_id = null, $homework_date = null, $submission_date = null)
+    {
+        $return = HomeworkModel::select(
+            'homework.*',
+            'class.name as class_name',
+            'subject.name as subject_name',
+            'users.name as created_by_name'
+        )
+            ->join('class', 'class.id', '=', 'homework.class_id')
+            ->join('subject', 'subject.id', '=', 'homework.subject_id')
+            ->join('users', 'users.id', '=', 'homework.created_by')
+            ->where('homework.class_id', $class_id);
+
+        if (!empty($subject_id)) {
+            $return->where('homework.subject_id', $subject_id);
+        }
+
+        if (!empty($homework_date)) {
+            $return->whereDate('homework.homework_date', $homework_date);
+        }
+
+        if (!empty($submission_date)) {
+            $return->whereDate('homework.submission_date', $submission_date);
+        }
+
+        return $return->orderBy('homework.id', 'desc')->paginate(10);
+    }
 }

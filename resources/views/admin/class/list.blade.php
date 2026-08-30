@@ -158,6 +158,7 @@
                                                 <tr>
                                                     <th>N°##</th>
                                                     <th>Nom de la classe</th>
+                                                    <th>Scolarité lié a la classe</th>
                                                     <th>Status</th>
                                                     <th>Créé Par</th>
                                                     <th>Date création</th>
@@ -171,6 +172,7 @@
                                                     <tr>
                                                         <td>{{ $value->id }}</td>
                                                         <td>{{ $value->name }}</td>
+                                                        <td>{{ number_format($value->amount) }} FCFA</td>
                                                         <td>
                                                             @if ($value->status == 0)
                                                                 Active

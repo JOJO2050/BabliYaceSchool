@@ -113,12 +113,12 @@
                                             <table class="table table-striped mt-3">
                                                 <thead class="table-success">
                                                     <tr>
-                                                        <th>N°##</th>
+                                                        <th>N°#MAJ#</th>
                                                         <th>photo</th>
                                                         <th>Nom</th>
                                                         <th>Prénom</th>
                                                         <th class="text-center">Email</th>
-                                                        <th>Numero d'admission</th>
+                                                        {{-- <th>Numero d'admission</th> --}}
                                                         <th>Numero maricule</th>
                                                         <th>Classe</th>
                                                         {{-- <th>Genre</th>
@@ -137,7 +137,7 @@
                                                 <tbody>
                                                     @foreach ($getRecord as $value)
                                                         <tr>
-                                                            <td>{{ $value->id }}</td>
+                                                            <td>#MAJ#{{ $value->id }}</td>
                                                             <td>
                                                                 @if (!empty($value->getProfile()))
                                                                     <img src="{{ $value->getProfile() }}"
@@ -147,7 +147,7 @@
                                                             <td>{{ $value->name }}</td>
                                                             <td>{{ $value->last_name }}</td>
                                                             <td>{{ $value->email }}</td>
-                                                            <td>{{ $value->admission_number }}</td>
+                                                            {{-- <td>{{ $value->admission_number }}</td> --}}
                                                             <td>{{ $value->roll_number }}</td>
                                                             <td>{{ $value->class_name }}</td>
                                                             {{-- <td>{{ $value->gender }}</td> --}}
@@ -169,35 +169,64 @@
                                                             </td>
                                                             <td>{{ date('d-m-Y H:i A', strtotime($value->updated_at)) }}
                                                             </td> --}}
-                                                            <td style="width:500px;">
-                                                                <div class="d-flex justify-content-center gap-2">
+                                                            <td style="min-width:390px;">
+                                                                <div class="d-flex flex-column align-items-start gap-2">
+                                                                    <div
+                                                                        class="d-flex justify-content-start gap-2 w-100">
+                                                                        <a href="{{ url('/parent/my_student/subject/' . $value->id) }}"
+                                                                            class="btn btn-sm btn-warning d-flex align-items-center justify-content-center gap-1"
+                                                                            style="width:120px;height:38px;white-space:nowrap;">
+                                                                            <i class="fas fa-book"></i>
+                                                                            <span>Matières</span>
+                                                                        </a>
+                                                                        <a href="{{ url('/parent/my_student/my_attendance/' . $value->id) }}"
+                                                                            class="btn btn-sm btn-secondary d-flex align-items-center justify-content-center gap-1"
+                                                                            style="width:120px;height:38px;white-space:nowrap;">
+                                                                            <i class="fas fa-calendar-check"></i>
+                                                                            <span>Pointage</span>
+                                                                        </a>
 
-                                                                    <a href="{{ url('/parent/my_student/subject/' . $value->id) }}"
-                                                                        class="btn btn-sm btn-warning">
-                                                                        <b>Matières</b>
-                                                                    </a>
+                                                                        <a href="{{ url('/parent/my_student/exam_timetable/' . $value->id) }}"
+                                                                            class="btn btn-sm btn-primary d-flex align-items-center justify-content-center gap-1"
+                                                                            style="width:120px;height:38px;white-space:nowrap;">
+                                                                            <i class="fas fa-file-alt"></i>
+                                                                            <span>Examen</span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div
+                                                                        class="d-flex justify-content-start gap-2 w-100">
+                                                                        <a href="{{ url('/parent/my_student/calendar/' . $value->id) }}"
+                                                                            class="btn btn-sm btn-success d-flex align-items-center justify-content-center gap-1"
+                                                                            style="width:120px;height:38px;white-space:nowrap;">
+                                                                            <i class="fas fa-calendar"></i>
+                                                                            <span>Calendrier</span>
+                                                                        </a>
+                                                                        <a href="{{ url('/parent/my_student/exam_result/' . $value->id) }}"
+                                                                            class="btn btn-sm btn-primary d-flex align-items-center justify-content-center gap-1"
+                                                                            style="width:120px;height:38px;white-space:nowrap;">
+                                                                            <i class="fas fa-chart-bar"></i>
+                                                                            <span>Résultat</span>
+                                                                        </a>
 
-                                                                    <a href="{{ url('/parent/my_student/my_attendance/' . $value->id) }}"
-                                                                        class="btn btn-sm btn-secondary">
-                                                                        <b>Pointage</b>
-                                                                    </a>
 
-                                                                    <a href="{{ url('/parent/my_student/exam_timetable/' . $value->id) }}"
-                                                                        class="btn btn-sm btn-primary">
-                                                                        <b>Examen</b>
-                                                                    </a>
-
-                                                                    <a href="{{ url('/parent/my_student/calendar/' . $value->id) }}"
-                                                                        class="btn btn-sm btn-success">
-                                                                        <b>Calendrier</b>
-                                                                    </a>
-
-                                                                    <a href="{{ url('/parent/my_student/exam_result/' . $value->id) }}"
-                                                                        class="btn btn-sm btn-primary">
-                                                                        <b>Resultat</b>
-                                                                    </a>
+                                                                        <a href="{{ url('/parent/my_student/homework/' . $value->id) }}"
+                                                                            class="btn btn-sm btn-info d-flex align-items-center justify-content-center gap-1"
+                                                                            style="width:120px;height:38px;white-space:nowrap;">
+                                                                            <i class="fas fa-inbox"></i>
+                                                                            <span>Devoirs reçus</span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="d-flex justify-content-start w-100">
+                                                                        <a href="{{ url('/parent/my_student/homework_submitted/' . $value->id) }}"
+                                                                            class="btn btn-sm btn-danger d-flex align-items-center justify-content-center gap-1"
+                                                                            style="width:120px;height:38px;white-space:nowrap;">
+                                                                            <i class="fas fa-paper-plane"></i>
+                                                                            <span>Devoirs envoyés</span>
+                                                                        </a>
+                                                                    </div>
                                                                 </div>
                                                             </td>
+
                                                         </tr>
                                                     @endforeach
                                                 </tbody>

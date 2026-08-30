@@ -12,6 +12,7 @@ use App\Http\Controllers\ClassTimetableController;
 use App\Http\Controllers\CommunicateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExaminationsController;
+use App\Http\Controllers\FeesCollectionController;
 use App\Http\Controllers\HomeworkController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\StudentController;
@@ -203,6 +204,15 @@ Route::group(["middleware" => "admin"], function () {
     Route::get('admin/homework/homework_delete/{id}', [HomeworkController::class, 'HomeworkDelete']);
     Route::get('admin/homework/homework_submitted/{id}', [HomeworkController::class, 'HomeworkAdminSubmitted']);
     Route::post('admin/ajax_get_subject/add', [HomeworkController::class, 'AjaxGetSubjectAdd']);
+
+    //Gestion des scolarité
+    Route::get('admin/fees_collection/collect_fees', [FeesCollectionController::class, 'CollectFees']);
+    Route::get('admin/fees_collection/collect_fees/add_fees/{student_id}', [FeesCollectionController::class, 'CollectFeesAdd']);
+    Route::post('admin/fees_collection/collect_fees/add_fees/{student_id}', [FeesCollectionController::class, 'CollectFeesInsert']);
+    Route::get('admin/fees_collection/collect_fees/edit_fees/{id}', [FeesCollectionController::class, 'CollectFeesEdit']);
+    Route::post('admin/fees_collection/collect_fees/edit_fees/{id}', [FeesCollectionController::class, 'CollectFeesUpdate']);
+    //pour le js
+    Route::get('admin/fees_collection/get_students', [FeesCollectionController::class, 'getStudentsByClass']);
 });
 
 
@@ -289,7 +299,6 @@ Route::group(["middleware" => "student"], function () {
 });
 
 
-
 // les routes definis pour les parents
 Route::group(["middleware" => "parent"], function () {
 
@@ -319,4 +328,9 @@ Route::group(["middleware" => "parent"], function () {
     Route::get("parent/my_student_notice_board", [CommunicateController::class, "myNoticeBoardParentStudent"]);
     //Liste des informations
     Route::get("parent/my_notice_board", [CommunicateController::class, "myNoticeBoardParent"]);
+
+    // Gestion des devoirs
+    Route::get('parent/my_student/homework/{id}', [HomeworkController::class, 'HomeworkStudentParent']);
+    Route::get('parent/my_student/homework_submitted/{id}', [HomeworkController::class, 'HomeworkSumittedStudentParent']);
+    Route::post('parent/ajax_get_subject/add', [HomeworkController::class, 'ajax_get_subject']);
 });
