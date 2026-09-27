@@ -83,7 +83,8 @@
                                             <div class="text-center text-muted">
                                                 <i class="fa fa-comments fa-3x mb-3"></i>
                                                 <h5>Mon espace de chat</h5>
-                                                <p>Sélectionnez une personne pour commencer une conversation.</p>
+                                                <p>Sélectionnez une personne pour commencer une conversation s'il vous
+                                                    plait.</p>
                                             </div>
                                         </div>
                                     @endif
